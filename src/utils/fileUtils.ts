@@ -1,0 +1,49 @@
+import RNFS from 'react-native-fs';
+import FileViewer from 'react-native-file-viewer';
+import {Platform, ToastAndroid} from 'react-native';
+
+export const getDownloadPath = () => {
+  return Platform.OS === 'android'
+    ? `${RNFS.ExternalStorageDirectoryPath}/Android/data/com.blueprintresume/files/Download`
+    : RNFS.DocumentDirectoryPath;
+};
+
+export const loadDownloadedResumes = async () => {
+  try {
+    const downloadPath = getDownloadPath();
+    const files = await RNFS.readDir(downloadPath);
+    return files
+      .filter(
+        file => file.name.endsWith('.pdf') && file.name.startsWith('Resume_'),
+      )
+      .map(file => ({
+        name: file.name,
+        path: file.path,
+        createdDate: new Date(file.ctime!),
+      }))
+      .sort((a, b) => b.createdDate.getTime() - a.createdDate.getTime());
+  } catch (error: any) {
+    console.error('Error loading resumes:', error);
+    if (Platform.OS === 'android') {
+      ToastAndroid.show(
+        'Error loading resumes: ' + error?.message,
+        ToastAndroid.LONG,
+      );
+    }
+    return [];
+  }
+};
+
+export const openResume = async (path: string) => {
+  try {
+    await FileViewer.open(path, {
+      showOpenWithDialog: true,
+      showAppsSuggestions: true,
+    });
+  } catch (error) {
+    console.error('Error opening PDF:', error);
+    if (Platform.OS === 'android') {
+      ToastAndroid.show('No PDF viewer app installed', ToastAndroid.LONG);
+    }
+  }
+};
