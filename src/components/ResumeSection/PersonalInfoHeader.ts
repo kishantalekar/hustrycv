@@ -1,5 +1,5 @@
-import {Basics} from '../ResumePreview/ResumePreview';
 import {getResumeStyles, SPACING} from '../../utils/resumeStyles';
+import {Basics} from '../ResumePreview/ResumePreview.types';
 
 export const getPersonalInfoHTML = (basics: Basics, scale: number) => {
   const styles = getResumeStyles(scale);
