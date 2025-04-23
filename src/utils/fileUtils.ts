@@ -47,3 +47,19 @@ export const openResume = async (path: string) => {
     }
   }
 };
+
+export const deleteResume = async (path: string) => {
+  try {
+    await RNFS.unlink(path);
+    if (Platform.OS === 'android') {
+      ToastAndroid.show('Resume deleted successfully', ToastAndroid.SHORT);
+    }
+    return true;
+  } catch (error) {
+    console.error('Error deleting resume:', error);
+    if (Platform.OS === 'android') {
+      ToastAndroid.show('Failed to delete resume', ToastAndroid.LONG);
+    }
+    return false;
+  }
+};

@@ -1,7 +1,18 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import {FONTS} from '../constants';
-import {loadDownloadedResumes, openResume} from '../utils/fileUtils';
+import {
+  loadDownloadedResumes,
+  openResume,
+  deleteResume,
+} from '../utils/fileUtils';
 interface DownloadedResume {
   name: string;
   path: string;
@@ -17,15 +28,47 @@ const DownloadedResumes = () => {
     });
   }, []);
 
+  const handleDelete = (resume: DownloadedResume) => {
+    Alert.alert(
+      'Delete Resume',
+      `Are you sure you want to delete ${resume.name}?`,
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            const success = await deleteResume(resume.path);
+            if (success) {
+              setResumes(prev =>
+                prev.filter(item => item.path !== resume.path),
+              );
+            }
+          },
+        },
+      ],
+    );
+  };
+
   const renderItem = ({item}: {item: DownloadedResume}) => (
-    <TouchableOpacity
-      style={styles.resumeItem}
-      onPress={() => openResume(item.path)}>
-      <Text style={styles.resumeName}>{item.name}</Text>
-      <Text style={styles.resumeDate}>
-        {item.createdDate.toLocaleDateString()}
-      </Text>
-    </TouchableOpacity>
+    <View style={styles.resumeItem}>
+      <TouchableOpacity
+        style={styles.resumeContent}
+        onPress={() => openResume(item.path)}>
+        <Text style={styles.resumeName}>{item.name}</Text>
+        <Text style={styles.resumeDate}>
+          {item.createdDate.toLocaleDateString()}
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.deleteButton}
+        onPress={() => handleDelete(item)}>
+        <Text style={styles.deleteButtonText}>Delete</Text>
+      </TouchableOpacity>
+    </View>
   );
   return (
     <View style={styles.container}>
@@ -71,6 +114,23 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  resumeContent: {
+    flex: 1,
+  },
+  deleteButton: {
+    backgroundColor: '#DC3545',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 6,
+    marginLeft: 12,
+  },
+  deleteButtonText: {
+    color: 'white',
+    fontSize: 14,
+    fontFamily: FONTS.FIRA_SANS.REGULAR,
   },
   resumeName: {
     fontSize: 16,
