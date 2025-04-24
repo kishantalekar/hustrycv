@@ -1,7 +1,10 @@
 import {create} from 'zustand';
 import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
-import {mockResumeData} from '../assets/resume_mock_data';
+import {
+  extendedMockResumeData,
+  mockResumeData,
+} from '../assets/resume_mock_data';
 
 // Type definitions -----------------------------------------------------------
 interface Metadata {
@@ -184,7 +187,7 @@ const initialState: ResumeState = {
 
 // Store Implementation ------------------------------------------------------
 export const useResumeStore = create<ResumeState>(set => ({
-  ...mockResumeData,
+  ...extendedMockResumeData,
 
   updateMetadata: metadata =>
     set(state => ({

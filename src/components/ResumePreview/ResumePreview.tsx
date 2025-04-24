@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   ScrollView,
@@ -6,78 +6,29 @@ import {
   Text,
   StyleSheet,
 } from 'react-native';
-import {WebView} from 'react-native-webview';
-import {useA4Dimensions} from '../../hooks/useA4Dimensions';
-import {getCommonStyles} from '../../utils/htmlStyles';
-import {getPersonalInfoHTML} from '../ResumeSection/PersonalInfoHeader';
-import {getSummaryHTML} from '../ResumeSection/SummarySection';
-import {getWorkExperienceHTML} from '../ResumeSection/WorkExperienceSection';
-import {getEducationHTML} from '../ResumeSection/EducationSection';
-import {getSkillsHTML} from '../ResumeSection/SkillsSection';
 import {FONTS} from '../../constants';
-import {createAndSavePDF} from '../../utils/pdfUtils';
+import {createAndSavePDF, generatePDF} from '../../utils/pdfUtils';
 import {navigate} from '../../utils/navigation';
-import {ResumeData, ResumePreviewProps} from './ResumePreview.types';
-
-const getResumeHTML = (resumeData: ResumeData, scale: number) => {
-  console.log('education', resumeData?.sections?.education?.items.length);
-  if (!resumeData) {
-    return `
-      <html>
-        <body>
-          <p>No resume data available</p>
-        </body>
-      </html>
-    `;
-  }
-
-  return `
-    <html>
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-        <style>
-          body {
-            padding: 16px;
-            margin: 0;
-            font-family: 'FiraSans-Regular';
-            background-color: white;
-          }
-          ${getCommonStyles(scale)}
-        </style>
-      </head>
-      <body>
-        ${
-          resumeData.basics ? getPersonalInfoHTML(resumeData.basics, scale) : ''
-        }
-        ${resumeData.basics?.summary ? getSummaryHTML(resumeData.basics) : ''}
-        ${
-          resumeData.sections?.work?.items.length
-            ? getWorkExperienceHTML(resumeData.sections.work)
-            : ''
-        }
-        ${
-          resumeData.sections?.education?.items.length
-            ? getEducationHTML(resumeData.sections.education)
-            : ''
-        }
-        ${
-          resumeData.sections?.skills?.items.length
-            ? getSkillsHTML(resumeData.sections.skills)
-            : ''
-        }
-      </body>
-    </html>
-  `;
-};
+import {ResumePreviewProps} from './ResumePreview.types';
+import Document from 'react-native-pdf';
+import {getProfessionalResumeHTML} from '../../templates';
 
 export default function ResumePreview({
   resumeData,
   style,
 }: Readonly<ResumePreviewProps>) {
-  const {scale, previewWidth, previewHeight} = useA4Dimensions();
+  const [pdfBase64, setPdfBase64] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (resumeData) {
+      generatePDF(getProfessionalResumeHTML(resumeData, 1)).then(base64 => {
+        if (base64) {
+          return setPdfBase64(base64);
+        }
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!resumeData) {
     return (
@@ -86,31 +37,24 @@ export default function ResumePreview({
       </View>
     );
   }
-
   return (
     <ScrollView
       style={styles.container}
       contentContainerStyle={styles.contentContainer}>
-      <View
-        style={[
-          styles.previewContainer,
-          {
-            width: previewWidth,
-            height: previewHeight,
-          },
-          style,
-        ]}>
-        <WebView
-          source={{html: getResumeHTML(resumeData, scale)}}
-          style={styles.webView}
-          scrollEnabled={true}
-          showsVerticalScrollIndicator={false}
-          bounces={false}
-        />
+      <View style={[styles.previewContainer, style]}>
+        {pdfBase64 && (
+          <Document
+            source={{uri: `data:application/pdf;base64,${pdfBase64}`}}
+            style={{flex: 1}}
+          />
+        )}
       </View>
+
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          onPress={() => createAndSavePDF(getResumeHTML(resumeData, scale))}
+          onPress={() =>
+            createAndSavePDF(getProfessionalResumeHTML(resumeData, 1))
+          }
           style={styles.exportButton}>
           <Text style={styles.exportButtonText}>{'Download PDF'}</Text>
         </TouchableOpacity>
@@ -171,7 +115,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 8,
     elevation: 8,
-    overflow: 'hidden',
+    // overflow: 'hidden',
+    height: 842,
+    width: '100%',
   },
   webView: {
     flex: 1,

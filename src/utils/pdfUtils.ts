@@ -25,7 +25,17 @@ export const requestStoragePermission = async () => {
     return false;
   }
 };
-
+export const generatePDF = async (html: string) => {
+  const options = {
+    html,
+    base64: true,
+  };
+  const file = await RNHTMLtoPDF.convert(options);
+  if (file.base64) {
+    return file.base64;
+  }
+  return null;
+};
 export const createAndSavePDF = async (html: string) => {
   try {
     const hasPermission = await requestStoragePermission();
@@ -49,6 +59,8 @@ export const createAndSavePDF = async (html: string) => {
       directory: Platform.OS === 'android' ? 'Download' : 'Documents',
       padding: 12,
       bgColor: '#ffffff',
+      width: 595, // <-- A4 width in points
+      height: 842,
     };
 
     const file = await RNHTMLtoPDF.convert(options);

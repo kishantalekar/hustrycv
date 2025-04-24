@@ -27,6 +27,13 @@ export interface Skill {
   level?: string;
   keywords?: string[];
 }
+export interface Project {
+  id: string;
+  name?: string;
+  description?: string;
+  url?: string;
+  highlights?: string[];
+}
 export interface ResumeData {
   basics?: Basics;
   sections?: {
@@ -44,6 +51,11 @@ export interface ResumeData {
       type: string;
       visible: boolean;
       items: Array<Skill>;
+    };
+    projects?: {
+      type: string;
+      visible: boolean;
+      items: Array<Project>;
     };
   };
 }
