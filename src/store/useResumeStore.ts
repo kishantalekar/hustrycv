@@ -53,7 +53,7 @@ interface SkillItem {
   keywords: string[];
 }
 
-interface ProjectItem {
+export interface ProjectItem {
   id: string;
   name: string;
   description: string;
@@ -61,6 +61,14 @@ interface ProjectItem {
   highlights: string[];
 }
 
+export interface CertificateItem {
+  id: string;
+  name: string;
+  authority: string;
+  certificationUrlOrCode: string;
+  issueDate: string;
+  description: string;
+}
 interface CustomSectionItem {
   id: string;
   [key: string]: any;
@@ -87,6 +95,7 @@ interface ResumeState {
     education: Section<EducationItem>;
     skills: Section<SkillItem>;
     projects: Section<ProjectItem>;
+    certifications: Section<CertificateItem>;
     customSections: Section<CustomSectionItem>[];
   };
   settings: Settings;
@@ -172,6 +181,11 @@ const initialState: ResumeState = {
     },
     projects: {
       type: 'projects',
+      visible: true,
+      items: [],
+    },
+    certifications: {
+      type: 'certifications',
       visible: true,
       items: [],
     },

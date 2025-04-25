@@ -59,8 +59,8 @@ export const createAndSavePDF = async (html: string) => {
       directory: Platform.OS === 'android' ? 'Download' : 'Documents',
       padding: 12,
       bgColor: '#ffffff',
-      width: 595, // <-- A4 width in points
-      height: 842,
+      // width: 595, // <-- A4 width in points
+      // height: 842,
     };
 
     const file = await RNHTMLtoPDF.convert(options);

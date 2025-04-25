@@ -10,8 +10,8 @@ import {FONTS} from '../../constants';
 import {createAndSavePDF, generatePDF} from '../../utils/pdfUtils';
 import {navigate} from '../../utils/navigation';
 import {ResumePreviewProps} from './ResumePreview.types';
-import Document from 'react-native-pdf';
 import {getProfessionalResumeHTML} from '../../templates';
+import Pdf from 'react-native-pdf';
 
 export default function ResumePreview({
   resumeData,
@@ -43,7 +43,7 @@ export default function ResumePreview({
       contentContainerStyle={styles.contentContainer}>
       <View style={[styles.previewContainer, style]}>
         {pdfBase64 && (
-          <Document
+          <Pdf
             source={{uri: `data:application/pdf;base64,${pdfBase64}`}}
             style={{flex: 1}}
           />
@@ -115,7 +115,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 8,
     elevation: 8,
-    // overflow: 'hidden',
     height: 842,
     width: '100%',
   },

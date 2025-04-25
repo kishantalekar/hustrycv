@@ -274,6 +274,39 @@ export const extendedMockResumeData = {
         },
       ],
     },
+    certifications: {
+      type: 'certifications',
+      visible: true,
+      items: [
+        {
+          id: 'cert-001',
+          name: 'AWS Certified Solutions Architect',
+          authority: 'Amazon Web Services',
+          certificationUrlOrCode: 'AWS-CSA-123456',
+          issueDate: '2023-06-15',
+          description:
+            'Professional level certification for designing distributed systems on AWS',
+        },
+        {
+          id: 'cert-002',
+          name: 'Microsoft Azure Developer Associate',
+          authority: 'Microsoft',
+          certificationUrlOrCode: 'AZ-204-789012',
+          issueDate: '2023-03-01',
+          description:
+            'Certification for building cloud solutions using Azure services',
+        },
+        {
+          id: 'cert-003',
+          name: 'Google Cloud Professional Cloud Architect',
+          authority: 'Google Cloud',
+          certificationUrlOrCode: 'GCP-PCA-345678',
+          issueDate: '2022-11-30',
+          description:
+            'Expert level certification for designing and managing Google Cloud solutions',
+        },
+      ],
+    },
     customSections: [
       {
         type: 'certifications',

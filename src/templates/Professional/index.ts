@@ -35,18 +35,19 @@ export const getProfessionalResumeHTML = (
           rel="stylesheet" />
         <style>
           body {
-            padding: 16px;
             margin: 0;
             font-family: 'Fira Sans', sans-serif;
             background-color: white;
           }
-          @page {
-            // size: A4; /* <-- This tells it to generate A4 size pages */
-            // margin: 20mmm; /* <-- Set your preferred margins */
-          }
+       @page 
+            {
+                size: a4 portrait;
+                margin: 15pt 15pt; 
+            }
         </style>
       </head>
       <body>
+       <div class="a4-page">
         ${
           resumeData.basics ? getPersonalInfoHTML(resumeData.basics, scale) : ''
         }
@@ -71,6 +72,7 @@ export const getProfessionalResumeHTML = (
             ? getProjectsHTML(resumeData.sections.projects)
             : ''
         }
+       </div>
       </body>
     </html>
   `;

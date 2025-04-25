@@ -5,10 +5,7 @@ import {RootStackParamList} from '../navigation/AppNavigator';
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 
 // Type-safe navigation function
-export const navigate = <RouteName extends keyof RootStackParamList>(
-  name: RouteName,
-  params?: RootStackParamList[RouteName],
-) => {
+export const navigate = (name: string, params?: RootStackParamList[]) => {
   if (navigationRef.isReady()) {
     //@ts-ignore
     navigationRef.navigate(name, params);

@@ -1,11 +1,12 @@
 import React from 'react';
 import {
   View,
-  Text,
   StyleSheet,
-  TextInput,
-  TouchableOpacity,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
+import {Card, TextInput, Button, IconButton, Text} from 'react-native-paper';
 import {FONTS} from '../../../constants/fonts';
 import {useResumeStore} from '../../../store/useResumeStore';
 
@@ -28,90 +29,111 @@ export const EducationEditor = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.sectionTitle}>Education</Text>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.keyboardAvoidingView}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        <Text style={styles.sectionTitle} variant="headlineMedium">
+          Education
+        </Text>
 
-      {education?.items?.map(edu => (
-        <View key={edu.id} style={styles.educationCard}>
-          <TextInput
-            style={styles.input}
-            value={edu.institution}
-            onChangeText={text => updateEducation(edu.id, {institution: text})}
-            placeholder="Institution Name"
-          />
-          <TextInput
-            style={styles.input}
-            value={edu.degree}
-            onChangeText={text => updateEducation(edu.id, {degree: text})}
-            placeholder="Degree"
-          />
-          {/* <TextInput
-            style={styles.input}
-            value={edu.field}
-            onChangeText={text => updateEducation(edu.id, {field: text})}
-            placeholder="Field of Study"
-          /> */}
-          <View style={styles.row}>
-            <TextInput
-              style={[styles.input, styles.flex1]}
-              value={edu.startDate}
-              onChangeText={text => updateEducation(edu.id, {startDate: text})}
-              placeholder="Start Date"
+        {education?.items?.map((edu, index) => (
+          <Card key={edu.id} style={styles.educationCard}>
+            <Card.Title
+              title={edu.institution || `Education ${index + 1}`}
+              right={props => (
+                <IconButton
+                  {...props}
+                  icon="delete"
+                  onPress={() => removeEducation(edu.id)}
+                />
+              )}
             />
-            <TextInput
-              style={[styles.input, styles.flex1]}
-              value={edu.endDate}
-              onChangeText={text => updateEducation(edu.id, {endDate: text})}
-              placeholder="End Date"
-            />
-          </View>
-          <TextInput
-            style={styles.input}
-            value={edu.gpa}
-            onChangeText={text => updateEducation(edu.id, {gpa: text})}
-            placeholder="GPA (Optional)"
-            keyboardType="decimal-pad"
-          />
-          <TouchableOpacity
-            style={styles.deleteButton}
-            onPress={() => removeEducation(edu.id)}>
-            <Text style={styles.deleteButtonText}>Remove</Text>
-          </TouchableOpacity>
-        </View>
-      ))}
+            <Card.Content>
+              <TextInput
+                mode="outlined"
+                label="Institution Name"
+                placeholder="Enter institution name"
+                style={styles.input}
+                value={edu.institution}
+                onChangeText={text =>
+                  updateEducation(edu.id, {institution: text})
+                }
+              />
+              <TextInput
+                mode="outlined"
+                label="Degree"
+                placeholder="Enter your degree"
+                style={styles.input}
+                value={edu.degree}
+                onChangeText={text => updateEducation(edu.id, {degree: text})}
+              />
+              <View style={styles.row}>
+                <TextInput
+                  mode="outlined"
+                  label="Start Date"
+                  placeholder="MM/YYYY"
+                  style={[styles.input, styles.flex1]}
+                  value={edu.startDate}
+                  onChangeText={text =>
+                    updateEducation(edu.id, {startDate: text})
+                  }
+                />
+                <TextInput
+                  mode="outlined"
+                  label="End Date"
+                  placeholder="MM/YYYY or Present"
+                  style={[styles.input, styles.flex1]}
+                  value={edu.endDate}
+                  onChangeText={text =>
+                    updateEducation(edu.id, {endDate: text})
+                  }
+                />
+              </View>
+              <TextInput
+                mode="outlined"
+                label="GPA (Optional)"
+                placeholder="Enter your GPA"
+                style={styles.input}
+                value={edu.gpa}
+                onChangeText={text => updateEducation(edu.id, {gpa: text})}
+                keyboardType="decimal-pad"
+              />
+            </Card.Content>
+          </Card>
+        ))}
 
-      <TouchableOpacity style={styles.addButton} onPress={addNewEducation}>
-        <Text style={styles.addButtonText}>+ Add Education</Text>
-      </TouchableOpacity>
-    </View>
+        <Button
+          mode="contained"
+          onPress={addNewEducation}
+          style={styles.addButton}
+          icon="plus">
+          Add Education
+        </Button>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
+  keyboardAvoidingView: {
+    flex: 1,
+  },
   container: {
-    gap: 16,
+    flex: 1,
+    padding: 16,
   },
   sectionTitle: {
-    fontSize: 24,
-    fontFamily: FONTS.FIRA_SANS.BOLD,
     marginBottom: 16,
+    fontFamily: FONTS.FIRA_SANS.BOLD,
   },
   educationCard: {
-    backgroundColor: 'white',
-    padding: 16,
-    borderRadius: 8,
-    gap: 12,
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
+    marginBottom: 16,
+    elevation: 2,
   },
   input: {
+    marginBottom: 12,
     backgroundColor: 'white',
-    padding: 12,
-    borderRadius: 8,
-    fontSize: 16,
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
   },
   row: {
     flexDirection: 'row',
@@ -121,25 +143,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   addButton: {
-    padding: 16,
-    backgroundColor: '#007AFF',
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  addButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontFamily: FONTS.FIRA_SANS.BOLD,
-  },
-  deleteButton: {
-    padding: 12,
-    backgroundColor: '#FF3B30',
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  deleteButtonText: {
-    color: 'white',
-    fontSize: 14,
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
+    marginTop: 8,
+    marginBottom: 24,
   },
 });

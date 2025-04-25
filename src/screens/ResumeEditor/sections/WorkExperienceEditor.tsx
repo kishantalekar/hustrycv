@@ -1,11 +1,12 @@
 import React from 'react';
 import {
   View,
-  Text,
   StyleSheet,
-  TextInput,
-  TouchableOpacity,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
+import {Card, TextInput, Button, IconButton, Text} from 'react-native-paper';
 import {FONTS} from '../../../constants/fonts';
 import {useResumeStore} from '../../../store/useResumeStore';
 
@@ -30,85 +31,163 @@ export const WorkExperienceEditor = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.sectionTitle}>Work Experience</Text>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.keyboardAvoidingView}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        <Text style={styles.sectionTitle} variant="headlineMedium">
+          Work Experience
+        </Text>
 
-      {workExperience?.items?.map(experience => (
-        <View key={experience.id} style={styles.experienceCard}>
-          <TextInput
-            style={styles.input}
-            value={experience.company}
-            onChangeText={text =>
-              updateWorkExperience(experience.id, {company: text})
-            }
-            placeholder="Company Name"
-          />
-          <TextInput
-            style={styles.input}
-            value={experience.position}
-            onChangeText={text =>
-              updateWorkExperience(experience.id, {position: text})
-            }
-            placeholder="Position"
-          />
-          <View style={styles.row}>
+        <Card style={styles.addCard}>
+          <Card.Content>
             <TextInput
-              style={[styles.input, styles.flex1]}
-              value={experience.startDate}
+              mode="outlined"
+              label="Company Name"
+              placeholder="Enter company name"
+              style={styles.input}
+              value={workExperience?.items?.[0]?.company || ''}
               onChangeText={text =>
-                updateWorkExperience(experience.id, {startDate: text})
+                updateWorkExperience(workExperience?.items?.[0]?.id || '', {
+                  company: text,
+                })
               }
-              placeholder="Start Date"
             />
             <TextInput
-              style={[styles.input, styles.flex1]}
-              value={experience.endDate}
+              mode="outlined"
+              label="Position"
+              placeholder="Enter your position"
+              style={styles.input}
+              value={workExperience?.items?.[0]?.position || ''}
               onChangeText={text =>
-                updateWorkExperience(experience.id, {endDate: text})
+                updateWorkExperience(workExperience?.items?.[0]?.id || '', {
+                  position: text,
+                })
               }
-              placeholder="End Date"
             />
-          </View>
-          <TouchableOpacity
-            style={styles.deleteButton}
-            onPress={() => removeWorkExperience(experience.id)}>
-            <Text style={styles.deleteButtonText}>Remove</Text>
-          </TouchableOpacity>
-        </View>
-      ))}
+            <View style={styles.row}>
+              <TextInput
+                mode="outlined"
+                label="Start Date"
+                placeholder="MM/YYYY"
+                style={[styles.input, styles.flex1]}
+                value={workExperience?.items?.[0]?.startDate || ''}
+                onChangeText={text =>
+                  updateWorkExperience(workExperience?.items?.[0]?.id || '', {
+                    startDate: text,
+                  })
+                }
+              />
+              <TextInput
+                mode="outlined"
+                label="End Date"
+                placeholder="MM/YYYY or Present"
+                style={[styles.input, styles.flex1]}
+                value={workExperience?.items?.[0]?.endDate || ''}
+                onChangeText={text =>
+                  updateWorkExperience(workExperience?.items?.[0]?.id || '', {
+                    endDate: text,
+                  })
+                }
+              />
+            </View>
+          </Card.Content>
+        </Card>
 
-      <TouchableOpacity style={styles.addButton} onPress={addNewExperience}>
-        <Text style={styles.addButtonText}>+ Add Experience</Text>
-      </TouchableOpacity>
-    </View>
+        {workExperience?.items?.slice(1).map(experience => (
+          <Card key={experience.id} style={styles.experienceCard}>
+            <Card.Title
+              title={experience.company || 'Work Experience'}
+              right={props => (
+                <IconButton
+                  {...props}
+                  icon="delete"
+                  onPress={() => removeWorkExperience(experience.id)}
+                />
+              )}
+            />
+            <Card.Content>
+              <TextInput
+                mode="outlined"
+                label="Company Name"
+                placeholder="Enter company name"
+                style={styles.input}
+                value={experience.company}
+                onChangeText={text =>
+                  updateWorkExperience(experience.id, {company: text})
+                }
+              />
+              <TextInput
+                mode="outlined"
+                label="Position"
+                placeholder="Enter your position"
+                style={styles.input}
+                value={experience.position}
+                onChangeText={text =>
+                  updateWorkExperience(experience.id, {position: text})
+                }
+              />
+              <View style={styles.row}>
+                <TextInput
+                  mode="outlined"
+                  label="Start Date"
+                  placeholder="MM/YYYY"
+                  style={[styles.input, styles.flex1]}
+                  value={experience.startDate}
+                  onChangeText={text =>
+                    updateWorkExperience(experience.id, {startDate: text})
+                  }
+                />
+                <TextInput
+                  mode="outlined"
+                  label="End Date"
+                  placeholder="MM/YYYY or Present"
+                  style={[styles.input, styles.flex1]}
+                  value={experience.endDate}
+                  onChangeText={text =>
+                    updateWorkExperience(experience.id, {endDate: text})
+                  }
+                />
+              </View>
+            </Card.Content>
+          </Card>
+        ))}
+
+        <Button
+          mode="contained"
+          onPress={addNewExperience}
+          style={styles.addButton}
+          icon="plus">
+          Add Experience
+        </Button>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
+  keyboardAvoidingView: {
+    flex: 1,
+  },
   container: {
-    gap: 16,
+    flex: 1,
+    padding: 16,
   },
   sectionTitle: {
-    fontSize: 24,
-    fontFamily: FONTS.FIRA_SANS.BOLD,
     marginBottom: 16,
+    fontFamily: FONTS.FIRA_SANS.BOLD,
+  },
+  addCard: {
+    marginBottom: 16,
+    elevation: 2,
   },
   experienceCard: {
-    backgroundColor: 'white',
-    padding: 16,
-    borderRadius: 8,
-    gap: 12,
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
+    marginBottom: 16,
+    elevation: 2,
   },
   input: {
+    marginBottom: 12,
     backgroundColor: 'white',
-    padding: 12,
-    borderRadius: 8,
-    fontSize: 16,
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
   },
   row: {
     flexDirection: 'row',
@@ -118,25 +197,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   addButton: {
-    padding: 16,
-    backgroundColor: '#007AFF',
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  addButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontFamily: FONTS.FIRA_SANS.BOLD,
-  },
-  deleteButton: {
-    padding: 12,
-    backgroundColor: '#FF3B30',
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  deleteButtonText: {
-    color: 'white',
-    fontSize: 14,
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
+    marginTop: 8,
+    marginBottom: 24,
   },
 });

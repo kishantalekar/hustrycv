@@ -1,5 +1,11 @@
 import React from 'react';
-import {View, Text, StyleSheet, TextInput} from 'react-native';
+import {
+  StyleSheet,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
+import {Card, TextInput, Text} from 'react-native-paper';
 import {FONTS} from '../../../constants/fonts';
 import {useResumeStore} from '../../../store/useResumeStore';
 
@@ -7,98 +13,110 @@ export const PersonalInfoEditor = () => {
   const {basics, updateBasics} = useResumeStore();
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.sectionTitle}>Personal Information</Text>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.keyboardAvoidingView}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        <Text style={styles.sectionTitle} variant="headlineMedium">
+          Personal Information
+        </Text>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Full Name</Text>
-        <TextInput
-          style={styles.input}
-          value={basics.name}
-          onChangeText={text => updateBasics({name: text})}
-          placeholder="Enter your full name"
-        />
-      </View>
+        <Card style={styles.card}>
+          <Card.Content>
+            <TextInput
+              mode="outlined"
+              label="Full Name"
+              value={basics.name}
+              onChangeText={text => updateBasics({name: text})}
+              placeholder="Enter your full name"
+              style={styles.input}
+            />
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Email</Text>
-        <TextInput
-          style={styles.input}
-          value={basics.email}
-          onChangeText={text => updateBasics({email: text})}
-          placeholder="Enter your email"
-          keyboardType="email-address"
-        />
-      </View>
+            <TextInput
+              mode="outlined"
+              label="Email"
+              value={basics.email}
+              onChangeText={text => updateBasics({email: text})}
+              placeholder="Enter your email"
+              keyboardType="email-address"
+              style={styles.input}
+            />
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Phone</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter your phone number"
-          keyboardType="phone-pad"
-          onChangeText={text => updateBasics({phone: text})}
-          value={basics.phone}
-        />
-      </View>
+            <TextInput
+              mode="outlined"
+              label="Phone"
+              placeholder="Enter your phone number"
+              keyboardType="phone-pad"
+              onChangeText={text => updateBasics({phone: text})}
+              value={basics.phone}
+              style={styles.input}
+            />
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Location</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="City, Country"
-          value={basics.location}
-          onChangeText={text => updateBasics({location: text})}
-        />
-      </View>
+            <TextInput
+              mode="outlined"
+              label="Location"
+              placeholder="City, Country"
+              value={basics.location}
+              onChangeText={text => updateBasics({location: text})}
+              style={styles.input}
+            />
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>LinkedIn</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="LinkedIn profile URL"
-          value={basics.linkedin}
-          onChangeText={text => updateBasics({linkedin: text})}
-        />
-      </View>
+            <TextInput
+              mode="outlined"
+              label="LinkedIn"
+              placeholder="LinkedIn profile URL"
+              value={basics.linkedin}
+              onChangeText={text => updateBasics({linkedin: text})}
+              style={styles.input}
+            />
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>GitHub</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="GitHub profile URL"
-          value={basics.github}
-          onChangeText={text => updateBasics({github: text})}
-        />
-      </View>
-    </View>
+            <TextInput
+              mode="outlined"
+              label="GitHub"
+              placeholder="GitHub profile URL"
+              value={basics.github}
+              onChangeText={text => updateBasics({github: text})}
+              style={styles.input}
+            />
+          </Card.Content>
+        </Card>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
+  keyboardAvoidingView: {
+    flex: 1,
+    backgroundColor: '#F5F5F5',
+  },
   container: {
-    gap: 16,
+    flex: 1,
+    padding: 16,
   },
   sectionTitle: {
-    fontSize: 24,
+    marginBottom: 24,
     fontFamily: FONTS.FIRA_SANS.BOLD,
+    fontSize: 28,
+    color: '#1A1A1A',
+  },
+  card: {
     marginBottom: 16,
-  },
-  inputGroup: {
-    gap: 8,
-  },
-  label: {
-    fontSize: 16,
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
-    color: '#333',
+    elevation: 2,
+    borderRadius: 12,
+    backgroundColor: '#FFFFFF',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
   input: {
-    backgroundColor: 'white',
-    padding: 12,
-    borderRadius: 8,
+    marginBottom: 16,
+    backgroundColor: '#FFFFFF',
     fontSize: 16,
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderRadius: 8,
   },
 });

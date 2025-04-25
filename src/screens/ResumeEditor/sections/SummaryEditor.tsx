@@ -1,5 +1,11 @@
 import React from 'react';
-import {View, Text, StyleSheet, TextInput} from 'react-native';
+import {
+  StyleSheet,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
+import {Card, Text, TextInput} from 'react-native-paper';
 import {FONTS} from '../../../constants/fonts';
 import {useResumeStore} from '../../../store/useResumeStore';
 
@@ -7,38 +13,63 @@ export const SummaryEditor = () => {
   const {basics, updateBasics} = useResumeStore();
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.sectionTitle}>Professional Summary</Text>
-      <TextInput
-        style={styles.input}
-        multiline
-        numberOfLines={6}
-        value={basics.summary}
-        onChangeText={text => updateBasics({summary: text})}
-        placeholder="Write a brief summary of your professional background and goals..."
-        textAlignVertical="top"
-      />
-    </View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.keyboardAvoidingView}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        <Text style={styles.sectionTitle} variant="headlineMedium">
+          Professional Summary
+        </Text>
+
+        <Card style={styles.card}>
+          <Card.Content>
+            <TextInput
+              mode="outlined"
+              multiline
+              numberOfLines={8}
+              value={basics.summary}
+              onChangeText={text => updateBasics({summary: text})}
+              placeholder="Write a brief summary highlighting your key professional achievements, skills, and career objectives..."
+              style={styles.input}
+            />
+          </Card.Content>
+        </Card>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
+  keyboardAvoidingView: {
+    flex: 1,
+    backgroundColor: '#F5F5F5',
+  },
   container: {
-    gap: 16,
+    flex: 1,
+    padding: 16,
   },
   sectionTitle: {
-    fontSize: 24,
+    marginBottom: 24,
     fontFamily: FONTS.FIRA_SANS.BOLD,
+    fontSize: 28,
+    color: '#1A1A1A',
+  },
+  card: {
     marginBottom: 16,
+    elevation: 2,
+    borderRadius: 12,
+    backgroundColor: '#FFFFFF',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
   input: {
-    backgroundColor: 'white',
-    padding: 12,
-    borderRadius: 8,
+    backgroundColor: '#FFFFFF',
     fontSize: 16,
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
-    minHeight: 120,
+    minHeight: 160,
   },
 });
