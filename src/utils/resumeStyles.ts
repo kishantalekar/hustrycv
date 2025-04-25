@@ -1,64 +1,139 @@
+// FONT SIZE CONSTANTS
 export const FONT_SIZES = {
-  h1: 24,
-  h2: 20,
-  h3: 16,
-  body: 12,
-  small: 8,
+  h1: 24, // Used for your name at the top of the resume
+  h2: 20, // Used for main section headers like "Experience", "Education"
+  h3: 16, // Used for subsection titles like company names or degree names
+  h4: 14, // Used for even smaller titles or subtitles
+  body: 12, // Used for normal body text like job descriptions and bullet points
+  small: 8, // Used for supporting information like dates or footnotes
 } as const;
 
+// SPACING CONSTANTS
 export const SPACING = {
-  xs: 4,
-  sm: 8,
-  md: 16,
-  lg: 24,
-  xl: 32,
+  xs: 4, // Minimal spacing between closely related elements
+  sm: 8, // Small spacing for tight grouping
+  md: 16, // Standard spacing between sections
+  lg: 24, // Large spacing for major sections
+  xl: 32, // Extra large spacing for page-level elements
 } as const;
 
+// COLOR CONSTANTS
 export const COLORS = {
-  primary: '#2D3748',
-  secondary: '#4A5568',
-  accent: '#3182CE',
-  link: '#2B6CB0',
-  divider: '#CBD5E0',
-  background: '#FFFFFF',
+  primary: '#2D3748', // Main text color
+  secondary: '#4A5568', // Secondary text color for less emphasis
+  accent: '#3182CE', // Accent color for highlights or important elements
+  link: '#2B6CB0', // Color for links or interactive elements
+  divider: '#CBD5E0', // Color for dividers or separators
+  background: '#FFFFFF', // Page background color
 } as const;
 
-export const getResumeStyles = (scale: number) => ({
+// COMMON STYLES APPLIED ACROSS THE RESUME
+export const getCommonStyles = () => `
+  .section {
+    margin: 10pt 0;
+    break-inside: avoid;  // Prevents section from breaking across pages when printing
+  }
+  
+  .section-title {
+    font-size: ${FONT_SIZES.h3}pt;  // Using h3 size (16pt) for section titles
+    font-weight: 400;
+  }
+  
+  .text-regular {
+    font-size: ${FONT_SIZES.body}pt;  // Using body size (12pt) for regular text
+  }
+  .body-large{
+    font-size: ${FONT_SIZES.body}pt;
+    font-weight: 400;
+}
+  
+  .text-bold {
+    font-weight: 500;
+  }
+  .text-italic {
+    font-style: italic;
+  }
+  
+  .text-muted {
+    color: #666;  // Muted text for less important information
+  }
+  
+  hr {
+  margin:0;
+  margin-top: 4pt;
+    margin-bottom: 8pt;
+    padding: 0;
+
+  }
+`;
+
+// RESUME-SPECIFIC STYLES WITH DETAILED TYPOGRAPHY
+export const getResumeStyles = () => ({
   container: `
     margin-bottom: ${SPACING.md}px;
   `,
+
+  // Your name at the top of the resume
   header: `
     font-family: 'FiraSans-Bold';
-    font-size: ${FONT_SIZES.h1 * scale}px;
+    font-size: ${FONT_SIZES.h1}px;  // Largest size (24px) for your name
     color: ${COLORS.primary};
     margin: 0;
   `,
+
+  // Used for professional title or summary heading
   subheader: `
     font-family: 'FiraSans-Medium';
-    font-size: ${FONT_SIZES.h2 * scale}px;
+    font-size: ${FONT_SIZES.h2}px;  // Second largest size (20px)
     color: ${COLORS.secondary};
     margin: ${SPACING.sm}px 0;
   `,
+
+  // Main content text style
   body: `
     font-family: 'FiraSans-Regular';
-    font-size: ${FONT_SIZES.body * scale}px;
+    font-size: ${FONT_SIZES.body}px;  // Standard text size (12px)
     color: ${COLORS.primary};
     line-height: 1.5;
   `,
+
+  // Used for dates, locations, or supplementary information
   small: `
     font-family: 'FiraSans-Regular';
-    font-size: ${FONT_SIZES.small * scale}px;
+    font-size: ${FONT_SIZES.small}px;  // Smallest size (8px)
     color: ${COLORS.secondary};
   `,
+
   link: `
     color: ${COLORS.link};
     text-decoration: none;
   `,
+
   divider: `
     border-bottom: 1px solid ${COLORS.divider};
     margin: ${SPACING.md}px 0;
   `,
+
   centered: `
     text-align: center;
+  `,
+
+  certificationCard: `
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: center;
+  `,
+
+  certificationItem: `
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+  `,
+
+  skillsCard: `
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
   `,
 });

@@ -198,6 +198,19 @@ export const extendedMockResumeData = {
             'President of Computer Science Club',
           ],
         },
+        {
+          id: 'edu-3',
+          institution: 'University of Washington',
+          degree: 'B.S. Computer Science',
+          startDate: '2010-09',
+          endDate: '2014-05',
+          gpa: '3.8',
+          highlights: [
+            'Minor in Mathematics',
+            "Dean's List all semesters",
+            'President of Computer Science Club',
+          ],
+        },
       ],
     },
     skills: {
@@ -300,7 +313,8 @@ export const extendedMockResumeData = {
           id: 'cert-003',
           name: 'Google Cloud Professional Cloud Architect',
           authority: 'Google Cloud',
-          certificationUrlOrCode: 'GCP-PCA-345678',
+          certificationUrlOrCode:
+            'https://www.coursera.org/account/accomplishments/certificate/3JHYUB5XG94K',
           issueDate: '2022-11-30',
           description:
             'Expert level certification for designing and managing Google Cloud solutions',

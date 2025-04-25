@@ -33,7 +33,10 @@ export const styles = StyleSheet.create({
   },
   pdfView: {
     flex: 1,
-    backgroundColor: COLORS.background.secondary,
+    backgroundColor: COLORS.background.primary,
+    margin: 0,
+    paddingVertical: 10,
+    marginHorizontal: 0,
   },
   loadingContainer: {
     flex: 1,

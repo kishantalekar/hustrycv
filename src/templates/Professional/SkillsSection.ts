@@ -1,26 +1,20 @@
-export const getSkillsHTML = (skills: any) => `
+import {getResumeStyles} from '../../utils/resumeStyles';
+
+export const getSkillsHTML = (skills: any) => {
+  const styles = getResumeStyles();
+  return `
   <div class="section">
-    <h2 class="section-title" style="break-after: avoid;">Skills</h2>
-    <div style="display: flex; flex-wrap: wrap; gap: 12px;break-after: avoid;">
+    <h2 class="section-title">Technical Skills</h2>
+    <hr/>
+    <div style="${styles.skillsCard}">
       ${skills.items
         .map(
           (item: any) => `
-        <div style="margin-bottom: 8px;break-after: avoid;">
-          <div class="text-bold">${item.name}</div>
-          <div class="text-regular text-muted" style="text-transform: capitalize;">
-            ${item.level}
-          </div>
-          <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px;">
-            ${item.keywords
-              .map(
-                (keyword: string) => `
-              <span class="text-regular" style="background: #f0f0f0; padding: 2px 8px; border-radius: 4px;">
-                ${keyword}
-              </span>
-            `,
-              )
-              .join('')}
-          </div>
+        <div style="margin-bottom: 2px;">
+          <div class="text-regular" >
+          <span class="text-bold">${
+            item.name
+          }</span>:&nbsp;&nbsp;${item.keywords.join(', ')}</div>
         </div>
       `,
         )
@@ -28,3 +22,4 @@ export const getSkillsHTML = (skills: any) => `
     </div>
   </div>
 `;
+};

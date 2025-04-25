@@ -26,10 +26,15 @@ export const requestStoragePermission = async () => {
   }
 };
 export const generatePDF = async (html: string) => {
+  const fontUri = require('../assets/fonts/FiraSans-Regular.ttf');
+
+  console.log('fontUri', fontUri);
   const options = {
     html,
     base64: true,
+    fonts: [fontUri],
   };
+
   const file = await RNHTMLtoPDF.convert(options);
   if (file.base64) {
     return file.base64;
@@ -59,8 +64,6 @@ export const createAndSavePDF = async (html: string) => {
       directory: Platform.OS === 'android' ? 'Download' : 'Documents',
       padding: 12,
       bgColor: '#ffffff',
-      // width: 595, // <-- A4 width in points
-      // height: 842,
     };
 
     const file = await RNHTMLtoPDF.convert(options);

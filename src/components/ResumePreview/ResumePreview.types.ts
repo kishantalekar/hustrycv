@@ -34,6 +34,14 @@ export interface Project {
   url?: string;
   highlights?: string[];
 }
+export interface Certification {
+  id: string;
+  name: string;
+  authority: string;
+  certificationUrlOrCode: string;
+  issueDate: string;
+  description: string;
+}
 export interface ResumeData {
   basics?: Basics;
   sections?: {
@@ -53,6 +61,11 @@ export interface ResumeData {
       items: Array<Skill>;
     };
     projects?: {
+      type: string;
+      visible: boolean;
+      items: Array<Project>;
+    };
+    certifications?: {
       type: string;
       visible: boolean;
       items: Array<Project>;

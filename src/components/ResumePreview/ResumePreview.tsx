@@ -15,7 +15,7 @@ export default function ResumePreview({
 
   useEffect(() => {
     if (resumeData) {
-      generatePDF(getProfessionalResumeHTML(resumeData, 1)).then(base64 => {
+      generatePDF(getProfessionalResumeHTML(resumeData)).then(base64 => {
         if (base64) {
           return setPdfBase64(base64);
         }

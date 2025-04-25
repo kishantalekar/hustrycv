@@ -24,7 +24,7 @@ export const DownloadScreen = () => {
   useEffect(() => {
     if (resumeData) {
       setIsLoading(true);
-      generatePDF(getProfessionalResumeHTML(resumeData, 1))
+      generatePDF(getProfessionalResumeHTML(resumeData))
         .then(base64 => {
           if (base64) {
             setPdfBase64(base64);
@@ -37,11 +37,13 @@ export const DownloadScreen = () => {
   }, [resumeData]);
 
   const handleDownload = async () => {
-    if (!resumeData) return;
+    if (!resumeData) {
+      return;
+    }
 
     setDownloadStarted(true);
     try {
-      await createAndSavePDF(getProfessionalResumeHTML(resumeData, 1));
+      await createAndSavePDF(getProfessionalResumeHTML(resumeData));
       Alert.alert('Success', 'Resume saved successfully!');
     } catch (error) {
       Alert.alert('Error', 'Failed to save resume. Please try again.');

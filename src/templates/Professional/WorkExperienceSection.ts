@@ -1,7 +1,7 @@
 export const getWorkExperienceHTML = (work: any) => {
   console.log('work', work);
   return `
-  <div class="section">
+  <div class="section" style="break-inside:avoid;">
     <h2 class="section-title">Work Experience</h2>
     ${work.items
       .map(

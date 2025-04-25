@@ -3,7 +3,7 @@ import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
 import {
   extendedMockResumeData,
-  mockResumeData,
+  // mockResumeData,
 } from '../assets/resume_mock_data';
 
 // Type definitions -----------------------------------------------------------

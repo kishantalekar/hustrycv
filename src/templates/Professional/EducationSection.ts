@@ -1,6 +1,6 @@
 export const getEducationHTML = (education: any) => `
-  <div class="section">
-    <h2 class="section-title">Education</h2>
+  <div class="section" style="page-break-inside:avoid;">
+    <h2 class="section-title" style="font-family:Helvetica;">Education</h2>
     ${education.items
       .map(
         (item: any) => `
@@ -11,7 +11,7 @@ export const getEducationHTML = (education: any) => `
             ${item.startDate} - ${item.endDate}
           </span>
         </div>
-        <div class="text-regular">
+        <div class="text-regular" >
           ${item.degree}
           ${
             item.gpa

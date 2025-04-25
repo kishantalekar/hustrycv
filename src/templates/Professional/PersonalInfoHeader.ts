@@ -1,8 +1,8 @@
 import {getResumeStyles, SPACING} from '../../utils/resumeStyles';
 import {Basics} from '../../components/ResumePreview/ResumePreview.types';
 
-export const getPersonalInfoHTML = (basics: Basics, scale: number) => {
-  const styles = getResumeStyles(scale);
+export const getPersonalInfoHTML = (basics: Basics) => {
+  const styles = getResumeStyles();
 
   return `
   <div style="${styles.container} ${styles.centered}">
