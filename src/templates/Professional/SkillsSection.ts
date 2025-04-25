@@ -1,11 +1,11 @@
 export const getSkillsHTML = (skills: any) => `
   <div class="section">
-    <h2 class="section-title">Skills</h2>
-    <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+    <h2 class="section-title" style="break-after: avoid;">Skills</h2>
+    <div style="display: flex; flex-wrap: wrap; gap: 12px;break-after: avoid;">
       ${skills.items
         .map(
           (item: any) => `
-        <div style="margin-bottom: 8px;">
+        <div style="margin-bottom: 8px;break-after: avoid;">
           <div class="text-bold">${item.name}</div>
           <div class="text-regular text-muted" style="text-transform: capitalize;">
             ${item.level}

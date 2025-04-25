@@ -42,8 +42,11 @@ export const getProfessionalResumeHTML = (
        @page 
             {
                 size: a4 portrait;
-                margin: 15pt 15pt; 
+                margin: 10mm; 
             }
+        h1, p {
+            margin:0;
+        }
         </style>
       </head>
       <body>
