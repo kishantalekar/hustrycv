@@ -1,11 +1,10 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {View, Text, StyleSheet} from 'react-native';
 import {FONTS} from '../../constants/fonts';
-import {useResumeStore} from '../../store/useResumeStore';
-import ResumePreview from '../../components/ResumePreview/ResumePreview';
 import {PreviewScreen} from '../Preview/PreviewScreen';
 import {FormNavigator} from '../../navigation/FormNavigator';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {DownloadScreen} from '../Download/DownloadScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -14,11 +13,6 @@ const ImproveScreen = () => (
     <Text style={styles.placeholderText}>AI Improvements Coming Soon</Text>
   </View>
 );
-
-const DownloadScreen = () => {
-  const resumeData = useResumeStore();
-  return <ResumePreview resumeData={resumeData} />;
-};
 
 export const ResumeEditor = () => {
   return (
