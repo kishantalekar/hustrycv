@@ -1,14 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-} from 'react-native';
+import {View, ScrollView, Text, StyleSheet} from 'react-native';
 import {FONTS} from '../../constants';
-import {createAndSavePDF, generatePDF} from '../../utils/pdfUtils';
-import {navigate} from '../../utils/navigation';
+import {COLORS, SPACING, BORDER_RADIUS, SHADOW, TYPOGRAPHY} from '../../theme';
+import {generatePDF} from '../../utils/pdfUtils';
 import {ResumePreviewProps} from './ResumePreview.types';
 import {getProfessionalResumeHTML} from '../../templates';
 import Pdf from 'react-native-pdf';
@@ -45,25 +39,9 @@ export default function ResumePreview({
         {pdfBase64 && (
           <Pdf
             source={{uri: `data:application/pdf;base64,${pdfBase64}`}}
-            style={{flex: 1}}
+            style={styles.pdfView}
           />
         )}
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          onPress={() =>
-            createAndSavePDF(getProfessionalResumeHTML(resumeData, 1))
-          }
-          style={styles.exportButton}>
-          <Text style={styles.exportButtonText}>{'Download PDF'}</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() => navigate('DownloadedResumes')}
-          style={styles.viewDownloadsButton}>
-          <Text style={styles.exportButtonText}>View Downloads</Text>
-        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -72,10 +50,10 @@ export default function ResumePreview({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: COLORS.background.primary,
   },
   contentContainer: {
-    padding: 16,
+    padding: SPACING.container,
     alignItems: 'center',
     minHeight: '100%',
   },
@@ -83,62 +61,32 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5F5F5',
+    backgroundColor: COLORS.background.primary,
   },
   emptyText: {
-    fontSize: 16,
-    color: '#666',
+    fontSize: TYPOGRAPHY.size.md,
+    color: COLORS.text.secondary,
     fontFamily: FONTS.FIRA_SANS.REGULAR,
   },
   exportButton: {
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    backgroundColor: '#007AFF',
-    borderRadius: 8,
-    marginTop: 20,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    paddingHorizontal: SPACING.lg,
+    paddingVertical: SPACING.sm,
+    backgroundColor: COLORS.primary,
+    borderRadius: BORDER_RADIUS.md,
+    marginTop: SPACING.lg,
+    ...SHADOW.light,
   },
   exportButtonText: {
-    color: 'white',
-    fontSize: 16,
+    color: COLORS.text.light,
+    fontSize: TYPOGRAPHY.size.md,
     fontFamily: FONTS.FIRA_SANS.REGULAR,
   },
   previewContainer: {
-    backgroundColor: 'white',
-    borderRadius: 12,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 4},
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-    elevation: 8,
+    backgroundColor: COLORS.background.secondary,
+    borderRadius: BORDER_RADIUS.lg,
+    ...SHADOW.medium,
     height: 842,
     width: '100%',
   },
-  webView: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-  disabledButton: {
-    opacity: 0.6,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    gap: 12,
-    marginTop: 20,
-  },
-  viewDownloadsButton: {
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    backgroundColor: '#28A745',
-    borderRadius: 8,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
+  pdfView: {flex: 1},
 });

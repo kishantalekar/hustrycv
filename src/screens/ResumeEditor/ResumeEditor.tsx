@@ -1,10 +1,10 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {View, Text, StyleSheet} from 'react-native';
-import {FONTS} from '../../constants/fonts';
+import {View, Text} from 'react-native';
 import {PreviewScreen} from '../Preview/PreviewScreen';
 import {FormNavigator} from '../../navigation/FormNavigator';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {DownloadScreen} from '../Download/DownloadScreen';
+import {styles} from './ResumeEditor.styles';
 
 const Tab = createBottomTabNavigator();
 
@@ -65,83 +65,3 @@ export const ResumeEditor = () => {
     </Tab.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  tabBar: {
-    backgroundColor: 'white',
-    borderTopWidth: 1,
-    borderTopColor: '#E0E0E0',
-  },
-  tabBarLabel: {
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
-    fontSize: 12,
-  },
-  placeholderContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  placeholderText: {
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
-    fontSize: 16,
-    color: '#666',
-    textAlign: 'center',
-  },
-});
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#F5F5F5',
-//     marginTop: 20, // Adjust this value as needed to move the content downwards
-//   },
-//   contentContainerStyle: {
-//     flex: 1,
-//   },
-
-//   content: {
-//     flex: 1,
-//     padding: 16,
-//   },
-//   header: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     padding: 16,
-//     backgroundColor: 'white',
-//   },
-//   backButton: {
-//     padding: 8,
-//   },
-//   backButtonText: {
-//     fontSize: 16,
-//     color: '#007AFF',
-//     fontFamily: FONTS.FIRA_SANS.REGULAR,
-//   },
-//   mainContent: {
-//     flex: 1,
-//     flexDirection: 'row',
-//   },
-//   editorSection: {
-//     flex: 1,
-//     backgroundColor: '#F5F5F5',
-//   },
-//   previewSection: {
-//     flex: 0.5,
-//     borderLeftWidth: 1,
-//     borderLeftColor: '#E0E0E0',
-//     backgroundColor: 'white',
-//   },
-//   previewButton: {
-//     marginLeft: 'auto',
-//     backgroundColor: '#007AFF',
-//     paddingHorizontal: 16,
-//     paddingVertical: 8,
-//     borderRadius: 8,
-//   },
-//   previewButtonText: {
-//     color: 'white',
-//     fontFamily: FONTS.FIRA_SANS.REGULAR,
-//     fontSize: 16,
-//   },
-// });

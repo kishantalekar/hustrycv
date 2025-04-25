@@ -1,13 +1,7 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
-import {FONTS} from '../../../constants/fonts';
+import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
 import {navigate} from '../../../utils/navigation';
+import {styles} from './FormScreen.styles';
 
 interface SectionsInterface {
   id: string;
@@ -71,45 +65,5 @@ const FormScreen = () => {
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F5F5F5',
-  },
-  header: {
-    fontSize: 24,
-    fontFamily: FONTS.FIRA_SANS.BOLD,
-    marginBottom: 20,
-    marginTop: 40,
-    paddingHorizontal: 16,
-  },
-  sectionsContainer: {
-    padding: 16,
-  },
-  sectionButton: {
-    backgroundColor: 'white',
-    padding: 16,
-    borderRadius: 8,
-    marginBottom: 12,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
-    color: '#333',
-  },
-  arrow: {
-    fontSize: 18,
-    color: '#666',
-  },
-});
 
 export default FormScreen;

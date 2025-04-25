@@ -1,18 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
-import {FONTS} from '../constants';
+import {View, Text, FlatList, TouchableOpacity, Alert} from 'react-native';
 import {
   loadDownloadedResumes,
   openResume,
   deleteResume,
-} from '../utils/fileUtils';
+} from '../../utils/fileUtils';
+import {styles} from './DownloadedResumes.styles';
 interface DownloadedResume {
   name: string;
   path: string;
@@ -88,71 +81,5 @@ const DownloadedResumes = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F5F5F5',
-    padding: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
-    marginBottom: 16,
-    color: '#333',
-  },
-  listContainer: {
-    flexGrow: 1,
-  },
-  resumeItem: {
-    backgroundColor: 'white',
-    padding: 16,
-    borderRadius: 8,
-    marginBottom: 12,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  resumeContent: {
-    flex: 1,
-  },
-  deleteButton: {
-    backgroundColor: '#DC3545',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 6,
-    marginLeft: 12,
-  },
-  deleteButtonText: {
-    color: 'white',
-    fontSize: 14,
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
-  },
-  resumeName: {
-    fontSize: 16,
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
-    color: '#333',
-    marginBottom: 4,
-  },
-  resumeDate: {
-    fontSize: 14,
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
-    color: '#666',
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  emptyText: {
-    fontSize: 16,
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
-    color: '#666',
-  },
-});
 
 export default DownloadedResumes;

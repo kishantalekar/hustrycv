@@ -4,7 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Dashboard} from '../screens/Dashboard/Dashboard';
 import {ResumeEditor} from '../screens/ResumeEditor/ResumeEditor';
 import {PreviewScreen} from '../screens/Preview/PreviewScreen';
-import DownloadedResumes from '../screens/DownloadedResumes';
+import DownloadedResumes from '../screens/DownloadedResumes/DownloadedResumes';
 import {navigationRef} from '../utils/navigation';
 
 export type RootStackParamList = {

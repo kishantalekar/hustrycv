@@ -1,10 +1,10 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
-import {FONTS} from '../../constants/fonts';
 import {useNavigation} from '@react-navigation/native';
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import type {RootStackParamList} from '../../navigation/AppNavigator';
 import {navigate} from '../../utils/navigation';
+import {BORDER_RADIUS, COLORS, SHADOW, SPACING, typography} from '../../theme';
 
 interface ResumeItem {
   id: string;
@@ -77,71 +77,63 @@ export const Dashboard = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
-    padding: 16,
+    backgroundColor: COLORS.background.primary,
+    padding: SPACING.lg,
     marginTop: 40,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: SPACING.xl,
   },
   title: {
-    fontSize: 24,
-    fontFamily: FONTS.FIRA_SANS.BOLD,
+    ...typography.h1,
   },
   createButton: {
-    backgroundColor: '#007AFF',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
+    backgroundColor: COLORS.primary,
+    paddingHorizontal: SPACING.lg,
+    paddingVertical: SPACING.sm,
+    borderRadius: BORDER_RADIUS.sm,
   },
   createButtonText: {
-    color: 'white',
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
-    fontSize: 16,
+    color: COLORS.white,
+    ...typography.button,
   },
   resumeList: {
-    gap: 16,
+    gap: SPACING.lg,
   },
   resumeCard: {
-    backgroundColor: 'white',
-    borderRadius: 12,
+    backgroundColor: COLORS.white,
+    borderRadius: BORDER_RADIUS.md,
     overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    ...SHADOW.card,
   },
   resumePreview: {
     height: 120,
-    backgroundColor: '#E8E8E8',
+    backgroundColor: COLORS.preview,
     justifyContent: 'center',
     alignItems: 'center',
   },
   previewText: {
-    color: '#666',
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
+    color: COLORS.text.secondary,
+    ...typography.body1,
   },
   resumeInfo: {
-    padding: 12,
+    padding: SPACING.md,
   },
   resumeName: {
     fontSize: 18,
-    fontFamily: FONTS.FIRA_SANS.BOLD,
-    marginBottom: 4,
+    fontFamily: typography.h1.fontFamily,
+    marginBottom: SPACING.xs,
   },
   resumeDate: {
-    fontSize: 14,
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
-    color: '#666',
-    marginBottom: 2,
+    ...typography.body2,
+    color: COLORS.text.secondary,
+    marginBottom: SPACING.xs,
   },
   resumeTemplate: {
-    fontSize: 14,
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
-    color: '#666',
+    ...typography.body2,
+    color: COLORS.text.secondary,
   },
 });

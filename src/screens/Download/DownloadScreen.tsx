@@ -11,6 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useResumeStore} from '../../store/useResumeStore';
 import {FONTS} from '../../constants';
+import {COLORS, SPACING, BORDER_RADIUS, SHADOW, TYPOGRAPHY} from '../../theme';
 import {createAndSavePDF, generatePDF} from '../../utils/pdfUtils';
 import {getProfessionalResumeHTML} from '../../templates';
 import {navigate} from '../../utils/navigation';
@@ -142,39 +143,35 @@ export const DownloadScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: COLORS.background.primary,
   },
   header: {
-    padding: 20,
-    paddingBottom: 10,
+    padding: SPACING.lg,
+    paddingBottom: SPACING.sm,
   },
   title: {
-    fontSize: 28,
+    fontSize: TYPOGRAPHY.size.xxxl,
     fontFamily: FONTS.FIRA_SANS.BOLD,
-    color: '#333333',
-    marginBottom: 8,
+    color: COLORS.text.primary,
+    marginBottom: SPACING.sm,
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: TYPOGRAPHY.size.md,
     fontFamily: FONTS.FIRA_SANS.REGULAR,
-    color: '#666666',
+    color: COLORS.text.secondary,
   },
   previewContainer: {
     flex: 1,
-    margin: 16,
+    margin: SPACING.md,
     minHeight: 400,
-    backgroundColor: 'white',
-    borderRadius: 12,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 4},
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-    elevation: 8,
+    backgroundColor: COLORS.background.secondary,
+    borderRadius: BORDER_RADIUS.lg,
+    ...SHADOW.medium,
     overflow: 'hidden',
   },
   pdfView: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: COLORS.background.secondary,
   },
   loadingContainer: {
     flex: 1,
@@ -182,10 +179,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loadingText: {
-    marginTop: 12,
-    fontSize: 16,
+    marginTop: SPACING.sm,
+    fontSize: TYPOGRAPHY.size.md,
     fontFamily: FONTS.FIRA_SANS.REGULAR,
-    color: '#666666',
+    color: COLORS.text.secondary,
   },
   errorContainer: {
     flex: 1,
@@ -193,10 +190,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   errorText: {
-    marginTop: 12,
-    fontSize: 16,
+    marginTop: SPACING.sm,
+    fontSize: TYPOGRAPHY.size.md,
     fontFamily: FONTS.FIRA_SANS.REGULAR,
-    color: '#666666',
+    color: COLORS.text.secondary,
   },
   actionsContainer: {
     padding: 16,
