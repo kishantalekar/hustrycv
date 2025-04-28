@@ -5,9 +5,9 @@ import {
   extendedMockResumeData,
   // mockResumeData,
 } from '../assets/resume_mock_data';
-
+// chat.deepseek.com/a/chat/s/608ca039-1c33-4769-af31-fec567a8ef63 for section up and down schema
 // Type definitions -----------------------------------------------------------
-interface Metadata {
+https: interface Metadata {
   id: string;
   templateId: string;
   version: string;

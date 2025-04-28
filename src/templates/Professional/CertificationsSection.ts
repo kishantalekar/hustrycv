@@ -1,4 +1,4 @@
-import {getResumeStyles} from '../../utils/resumeStyles';
+import {getResumeStyles} from '../styles/resumeStyles';
 import {getExternalLinkIcon} from '../icons/externalLink';
 
 export const getCertificationsHTML = (certifications: any) => {

@@ -1,4 +1,4 @@
-import {getResumeStyles} from '../../utils/resumeStyles';
+import {getResumeStyles} from '../styles/resumeStyles';
 
 export const getSkillsHTML = (skills: any) => {
   const styles = getResumeStyles();

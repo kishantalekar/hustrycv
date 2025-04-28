@@ -1,5 +1,5 @@
 import {ResumeData} from '../../components/ResumePreview/ResumePreview.types';
-import {getCommonStyles} from '../../utils/resumeStyles';
+import {getCommonStyles} from '../styles/resumeStyles';
 import {getCertificationsHTML} from './CertificationsSection';
 import {getEducationHTML} from './EducationSection';
 import {getPersonalInfoHTML} from './PersonalInfoHeader';
