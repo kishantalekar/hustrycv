@@ -28,7 +28,6 @@ export const requestStoragePermission = async () => {
 export const generatePDF = async (html: string) => {
   const fontUri = require('../assets/fonts/FiraSans-Regular.ttf');
 
-  console.log('fontUri', fontUri);
   const options = {
     html,
     base64: true,

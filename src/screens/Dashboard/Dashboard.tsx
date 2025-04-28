@@ -1,24 +1,27 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   ActivityIndicator,
   FlatList,
-  StyleSheet,
 } from 'react-native';
-import {useNavigation, NavigationProp} from '@react-navigation/native';
+import {
+  useNavigation,
+  NavigationProp,
+  useFocusEffect,
+} from '@react-navigation/native';
 import Pdf from 'react-native-pdf';
 import {createInitialResume, useResumeStore} from '../../store/useResumeStore';
 import {generatePDF} from '../../utils/pdfUtils';
 import {getProfessionalResumeHTML} from '../../templates';
 import {navigate} from '../../utils/navigation';
-import {COLORS, SPACING, BORDER_RADIUS, SHADOW, typography} from '../../theme';
+import {COLORS} from '../../theme';
+import {styles} from './Dashboard.styles';
 
 export const Dashboard = () => {
   const navigation = useNavigation<NavigationProp<any>>();
-  const {setActiveResume, resumes, activeResumeId, addResume} =
-    useResumeStore();
+  const {setActiveResume, resumes, addResume} = useResumeStore();
   const [pdfPreviews, setPdfPreviews] = useState<Record<string, string | null>>(
     {},
   );
@@ -26,39 +29,65 @@ export const Dashboard = () => {
     Record<string, boolean>
   >({});
 
-  useEffect(() => {
-    // Generate PDF previews for all resumes
-    const generatePreviews = async () => {
-      const loading = {};
-      resumes.forEach(resume => {
-        loading[resume.metadata.id] = true;
-      });
-      setLoadingPreviews(loading);
+  useFocusEffect(
+    useCallback(() => {
+      let isMounted = true;
+      const abortController = new AbortController();
 
-      const previews = {};
-      for (const resume of resumes) {
-        try {
-          const base64 = await generatePDF(getProfessionalResumeHTML(resume));
-          previews[resume.metadata.id] = base64;
-        } catch (error) {
-          console.error(
-            'Error generating preview for resume:',
-            resume.metadata.id,
-            error,
-          );
-          previews[resume.metadata.id] = null;
-        } finally {
-          setLoadingPreviews(prev => ({
-            ...prev,
-            [resume.metadata.id]: false,
-          }));
+      const generatePreviews = async () => {
+        const currentResumes = useResumeStore.getState().resumes;
+
+        // Initialize loading states
+        const loading = currentResumes.reduce(
+          (acc, resume) => ({
+            ...acc,
+            [resume.metadata.id]: true,
+          }),
+          {},
+        );
+
+        if (isMounted) setLoadingPreviews(loading);
+
+        const previews: Record<string, string | null> = {};
+
+        for (const resume of currentResumes) {
+          if (abortController.signal.aborted) break;
+
+          try {
+            const base64 = await generatePDF(getProfessionalResumeHTML(resume));
+            if (isMounted) {
+              previews[resume.metadata.id] = base64;
+            }
+          } catch (error) {
+            if (isMounted) {
+              previews[resume.metadata.id] = null;
+            }
+          } finally {
+            if (isMounted) {
+              setLoadingPreviews(prev => ({
+                ...prev,
+                [resume.metadata.id]: false,
+              }));
+            }
+          }
         }
-      }
-      setPdfPreviews(previews);
-    };
 
-    generatePreviews();
-  }, [resumes]);
+        if (isMounted) setPdfPreviews(prev => ({...prev, ...previews}));
+      };
+
+      // Initial generation
+      generatePreviews();
+
+      // Subscribe to resume changes
+      const unsubscribe = useResumeStore.subscribe(state => state.resumes);
+
+      return () => {
+        isMounted = false;
+        abortController.abort();
+        unsubscribe();
+      };
+    }, []),
+  );
 
   const handleResumePress = (resumeId: string) => {
     setActiveResume(resumeId);
@@ -108,21 +137,6 @@ export const Dashboard = () => {
           <Text style={styles.resumeTemplate}>
             Template: {item.metadata.templateId}
           </Text>
-          {/* <View style={styles.actionButtons}>
-            <TouchableOpacity
-              style={styles.actionButton}
-              onPress={() => {
-                setActiveResume(item.metadata.id);
-                navigation.navigate('DownloadScreen');
-              }}>
-              <Text style={styles.actionButtonText}>Download</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.actionButton, styles.editButton]}
-              onPress={() => handleResumePress(item.metadata.id)}>
-              <Text style={styles.actionButtonText}>Edit</Text>
-            </TouchableOpacity>
-          </View> */}
         </View>
       </TouchableOpacity>
     );
@@ -148,102 +162,3 @@ export const Dashboard = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.background.primary,
-    padding: SPACING.lg,
-    marginTop: 40,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: SPACING.xl,
-  },
-  title: {
-    ...typography.h1,
-  },
-  createButton: {
-    backgroundColor: COLORS.primary,
-    paddingHorizontal: SPACING.lg,
-    paddingVertical: SPACING.sm,
-    borderRadius: BORDER_RADIUS.sm,
-  },
-  createButtonText: {
-    color: COLORS.white,
-    ...typography.button,
-  },
-  resumeList: {
-    gap: SPACING.lg,
-  },
-  resumeCard: {
-    backgroundColor: COLORS.white,
-    borderRadius: BORDER_RADIUS.md,
-    overflow: 'hidden',
-    ...SHADOW.card,
-  },
-  resumePreview: {
-    height: 100,
-    backgroundColor: COLORS.preview,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  pdfView: {
-    width: '100%',
-    height: '100%',
-  },
-  previewText: {
-    color: COLORS.text.secondary,
-    ...typography.body1,
-  },
-  loadingContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  loadingText: {
-    marginTop: SPACING.sm,
-    color: COLORS.text.secondary,
-    ...typography.body2,
-  },
-  resumeInfo: {
-    padding: SPACING.md,
-  },
-  resumeName: {
-    fontSize: 18,
-    fontFamily: typography.h1.fontFamily,
-    marginBottom: SPACING.xs,
-  },
-  resumeDate: {
-    ...typography.body2,
-    color: COLORS.text.secondary,
-    marginBottom: SPACING.xs,
-  },
-  resumeTemplate: {
-    ...typography.body2,
-    color: COLORS.text.secondary,
-    marginBottom: SPACING.md,
-  },
-  actionButtons: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    gap: SPACING.md,
-    marginTop: SPACING.xs,
-  },
-  actionButton: {
-    backgroundColor: COLORS.primary,
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.xs,
-    borderRadius: BORDER_RADIUS.sm,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  editButton: {
-    backgroundColor: COLORS.secondary || '#555',
-  },
-  actionButtonText: {
-    color: COLORS.white,
-    ...typography.button,
-  },
-});
