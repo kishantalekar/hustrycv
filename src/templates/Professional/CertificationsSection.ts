@@ -1,10 +1,10 @@
-import {getResumeStyles} from '../styles/resumeStyles';
-import {getExternalLinkIcon} from '../icons/externalLink';
+import { getResumeStyles } from "../styles/resumeStyles";
+import { getExternalLinkIcon } from "../icons/externalLink";
 
 export const getCertificationsHTML = (certifications: any) => {
   const styles = getResumeStyles();
 
-  const res = `
+  return `
   <div class="section">
     <h2 class="section-title">Certifications</h2>
     <hr/>
@@ -21,21 +21,9 @@ export const getCertificationsHTML = (certifications: any) => {
           </a>
           <div class="text-regular"> - ${cert.authority}</div>
         </div>
-      `,
+      `
         )
-        .join('')}
-    </div>
-    <a href="https://example.com">https://example.com</a>
-<a href="">https://example.com</a>
-
-<!-- NG -->
-<a>https://example.com</a>
-<a href="https://example.com">LINK</a>
-
-<!-- Open https://example.com -->
-<a href="https://foo.com">https://example.com</a>
-  </div>
-`;
-  console.log(res);
-  return res;
+        .join("")}
+    </div>  
+    `;
 };

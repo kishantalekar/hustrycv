@@ -1,6 +1,53 @@
-import {githubIcon} from '../icons/icons';
+import { Project } from "@/app/resume.types";
+import { githubIcon } from "../icons/icons";
 // TODO: add skills in project section and dates in project section
 export const getProjectsHTML = (projects: any) => {
+  const projectItem = (item: Project) => {
+    return `
+     <div style="margin-bottom: 8pt;">
+    <!--heading -->
+      <div class="flex align-center space-between">
+      <div class="flex space-between gap-4">
+           <span class="text-bold">${item.name}</span>
+            <a href="${
+              item.url
+            }" style="color: #000; text-decoration: none;" class="text-regular">
+              ${githubIcon}
+            </a>
+         <span class="text-muted">|</span>
+            <span class="text-italic text-muted">Flutter, Appwrite </span>
+          </div>
+          <span class="text-regular text-muted">June 2024 - Aug 2024</span>
+        </div>
+    <!-- heading end-->
+     <!--Description-->
+            ${
+              item.description &&
+              `  <div class="text-regular text-muted " style="margin: 2pt 0;">
+            ${item.description}
+          </div>`
+            }
+        
+    <!--Description end-->
+    <!--Highlights-->
+          <ul style="margin: 2pt 0; padding-left: 14pt;">
+            ${
+              item?.highlights
+                ? item.highlights
+                    .map(
+                      (highlight: string) => `
+              <li class="bulleted-point" style=";"><span class="text-regular">${highlight}</span></li>
+            `
+                    )
+                    .join("")
+                : ""
+            }
+          </ul>
+      <!--Highlights end-->
+        </div>
+    `;
+  };
+
   return `
     <div class="section">
       <h2 class="section-title">Projects</h2>
@@ -9,36 +56,10 @@ export const getProjectsHTML = (projects: any) => {
       ${projects.items
         .map(
           (item: any) => `
-        <div style="margin-bottom: 12pt;">
-          <div style="display: flex; gap: 8px;align-items: center;justify-content:space-between;">
-          <div>
-          <span class="text-bold">${item.name}</span>
-            <a href="${
-              item.url
-            }" style="color: #000; text-decoration: none;" class="text-regular">
-              ${githubIcon}
-            </a>
-            |
-            <span class="text-italic">Flutter, Appwrite </span>
-          </div>
-          <span class="body-large ">June 2024 - Aug 2024</span>
-          </div>
-          <div class="text-regular text-muted" style="margin: 4pt 0;">
-            ${item.description}
-          </div>
-          <ul style="margin: 4pt 0; padding-left: 14pt;">
-            ${item.highlights
-              .map(
-                (highlight: string) => `
-              <li class="text-regular" style=";">${highlight}</li>
-            `,
-              )
-              .join('')}
-          </ul>
-        </div>
-      `,
+        ${projectItem(item)}
+      `
         )
-        .join('')}
+        .join("")}
     </div>
     </div>
   `;

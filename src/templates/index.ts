@@ -1,1 +1,2 @@
-export * from './Professional';
+export * from "./Professional";
+export * from "./Technical";

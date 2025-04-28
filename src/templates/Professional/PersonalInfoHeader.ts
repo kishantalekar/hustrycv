@@ -1,22 +1,21 @@
-import {getResumeStyles, SPACING} from '../styles/resumeStyles';
-import {Basics} from '../../components/ResumePreview/ResumePreview.types';
+import { getResumeStyles, SPACING } from "../styles/resumeStyles";
+import { Basics } from "../../components/ResumePreview/ResumePreview.types";
 
 export const getPersonalInfoHTML = (basics: Basics) => {
   const styles = getResumeStyles();
-
+  const links = [basics.email, basics.linkedin, basics.github]
+    .map((link) => `<a href="${link}" style="${styles.link}">${link}</a>`)
+    .join(" | ");
   return `
-  <div style="${styles.container} ${styles.centered}">
-    <h1 style="${styles.header}">
+  <div class="text-center mb-16">
+    <h1 class="header">
       ${basics.name}
     </h1>
-    <div style="${styles.small}; margin: ${SPACING.sm}px 0;">
-      ${basics.email} • ${basics.phone} • ${basics.location}
+    <div class="text-regular" style="${styles.small}; margin: ${SPACING.sm}px 0;">
+      ${basics.phone} |
+      ${links}
     </div>
-    <div style="${styles.small}">
-      <a href="${basics.linkedin}" style="${styles.link}">${basics.linkedin}</a> • 
-      <a href="${basics.github}" style="${styles.link}">${basics.github}</a> • 
-      <a href="${basics.website}" style="${styles.link}">${basics.website}</a>
-    </div>
+
   </div>
 `;
 };

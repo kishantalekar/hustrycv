@@ -19,20 +19,24 @@ export const SPACING = {
 
 // COLOR CONSTANTS
 export const COLORS = {
-  primary: '#2D3748', // Main text color
-  secondary: '#4A5568', // Secondary text color for less emphasis
-  accent: '#3182CE', // Accent color for highlights or important elements
-  link: '#2B6CB0', // Color for links or interactive elements
-  divider: '#CBD5E0', // Color for dividers or separators
-  background: '#FFFFFF', // Page background color
+  primary: "#2D3748", // Main text color
+  secondary: "#4A5568", // Secondary text color for less emphasis
+  accent: "#3182CE", // Accent color for highlights or important elements
+  link: "#2B6CB0", // Color for links or interactive elements
+  divider: "#CBD5E0", // Color for dividers or separators
+  background: "#FFFFFF", // Page background color
 } as const;
 
 // COMMON STYLES APPLIED ACROSS THE RESUME
 export const getCommonStyles = () => `
+  .header{
+    font-size: ${FONT_SIZES.h1}pt;
+  }
   .section {
     margin: 10pt 0;
     break-inside: avoid;  // Prevents section from breaking across pages when printing
   }
+
   
   .section-title {
     font-size: ${FONT_SIZES.h3}pt;  // Using h3 size (16pt) for section titles
@@ -57,27 +61,79 @@ export const getCommonStyles = () => `
   .text-muted {
     color: #666;  // Muted text for less important information
   }
+  .bulleted-point{
+    font-size: 10pt;  // Smallest size (8px)
+  }
   
   hr {
   margin:0;
-  margin-top: 4pt;
-    margin-bottom: 8pt;
-    padding: 0;
+  margin-top: 1pt;
+  margin-bottom: 4pt;
+  padding: 0;
 
+  }
+  .mb-2{
+  margin-bottom:2pt;
+  }
+  .mb-4{
+  margin-bottom:4pt;
+  }
+  .mb-8{
+  margin-bottom:8pt;
+  .mb-16{
+    margin-bottom:16pt;
+  }
+  }
+  .test1{
+  background-color:red;
+  border:1pt solid red;
+  }
+  .test2{
+  background-color:yellow;
+  }
+  .flex{
+    display:flex;
+  }
+  .flex-row{
+    flex-direction:row;
+  }
+  .flex-col{
+  flex-direction:column;
+  }
+  .center{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  }
+  .space-between{
+    justify-content:space-between;
+  }
+  .align-center{
+  align-items:center;
+  }
+  .gap-1{
+  gap:1pt;
+  }
+  .gap-2{
+  gap:2pt;
+  }
+  .gap-4{
+    gap:4pt;
+  }
+  .text-center{
+    text-align: center;
   }
 `;
 
 // RESUME-SPECIFIC STYLES WITH DETAILED TYPOGRAPHY
 export const getResumeStyles = () => ({
   container: `
-    margin-bottom: ${SPACING.md}px;
+    margin-bottom: ${SPACING.md}pt;
   `,
 
   // Your name at the top of the resume
   header: `
-    font-family: 'FiraSans-Bold';
-    font-size: ${FONT_SIZES.h1}px;  // Largest size (24px) for your name
-    color: ${COLORS.primary};
+    font-size: ${FONT_SIZES.h1}pt;  // Largest size (24px) for your name
     margin: 0;
   `,
 
@@ -86,7 +142,6 @@ export const getResumeStyles = () => ({
     font-family: 'FiraSans-Medium';
     font-size: ${FONT_SIZES.h2}px;  // Second largest size (20px)
     color: ${COLORS.secondary};
-    margin: ${SPACING.sm}px 0;
   `,
 
   // Main content text style
@@ -99,14 +154,12 @@ export const getResumeStyles = () => ({
 
   // Used for dates, locations, or supplementary information
   small: `
-    font-family: 'FiraSans-Regular';
-    font-size: ${FONT_SIZES.small}px;  // Smallest size (8px)
-    color: ${COLORS.secondary};
+  font-size:10pt;
   `,
 
   link: `
-    color: ${COLORS.link};
-    text-decoration: none;
+    color: #000;
+    text-decoration: underline;
   `,
 
   divider: `

@@ -1,0 +1,1 @@
+export { getTechnicalResumeHTML } from "./TechnicalTemplate";
