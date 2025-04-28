@@ -88,7 +88,7 @@ interface Settings {
   language: string;
 }
 
-interface Resume {
+export interface Resume {
   metadata: Metadata;
   basics: Basics;
   sections: {

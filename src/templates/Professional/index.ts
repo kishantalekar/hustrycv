@@ -9,7 +9,6 @@ import {getSummaryHTML} from './SummarySection';
 import {getWorkExperienceHTML} from './WorkExperienceSection';
 
 export const getProfessionalResumeHTML = (resumeData: ResumeData): string => {
-  console.log('education', resumeData?.sections?.education?.items.length);
   if (!resumeData) {
     // @ts-ignore
     return `

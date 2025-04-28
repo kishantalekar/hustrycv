@@ -1,4 +1,5 @@
 import {ViewStyle} from 'react-native';
+import {Resume} from '../../store/useResumeStore';
 
 export interface Basics {
   name?: string;
@@ -83,7 +84,7 @@ export interface ResumeData {
 }
 
 export interface ResumePreviewProps {
-  resumeData?: ResumeData;
+  resumeData?: Resume;
   style?: ViewStyle;
   selectedTemplate?: string;
   templates?: Template[];

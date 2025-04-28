@@ -2,7 +2,6 @@
 // TODO:add technical stack or skills here also
 
 export const getWorkExperienceHTML = (work: any) => {
-  console.log("work", work);
   return `
   <div class="section" style="break-inside:avoid;">
     <h2 class="section-title">Experience</h2>
@@ -14,7 +13,7 @@ export const getWorkExperienceHTML = (work: any) => {
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <span class="text-bold">${item.position}</span>
           <span class="text-regular text-muted">
-            ${item.startDate} - ${item.current ? "Present" : item.endDate}
+            ${item.startDate} - ${item.current ? 'Present' : item.endDate}
           </span>
         </div>
         <div class="text-regular flex flex-row space-between text-regular text-italic" style="margin: 4px 0;">
@@ -28,14 +27,14 @@ export const getWorkExperienceHTML = (work: any) => {
             <li class="bulleted-point">
             <span class="text-regular">${highlight}</span>
             </li>
-          `
+          `,
             )
-            .join("")}
+            .join('')}
         </ul>
       </div>
-    `
+    `,
       )
-      .join("")}
+      .join('')}
   </div>
 `;
 };
