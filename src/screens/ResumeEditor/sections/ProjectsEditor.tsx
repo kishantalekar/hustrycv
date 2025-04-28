@@ -4,7 +4,9 @@ import {ProjectItem, useResumeStore} from '../../../store/useResumeStore';
 import {Button, Card, TextInput, IconButton} from 'react-native-paper';
 
 export const ProjectsEditor = () => {
-  const {sections, addProject, updateProject, removeProject} = useResumeStore();
+  const {getActiveResume, addProject, updateProject, removeProject} =
+    useResumeStore();
+  const projects = getActiveResume().sections.projects;
   const [newHighlight, setNewHighlight] = useState('');
   const [editingProject, setEditingProject] = useState<Partial<ProjectItem>>(
     {},
@@ -39,7 +41,7 @@ export const ProjectsEditor = () => {
   };
 
   const handleRemoveHighlight = (projectId: string, index: number) => {
-    const project = sections.projects.items.find(p => p.id === projectId);
+    const project = projects.items.find(p => p.id === projectId);
     if (project) {
       const newHighlights = [...project.highlights];
       newHighlights.splice(index, 1);
@@ -115,7 +117,7 @@ export const ProjectsEditor = () => {
         </Card.Content>
       </Card>
 
-      {sections.projects.items.map(project => (
+      {projects.items.map(project => (
         <Card key={project.id} style={styles.card}>
           <Card.Title
             title={project.name}

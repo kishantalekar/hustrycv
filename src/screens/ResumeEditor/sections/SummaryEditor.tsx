@@ -10,8 +10,8 @@ import {FONTS} from '../../../constants/fonts';
 import {useResumeStore} from '../../../store/useResumeStore';
 
 export const SummaryEditor = () => {
-  const {basics, updateBasics} = useResumeStore();
-
+  const {getActiveResume, updateBasics} = useResumeStore();
+  const basics = getActiveResume().basics;
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

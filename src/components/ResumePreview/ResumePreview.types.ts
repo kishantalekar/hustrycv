@@ -1,3 +1,5 @@
+import {ViewStyle} from 'react-native';
+
 export interface Basics {
   name?: string;
   email?: string;
@@ -81,7 +83,7 @@ export interface ResumeData {
 }
 
 export interface ResumePreviewProps {
-  resumeData: ResumeData;
+  resumeData?: ResumeData;
   style?: ViewStyle;
   selectedTemplate?: string;
   templates?: Template[];

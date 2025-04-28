@@ -12,8 +12,13 @@ import {useResumeStore} from '../../../store/useResumeStore';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export const CertificationsEditor = () => {
-  const {sections, addCertification, removeCertification, updateCertification} =
-    useResumeStore();
+  const {
+    getActiveResume,
+    addCertification,
+    removeCertification,
+    updateCertification,
+  } = useResumeStore();
+  const certifications = getActiveResume().sections.certifications;
   const [expandedItems, setExpandedItems] = useState<{[key: string]: boolean}>(
     {},
   );
@@ -45,12 +50,11 @@ export const CertificationsEditor = () => {
       });
     }
   };
-  console.log(sections.certifications);
   return (
     <ScrollView style={styles.container}>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Your Certifications</Text>
-        {sections.certifications.items.map(cert => (
+        {certifications?.items.map(cert => (
           <View key={cert.id} style={styles.certificationCard}>
             <TouchableOpacity
               style={styles.cardHeader}

@@ -1,57 +1,132 @@
-import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import type {RootStackParamList} from '../../navigation/AppNavigator';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+} from 'react-native';
+import {useNavigation, NavigationProp} from '@react-navigation/native';
+import Pdf from 'react-native-pdf';
+import {createInitialResume, useResumeStore} from '../../store/useResumeStore';
+import {generatePDF} from '../../utils/pdfUtils';
+import {getProfessionalResumeHTML} from '../../templates';
 import {navigate} from '../../utils/navigation';
-import {BORDER_RADIUS, COLORS, SHADOW, SPACING, typography} from '../../theme';
-
-interface ResumeItem {
-  id: string;
-  name: string;
-  lastModified: string;
-  template: string;
-}
-
-const mockResumes: ResumeItem[] = [
-  {
-    id: '1',
-    name: 'Software Engineer Resume',
-    lastModified: '2024-01-20',
-    template: 'Professional',
-  },
-  {
-    id: '2',
-    name: 'Frontend Developer Resume',
-    lastModified: '2024-01-19',
-    template: 'Modern',
-  },
-];
-
-type NavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'Dashboard'
->;
+import {COLORS, SPACING, BORDER_RADIUS, SHADOW, typography} from '../../theme';
 
 export const Dashboard = () => {
-  const navigation = useNavigation<NavigationProp>();
-
-  const renderResumeItem = ({item}: {item: ResumeItem}) => (
-    <TouchableOpacity
-      style={styles.resumeCard}
-      onPress={() => navigation.navigate('ResumeEditor', {resumeId: item.id})}>
-      <View style={styles.resumePreview}>
-        <Text style={styles.previewText}>Preview</Text>
-      </View>
-      <View style={styles.resumeInfo}>
-        <Text style={styles.resumeName}>{item.name}</Text>
-        <Text style={styles.resumeDate}>
-          Last modified: {item.lastModified}
-        </Text>
-        <Text style={styles.resumeTemplate}>Template: {item.template}</Text>
-      </View>
-    </TouchableOpacity>
+  const navigation = useNavigation<NavigationProp<any>>();
+  const {setActiveResume, resumes, activeResumeId, addResume} =
+    useResumeStore();
+  const [pdfPreviews, setPdfPreviews] = useState<Record<string, string | null>>(
+    {},
   );
+  const [loadingPreviews, setLoadingPreviews] = useState<
+    Record<string, boolean>
+  >({});
+
+  useEffect(() => {
+    // Generate PDF previews for all resumes
+    const generatePreviews = async () => {
+      const loading = {};
+      resumes.forEach(resume => {
+        loading[resume.metadata.id] = true;
+      });
+      setLoadingPreviews(loading);
+
+      const previews = {};
+      for (const resume of resumes) {
+        try {
+          const base64 = await generatePDF(getProfessionalResumeHTML(resume));
+          previews[resume.metadata.id] = base64;
+        } catch (error) {
+          console.error(
+            'Error generating preview for resume:',
+            resume.metadata.id,
+            error,
+          );
+          previews[resume.metadata.id] = null;
+        } finally {
+          setLoadingPreviews(prev => ({
+            ...prev,
+            [resume.metadata.id]: false,
+          }));
+        }
+      }
+      setPdfPreviews(previews);
+    };
+
+    generatePreviews();
+  }, [resumes]);
+
+  const handleResumePress = (resumeId: string) => {
+    setActiveResume(resumeId);
+    navigation.navigate('ResumeEditor');
+  };
+
+  const handleCreateResumePress = () => {
+    const newResume = createInitialResume();
+    addResume(newResume);
+    const id = newResume.metadata.id;
+    setActiveResume(id);
+    navigate('ResumeEditor');
+  };
+
+  const renderResumeItem = ({item}: {item: (typeof resumes)[0]}) => {
+    const lastModified = new Date(item.metadata.updatedAt).toLocaleDateString();
+    const isLoading = loadingPreviews[item.metadata.id];
+    const pdfBase64 = pdfPreviews[item.metadata.id];
+
+    return (
+      <TouchableOpacity
+        style={styles.resumeCard}
+        onPress={() => handleResumePress(item.metadata.id)}>
+        <View style={styles.resumePreview}>
+          {isLoading ? (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="small" color={COLORS.primary} />
+              <Text style={styles.loadingText}>Generating preview...</Text>
+            </View>
+          ) : pdfBase64 ? (
+            <Pdf
+              source={{uri: `data:application/pdf;base64,${pdfBase64}`}}
+              style={styles.pdfView}
+              onError={error => console.log('PDF Error:', error)}
+              singlePage={true}
+              scale={3}
+            />
+          ) : (
+            <Text style={styles.previewText}>Preview not available</Text>
+          )}
+        </View>
+        <View style={styles.resumeInfo}>
+          <Text style={styles.resumeName}>
+            {item.basics.name || 'Untitled Resume'}
+          </Text>
+          <Text style={styles.resumeDate}>Last modified: {lastModified}</Text>
+          <Text style={styles.resumeTemplate}>
+            Template: {item.metadata.templateId}
+          </Text>
+          {/* <View style={styles.actionButtons}>
+            <TouchableOpacity
+              style={styles.actionButton}
+              onPress={() => {
+                setActiveResume(item.metadata.id);
+                navigation.navigate('DownloadScreen');
+              }}>
+              <Text style={styles.actionButtonText}>Download</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.actionButton, styles.editButton]}
+              onPress={() => handleResumePress(item.metadata.id)}>
+              <Text style={styles.actionButtonText}>Edit</Text>
+            </TouchableOpacity>
+          </View> */}
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -59,15 +134,15 @@ export const Dashboard = () => {
         <Text style={styles.title}>My Resumes</Text>
         <TouchableOpacity
           style={styles.createButton}
-          onPress={() => navigate('ResumeEditor')}>
+          onPress={handleCreateResumePress}>
           <Text style={styles.createButtonText}>Create New</Text>
         </TouchableOpacity>
       </View>
 
       <FlatList
-        data={mockResumes}
+        data={resumes}
         renderItem={renderResumeItem}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.metadata.id}
         contentContainerStyle={styles.resumeList}
       />
     </View>
@@ -110,14 +185,27 @@ const styles = StyleSheet.create({
     ...SHADOW.card,
   },
   resumePreview: {
-    height: 120,
+    height: 100,
     backgroundColor: COLORS.preview,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  pdfView: {
+    width: '100%',
+    height: '100%',
+  },
   previewText: {
     color: COLORS.text.secondary,
     ...typography.body1,
+  },
+  loadingContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  loadingText: {
+    marginTop: SPACING.sm,
+    color: COLORS.text.secondary,
+    ...typography.body2,
   },
   resumeInfo: {
     padding: SPACING.md,
@@ -135,5 +223,27 @@ const styles = StyleSheet.create({
   resumeTemplate: {
     ...typography.body2,
     color: COLORS.text.secondary,
+    marginBottom: SPACING.md,
+  },
+  actionButtons: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    gap: SPACING.md,
+    marginTop: SPACING.xs,
+  },
+  actionButton: {
+    backgroundColor: COLORS.primary,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.xs,
+    borderRadius: BORDER_RADIUS.sm,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  editButton: {
+    backgroundColor: COLORS.secondary || '#555',
+  },
+  actionButtonText: {
+    color: COLORS.white,
+    ...typography.button,
   },
 });

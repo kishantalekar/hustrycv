@@ -11,14 +11,10 @@ import {FONTS} from '../../../constants/fonts';
 import {useResumeStore} from '../../../store/useResumeStore';
 
 export const SkillsEditor = () => {
-  const {
-    sections: {skills},
-    addSkill,
-    updateSkill,
-    removeSkill,
-  } = useResumeStore();
+  const {getActiveResume, addSkill, updateSkill, removeSkill} =
+    useResumeStore();
   const [newKeyword, setNewKeyword] = useState('');
-
+  const skills = getActiveResume().sections.skills;
   const addNewSkill = () => {
     addSkill({
       name: '',

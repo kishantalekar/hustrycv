@@ -12,12 +12,12 @@ import {useResumeStore} from '../../../store/useResumeStore';
 
 export const WorkExperienceEditor = () => {
   const {
-    sections: {work: workExperience},
+    getActiveResume,
     addWorkExperience,
     updateWorkExperience,
     removeWorkExperience,
   } = useResumeStore();
-
+  const workExperience = getActiveResume().sections.work;
   const addNewExperience = () => {
     addWorkExperience({
       company: '',

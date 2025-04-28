@@ -13,7 +13,10 @@ import {getTechnicalResumeHTML} from '../../templates/Technical';
 import {getMinimalistResumeHTML} from '../../templates/Minimalist';
 
 export const PreviewScreen = () => {
-  const resumeData = useResumeStore();
+  const {resumes, activeResumeId} = useResumeStore();
+  const activeResume = resumes.find(
+    resume => resume.metadata.id === activeResumeId,
+  );
   const [selectedTemplate, setSelectedTemplate] = useState('professional');
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
@@ -63,7 +66,7 @@ export const PreviewScreen = () => {
         </TouchableOpacity>
       </View>
       <ResumePreview
-        resumeData={resumeData}
+        resumeData={activeResume}
         selectedTemplate={selectedTemplate}
         templates={templates}
       />

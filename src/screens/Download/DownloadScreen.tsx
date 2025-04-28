@@ -16,15 +16,18 @@ import Pdf from 'react-native-pdf';
 import {styles} from './DownloadScreen.styles';
 
 export const DownloadScreen = () => {
-  const resumeData = useResumeStore();
+  const {resumes, activeResumeId} = useResumeStore();
+  const activeResume = resumes.find(
+    resume => resume.metadata.id === activeResumeId,
+  );
   const [pdfBase64, setPdfBase64] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [downloadStarted, setDownloadStarted] = useState(false);
 
   useEffect(() => {
-    if (resumeData) {
+    if (activeResume) {
       setIsLoading(true);
-      generatePDF(getProfessionalResumeHTML(resumeData))
+      generatePDF(getProfessionalResumeHTML(activeResume))
         .then(base64 => {
           if (base64) {
             setPdfBase64(base64);
@@ -34,16 +37,16 @@ export const DownloadScreen = () => {
           setIsLoading(false);
         });
     }
-  }, [resumeData]);
+  }, [activeResume]);
 
   const handleDownload = async () => {
-    if (!resumeData) {
+    if (!activeResume) {
       return;
     }
 
     setDownloadStarted(true);
     try {
-      await createAndSavePDF(getProfessionalResumeHTML(resumeData));
+      await createAndSavePDF(getProfessionalResumeHTML(activeResume));
       Alert.alert('Success', 'Resume saved successfully!');
     } catch (error) {
       Alert.alert('Error', 'Failed to save resume. Please try again.');
@@ -60,7 +63,7 @@ export const DownloadScreen = () => {
     Alert.alert('Coming Soon', 'Email functionality will be available soon!');
   };
 
-  if (!resumeData) {
+  if (!activeResume) {
     return (
       <View style={styles.emptyContainer}>
         <Icon name="file-document-outline" size={80} color="#CCCCCC" />

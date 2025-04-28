@@ -11,13 +11,9 @@ import {FONTS} from '../../../constants/fonts';
 import {useResumeStore} from '../../../store/useResumeStore';
 
 export const EducationEditor = () => {
-  const {
-    sections: {education},
-    addEducation,
-    updateEducation,
-    removeEducation,
-  } = useResumeStore();
-
+  const {getActiveResume, addEducation, updateEducation, removeEducation} =
+    useResumeStore();
+  const education = getActiveResume().sections.education;
   const addNewEducation = () => {
     addEducation({
       institution: '',
