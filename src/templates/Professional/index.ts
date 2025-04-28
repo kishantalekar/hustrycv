@@ -1,15 +1,15 @@
-import { ResumeData } from "../../components/ResumePreview/ResumePreview.types";
-import { getCommonStyles } from "../styles/resumeStyles";
-import { getCertificationsHTML } from "./CertificationsSection";
-import { getEducationHTML } from "./EducationSection";
-import { getPersonalInfoHTML } from "./PersonalInfoHeader";
-import { getProjectsHTML } from "./ProjectsSection";
-import { getSkillsHTML } from "./SkillsSection";
-import { getSummaryHTML } from "./SummarySection";
-import { getWorkExperienceHTML } from "./WorkExperienceSection";
+import {ResumeData} from '../../components/ResumePreview/ResumePreview.types';
+import {getCommonStyles} from '../styles/resumeStyles';
+import {getCertificationsHTML} from './CertificationsSection';
+import {getEducationHTML} from './EducationSection';
+import {getPersonalInfoHTML} from './PersonalInfoHeader';
+import {getProjectsHTML} from './ProjectsSection';
+import {getSkillsHTML} from './SkillsSection';
+import {getSummaryHTML} from './SummarySection';
+import {getWorkExperienceHTML} from './WorkExperienceSection';
 
 export const getProfessionalResumeHTML = (resumeData: ResumeData): string => {
-  console.log("education", resumeData?.sections?.education?.items.length);
+  console.log('education', resumeData?.sections?.education?.items.length);
   if (!resumeData) {
     // @ts-ignore
     return `
@@ -38,7 +38,7 @@ export const getProfessionalResumeHTML = (resumeData: ResumeData): string => {
           body {
             margin: 0;
             font-family: 'Fira Sans', sans-serif;
-            background-color: #F8F8F8;
+             background-color: #FFFFFF;
             text-color:#111111
           }
 
@@ -55,32 +55,32 @@ export const getProfessionalResumeHTML = (resumeData: ResumeData): string => {
       </head>
       <body>
        <div class="a4-page">
-        ${resumeData.basics ? getPersonalInfoHTML(resumeData.basics) : ""}
-        ${resumeData.basics?.summary ? getSummaryHTML(resumeData.basics) : ""}
+        ${resumeData.basics ? getPersonalInfoHTML(resumeData.basics) : ''}
+        ${resumeData.basics?.summary ? getSummaryHTML(resumeData.basics) : ''}
          ${
            resumeData.sections?.education?.items.length
              ? getEducationHTML(resumeData.sections.education)
-             : ""
+             : ''
          }
         ${
           resumeData.sections?.work?.items.length
             ? getWorkExperienceHTML(resumeData.sections.work)
-            : ""
+            : ''
         }
         ${
           resumeData.sections?.projects?.items.length
             ? getProjectsHTML(resumeData.sections.projects)
-            : ""
+            : ''
         }
          ${
            resumeData.sections?.skills?.items.length
              ? getSkillsHTML(resumeData.sections.skills)
-             : ""
+             : ''
          }
         ${
           resumeData.sections?.certifications?.items.length
             ? getCertificationsHTML(resumeData.sections.certifications)
-            : ""
+            : ''
         }
        </div>
       </body>

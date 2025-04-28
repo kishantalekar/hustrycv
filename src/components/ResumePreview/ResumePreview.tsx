@@ -4,25 +4,31 @@ import {FONTS} from '../../constants';
 import {COLORS, SPACING, BORDER_RADIUS, SHADOW, TYPOGRAPHY} from '../../theme';
 import {generatePDF} from '../../utils/pdfUtils';
 import {ResumePreviewProps} from './ResumePreview.types';
-import {getProfessionalResumeHTML} from '../../templates';
 import Pdf from 'react-native-pdf';
 
 export default function ResumePreview({
   resumeData,
   style,
+  selectedTemplate,
+  templates,
 }: Readonly<ResumePreviewProps>) {
   const [pdfBase64, setPdfBase64] = useState<string | null>(null);
 
   useEffect(() => {
-    if (resumeData) {
-      generatePDF(getProfessionalResumeHTML(resumeData)).then(base64 => {
-        if (base64) {
-          return setPdfBase64(base64);
-        }
-      });
+    if (resumeData && templates) {
+      const selectedTemplateData = templates.find(
+        t => t.id === selectedTemplate,
+      );
+      if (selectedTemplateData) {
+        generatePDF(selectedTemplateData.getHTML(resumeData)).then(base64 => {
+          if (base64) {
+            return setPdfBase64(base64);
+          }
+        });
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [selectedTemplate, resumeData]);
 
   if (!resumeData) {
     return (

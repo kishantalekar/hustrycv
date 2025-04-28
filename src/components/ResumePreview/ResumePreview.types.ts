@@ -42,6 +42,13 @@ export interface Certification {
   issueDate: string;
   description: string;
 }
+export interface Template {
+  id: string;
+  name: string;
+  image: any;
+  getHTML: (data: any) => string;
+}
+
 export interface ResumeData {
   basics?: Basics;
   sections?: {
@@ -75,5 +82,7 @@ export interface ResumeData {
 
 export interface ResumePreviewProps {
   resumeData: ResumeData;
-  style?: any;
+  style?: ViewStyle;
+  selectedTemplate?: string;
+  templates?: Template[];
 }
