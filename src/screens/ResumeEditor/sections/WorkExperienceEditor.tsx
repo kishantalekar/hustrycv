@@ -1,14 +1,15 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   StyleSheet,
   ScrollView,
-  KeyboardAvoidingView,
-  Platform,
+  TouchableOpacity,
+  TextInput,
+  Text,
 } from 'react-native';
-import {Card, TextInput, Button, IconButton, Text} from 'react-native-paper';
 import {FONTS} from '../../../constants/fonts';
 import {useResumeStore} from '../../../store/useResumeStore';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export const WorkExperienceEditor = () => {
   const {
@@ -18,176 +19,311 @@ export const WorkExperienceEditor = () => {
     removeWorkExperience,
   } = useResumeStore();
   const workExperience = getActiveResume().sections.work;
-  const addNewExperience = () => {
-    addWorkExperience({
-      company: '',
-      position: '',
-      location: '',
-      startDate: '',
-      endDate: '',
-      current: false,
-      highlights: [],
-    });
+  const [expandedItems, setExpandedItems] = useState<{[key: string]: boolean}>(
+    {},
+  );
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [newExperience, setNewExperience] = useState({
+    company: '',
+    position: '',
+    location: '',
+    startDate: '',
+    endDate: '',
+    current: false,
+    highlights: [],
+  });
+
+  const toggleExpand = (id: string) => {
+    setExpandedItems(prev => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  const handleAddExperience = () => {
+    if (newExperience.company && newExperience.position) {
+      addWorkExperience(newExperience);
+      setNewExperience({
+        company: '',
+        position: '',
+        location: '',
+        startDate: '',
+        endDate: '',
+        current: false,
+        highlights: [],
+      });
+      setShowAddForm(false);
+    }
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.keyboardAvoidingView}>
-      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-        <Text style={styles.sectionTitle} variant="headlineMedium">
-          Work Experience
-        </Text>
+    <ScrollView style={styles.container}>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Work Experience</Text>
+        {workExperience?.items.map(experience => (
+          <View key={experience.id} style={styles.experienceCard}>
+            <TouchableOpacity
+              style={styles.cardHeader}
+              onPress={() => toggleExpand(experience.id)}>
+              <View>
+                <Text style={styles.companyName}>{experience.company}</Text>
+                <Text style={styles.position}>{experience.position}</Text>
+                {experience.location && (
+                  <Text style={styles.location}>{experience.location}</Text>
+                )}
+              </View>
+              <Icon
+                name={
+                  expandedItems[experience.id] ? 'expand-less' : 'expand-more'
+                }
+                size={24}
+                color="#666"
+              />
+            </TouchableOpacity>
+            {expandedItems[experience.id] && (
+              <View style={styles.cardContent}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Company Name"
+                  placeholderTextColor="#999"
+                  value={experience.company}
+                  onChangeText={text =>
+                    updateWorkExperience(experience.id, {
+                      ...experience,
+                      company: text,
+                    })
+                  }
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Position"
+                  placeholderTextColor="#999"
+                  value={experience.position}
+                  onChangeText={text =>
+                    updateWorkExperience(experience.id, {
+                      ...experience,
+                      position: text,
+                    })
+                  }
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Location (optional)"
+                  placeholderTextColor="#999"
+                  value={experience.location}
+                  onChangeText={text =>
+                    updateWorkExperience(experience.id, {
+                      ...experience,
+                      location: text,
+                    })
+                  }
+                />
+                <View style={styles.row}>
+                  <TextInput
+                    style={[styles.input, styles.flex1]}
+                    placeholder="Start Date (MM/YYYY)"
+                    placeholderTextColor="#999"
+                    value={experience.startDate}
+                    onChangeText={text =>
+                      updateWorkExperience(experience.id, {
+                        ...experience,
+                        startDate: text,
+                      })
+                    }
+                  />
+                  <TextInput
+                    style={[styles.input, styles.flex1]}
+                    placeholder="End Date (MM/YYYY)"
+                    placeholderTextColor="#999"
+                    value={experience.endDate}
+                    onChangeText={text =>
+                      updateWorkExperience(experience.id, {
+                        ...experience,
+                        endDate: text,
+                      })
+                    }
+                  />
+                </View>
+                <TouchableOpacity
+                  style={styles.deleteButton}
+                  onPress={() => removeWorkExperience(experience.id)}>
+                  <Text style={styles.deleteButtonText}>Delete</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
+        ))}
+      </View>
 
-        <Card style={styles.addCard}>
-          <Card.Content>
+      <View style={styles.section}>
+        {!showAddForm ? (
+          <TouchableOpacity
+            style={styles.addButton}
+            onPress={() => setShowAddForm(true)}>
+            <Text style={styles.addButtonText}>Add New Experience</Text>
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.inputContainer}>
+            <View style={styles.addFormHeader}>
+              {newExperience.company ? (
+                <Text style={styles.newExperienceTitle}>
+                  {newExperience.company}
+                </Text>
+              ) : (
+                <Text style={styles.addFormTitle}>Add New Experience</Text>
+              )}
+              {newExperience.position && (
+                <Text style={styles.position}>{newExperience.position}</Text>
+              )}
+            </View>
+
             <TextInput
-              mode="outlined"
-              label="Company Name"
-              placeholder="Enter company name"
               style={styles.input}
-              value={workExperience?.items?.[0]?.company || ''}
+              placeholder="Company Name *"
+              placeholderTextColor="#999"
+              value={newExperience.company}
               onChangeText={text =>
-                updateWorkExperience(workExperience?.items?.[0]?.id || '', {
-                  company: text,
-                })
+                setNewExperience(prev => ({...prev, company: text}))
               }
             />
             <TextInput
-              mode="outlined"
-              label="Position"
-              placeholder="Enter your position"
               style={styles.input}
-              value={workExperience?.items?.[0]?.position || ''}
+              placeholder="Position *"
+              placeholderTextColor="#999"
+              value={newExperience.position}
               onChangeText={text =>
-                updateWorkExperience(workExperience?.items?.[0]?.id || '', {
-                  position: text,
-                })
+                setNewExperience(prev => ({...prev, position: text}))
+              }
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Location (optional)"
+              placeholderTextColor="#999"
+              value={newExperience.location}
+              onChangeText={text =>
+                setNewExperience(prev => ({...prev, location: text}))
               }
             />
             <View style={styles.row}>
               <TextInput
-                mode="outlined"
-                label="Start Date"
-                placeholder="MM/YYYY"
                 style={[styles.input, styles.flex1]}
-                value={workExperience?.items?.[0]?.startDate || ''}
+                placeholder="Start Date (MM/YYYY) *"
+                placeholderTextColor="#999"
+                value={newExperience.startDate}
                 onChangeText={text =>
-                  updateWorkExperience(workExperience?.items?.[0]?.id || '', {
-                    startDate: text,
-                  })
+                  setNewExperience(prev => ({...prev, startDate: text}))
                 }
               />
               <TextInput
-                mode="outlined"
-                label="End Date"
-                placeholder="MM/YYYY or Present"
                 style={[styles.input, styles.flex1]}
-                value={workExperience?.items?.[0]?.endDate || ''}
+                placeholder="End Date (MM/YYYY)"
+                placeholderTextColor="#999"
+                value={newExperience.endDate}
                 onChangeText={text =>
-                  updateWorkExperience(workExperience?.items?.[0]?.id || '', {
-                    endDate: text,
-                  })
+                  setNewExperience(prev => ({...prev, endDate: text}))
                 }
               />
             </View>
-          </Card.Content>
-        </Card>
 
-        {workExperience?.items?.slice(1).map(experience => (
-          <Card key={experience.id} style={styles.experienceCard}>
-            <Card.Title
-              title={experience.company || 'Work Experience'}
-              right={props => (
-                <IconButton
-                  {...props}
-                  icon="delete"
-                  onPress={() => removeWorkExperience(experience.id)}
-                />
-              )}
-            />
-            <Card.Content>
-              <TextInput
-                mode="outlined"
-                label="Company Name"
-                placeholder="Enter company name"
-                style={styles.input}
-                value={experience.company}
-                onChangeText={text =>
-                  updateWorkExperience(experience.id, {company: text})
-                }
-              />
-              <TextInput
-                mode="outlined"
-                label="Position"
-                placeholder="Enter your position"
-                style={styles.input}
-                value={experience.position}
-                onChangeText={text =>
-                  updateWorkExperience(experience.id, {position: text})
-                }
-              />
-              <View style={styles.row}>
-                <TextInput
-                  mode="outlined"
-                  label="Start Date"
-                  placeholder="MM/YYYY"
-                  style={[styles.input, styles.flex1]}
-                  value={experience.startDate}
-                  onChangeText={text =>
-                    updateWorkExperience(experience.id, {startDate: text})
-                  }
-                />
-                <TextInput
-                  mode="outlined"
-                  label="End Date"
-                  placeholder="MM/YYYY or Present"
-                  style={[styles.input, styles.flex1]}
-                  value={experience.endDate}
-                  onChangeText={text =>
-                    updateWorkExperience(experience.id, {endDate: text})
-                  }
-                />
-              </View>
-            </Card.Content>
-          </Card>
-        ))}
-
-        <Button
-          mode="contained"
-          onPress={addNewExperience}
-          style={styles.addButton}
-          icon="plus">
-          Add Experience
-        </Button>
-      </ScrollView>
-    </KeyboardAvoidingView>
+            <View style={styles.formButtons}>
+              <TouchableOpacity
+                style={[styles.formButton, styles.cancelButton]}
+                onPress={() => {
+                  setShowAddForm(false);
+                  setNewExperience({
+                    company: '',
+                    position: '',
+                    location: '',
+                    startDate: '',
+                    endDate: '',
+                    current: false,
+                    highlights: [],
+                  });
+                }}>
+                <Text style={styles.cancelButtonText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.formButton,
+                  styles.saveButton,
+                  (!newExperience.company || !newExperience.position) &&
+                    styles.disabledButton,
+                ]}
+                onPress={handleAddExperience}
+                disabled={!newExperience.company || !newExperience.position}>
+                <Text style={styles.saveButtonText}>Save Experience</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  keyboardAvoidingView: {
-    flex: 1,
-  },
   container: {
     flex: 1,
+    backgroundColor: '#F5F5F5',
     padding: 16,
   },
-  sectionTitle: {
-    marginBottom: 16,
-    fontFamily: FONTS.FIRA_SANS.BOLD,
+  section: {
+    marginBottom: 24,
   },
-  addCard: {
+  sectionTitle: {
+    fontSize: 20,
+    fontFamily: FONTS.FIRA_SANS.BOLD,
     marginBottom: 16,
-    elevation: 2,
+    color: '#333',
   },
   experienceCard: {
-    marginBottom: 16,
-    elevation: 2,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    marginBottom: 12,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  cardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    padding: 16,
+  },
+  companyName: {
+    fontSize: 16,
+    fontFamily: FONTS.FIRA_SANS.REGULAR,
+    color: '#333',
+    marginBottom: 4,
+  },
+  position: {
+    fontSize: 14,
+    fontFamily: FONTS.FIRA_SANS.REGULAR,
+    color: '#666',
+    marginBottom: 2,
+  },
+  location: {
+    fontSize: 14,
+    fontFamily: FONTS.FIRA_SANS.REGULAR,
+    color: '#666',
+  },
+  cardContent: {
+    padding: 16,
+    borderTopWidth: 1,
+    borderTopColor: '#EEE',
   },
   input: {
+    borderWidth: 1,
+    borderColor: '#DDD',
+    borderRadius: 4,
+    padding: 12,
     marginBottom: 12,
-    backgroundColor: 'white',
+    fontFamily: FONTS.FIRA_SANS.REGULAR,
+    fontSize: 15,
+    color: '#333',
   },
   row: {
     flexDirection: 'row',
@@ -196,8 +332,78 @@ const styles = StyleSheet.create({
   flex1: {
     flex: 1,
   },
+  deleteButton: {
+    backgroundColor: '#FF3B30',
+    padding: 8,
+    borderRadius: 4,
+    alignItems: 'center',
+    marginTop: 12,
+  },
+  deleteButtonText: {
+    color: 'white',
+    fontFamily: FONTS.FIRA_SANS.REGULAR,
+    fontSize: 14,
+  },
   addButton: {
-    marginTop: 8,
-    marginBottom: 24,
+    backgroundColor: '#007AFF',
+    padding: 16,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  addButtonText: {
+    color: 'white',
+    fontFamily: FONTS.FIRA_SANS.REGULAR,
+    fontSize: 16,
+  },
+  inputContainer: {
+    backgroundColor: 'white',
+    padding: 16,
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  addFormHeader: {
+    marginBottom: 16,
+  },
+  addFormTitle: {
+    fontSize: 18,
+    fontFamily: FONTS.FIRA_SANS.REGULAR,
+    color: '#666',
+  },
+  newExperienceTitle: {
+    fontSize: 20,
+    fontFamily: FONTS.FIRA_SANS.REGULAR,
+    color: '#333',
+  },
+  formButtons: {
+    flexDirection: 'row',
+    gap: 12,
+    marginTop: 16,
+  },
+  formButton: {
+    flex: 1,
+    padding: 14,
+    borderRadius: 6,
+    alignItems: 'center',
+  },
+  saveButton: {
+    backgroundColor: '#007AFF',
+  },
+  cancelButton: {
+    backgroundColor: '#E0E0E0',
+  },
+  saveButtonText: {
+    color: 'white',
+    fontFamily: FONTS.FIRA_SANS.REGULAR,
+  },
+  cancelButtonText: {
+    color: '#666',
+    fontFamily: FONTS.FIRA_SANS.REGULAR,
+  },
+  disabledButton: {
+    opacity: 0.6,
   },
 });

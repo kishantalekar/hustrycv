@@ -16,11 +16,6 @@ const sections: SectionsInterface[] = [
     screenName: 'PersonalInfo',
   },
   {
-    id: 'summary',
-    title: 'Professional Summary',
-    screenName: 'Summary',
-  },
-  {
     id: 'experience',
     title: 'Work Experience',
     screenName: 'Experience',

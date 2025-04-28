@@ -71,19 +71,55 @@ export const CertificationsEditor = () => {
             </TouchableOpacity>
             {expandedItems[cert.id] && (
               <View style={styles.cardContent}>
-                <Text style={styles.certificationDetail}>
-                  Authority: {cert.authority}
-                </Text>
-                {!!cert.certificationUrlOrCode && (
-                  <Text style={styles.certificationDetail}>
-                    URL/Code: {cert.certificationUrlOrCode}
-                  </Text>
-                )}
-                {!!cert.description && (
-                  <Text style={styles.certificationDetail}>
-                    Description: {cert.description}
-                  </Text>
-                )}
+                <TextInput
+                  style={styles.input}
+                  placeholder="Certification Name"
+                  placeholderTextColor="#999"
+                  value={cert.name}
+                  onChangeText={text =>
+                    updateCertification(cert.id, {...cert, name: text})
+                  }
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Authority"
+                  placeholderTextColor="#999"
+                  value={cert.authority}
+                  onChangeText={text =>
+                    updateCertification(cert.id, {...cert, authority: text})
+                  }
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Certification URL/Code"
+                  placeholderTextColor="#999"
+                  value={cert.certificationUrlOrCode}
+                  onChangeText={text =>
+                    updateCertification(cert.id, {
+                      ...cert,
+                      certificationUrlOrCode: text,
+                    })
+                  }
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Issue Date (e.g., 2023-09)"
+                  placeholderTextColor="#999"
+                  value={cert.issueDate}
+                  onChangeText={text =>
+                    updateCertification(cert.id, {...cert, issueDate: text})
+                  }
+                />
+                <TextInput
+                  style={[styles.input, styles.multilineInput]}
+                  placeholder="Description"
+                  placeholderTextColor="#999"
+                  value={cert.description}
+                  onChangeText={text =>
+                    updateCertification(cert.id, {...cert, description: text})
+                  }
+                  multiline
+                />
                 <TouchableOpacity
                   style={styles.deleteButton}
                   onPress={() => removeCertification(cert.id)}>

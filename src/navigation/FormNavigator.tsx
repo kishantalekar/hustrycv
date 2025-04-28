@@ -5,7 +5,6 @@ import {
 } from '@react-navigation/native-stack';
 import FormScreen from '../screens/ResumeEditor/screens/FormScreen';
 import {PersonalInfoEditor} from '../screens/ResumeEditor/sections/PersonalInfoEditor';
-import {SummaryEditor} from '../screens/ResumeEditor/sections/SummaryEditor';
 import {WorkExperienceEditor} from '../screens/ResumeEditor/sections/WorkExperienceEditor';
 import {EducationEditor} from '../screens/ResumeEditor/sections/EducationEditor';
 import {SkillsEditor} from '../screens/ResumeEditor/sections/SkillsEditor';
@@ -39,11 +38,7 @@ export const FormNavigator = () => {
         component={PersonalInfoEditor}
         options={{title: 'Personal Information'}}
       />
-      <Stack.Screen
-        name="Summary"
-        component={SummaryEditor}
-        options={{title: 'Professional Summary'}}
-      />
+
       <Stack.Screen
         name="Experience"
         component={WorkExperienceEditor}
