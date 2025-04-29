@@ -1,2 +1,2 @@
-export * from './ResumePreview';
-export * from './ResumePreview.types';
+import {ResumePreview} from './ResumePreview';
+export {ResumePreview};
