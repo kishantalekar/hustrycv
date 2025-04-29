@@ -7,8 +7,8 @@ import {
   View,
   TouchableOpacityProps,
 } from 'react-native';
+import {FONTS} from '@/constants';
 import {COLORS, BORDER_RADIUS, SHADOW} from '../../theme';
-import {FONTS} from '../../constants/fonts';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'text';
 export type ButtonSize = 'small' | 'medium' | 'large';
@@ -37,7 +37,9 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const getBackgroundColor = () => {
-    if (disabled) return COLORS.border;
+    if (disabled) {
+      return COLORS.border;
+    }
     switch (variant) {
       case 'primary':
         return COLORS.primary;
@@ -52,7 +54,9 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   const getTextColor = () => {
-    if (disabled) return COLORS.text.secondary;
+    if (disabled) {
+      return COLORS.text.secondary;
+    }
     switch (variant) {
       case 'primary':
       case 'secondary':
@@ -67,7 +71,9 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   const getBorderColor = () => {
-    if (disabled) return COLORS.border;
+    if (disabled) {
+      return COLORS.border;
+    }
     switch (variant) {
       case 'outline':
         return COLORS.primary;

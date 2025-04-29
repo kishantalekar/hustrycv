@@ -1,8 +1,8 @@
 import React from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
+import {Typography} from '../../components/Typography/Typography';
 import {TypographyVariant} from '../../components/Typography/Typography.types';
 import {COLORS} from '../../theme';
-import {Typography} from '../../components/Typography/Typography';
 
 export default {
   title: 'Components/Typography',

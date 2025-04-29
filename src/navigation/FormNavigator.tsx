@@ -1,15 +1,15 @@
-import React from 'react';
 import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
+import React from 'react';
 import FormScreen from '../screens/ResumeEditor/screens/FormScreen';
-import {PersonalInfoEditor} from '../screens/ResumeEditor/sections/PersonalInfoEditor';
-import {WorkExperienceEditor} from '../screens/ResumeEditor/sections/WorkExperienceEditor';
-import {EducationEditor} from '../screens/ResumeEditor/sections/EducationEditor';
-import {SkillsEditor} from '../screens/ResumeEditor/sections/SkillsEditor';
-import {ProjectsEditor} from '../screens/ResumeEditor/sections/ProjectsEditor';
 import {CertificationsEditor} from '../screens/ResumeEditor/sections/CertificationsEditor';
+import {EducationEditor} from '../screens/ResumeEditor/sections/EducationEditor';
+import {PersonalInfoEditor} from '../screens/ResumeEditor/sections/PersonalInfoEditor';
+import {ProjectsEditor} from '../screens/ResumeEditor/sections/ProjectsEditor';
+import {SkillsEditor} from '../screens/ResumeEditor/sections/SkillsEditor';
+import {WorkExperienceEditor} from '../screens/ResumeEditor/sections/WorkExperienceEditor';
 
 const Stack = createNativeStackNavigator();
 type FormStackParamList = {

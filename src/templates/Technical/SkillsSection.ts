@@ -1,17 +1,17 @@
-import { Section } from "../../components/ResumePreview/ResumePreview.types";
+import { Section } from '../../components/ResumePreview/ResumePreview.types';
 
 export const getSkillsHTML = (skills: Section): string => {
-  if (!skills.items.length) return "";
+  if (!skills.items.length) {return '';}
 
   // Group skills by category if available
   const skillsByCategory: Record<string, string[]> = {};
 
   skills.items.forEach((item) => {
-    const category = item.category || "Other";
+    const category = item.category || 'Other';
     if (!skillsByCategory[category]) {
       skillsByCategory[category] = [];
     }
-    skillsByCategory[category].push(item.name || "");
+    skillsByCategory[category].push(item.name || '');
   });
 
   const categories = Object.keys(skillsByCategory);
@@ -20,7 +20,7 @@ export const getSkillsHTML = (skills: Section): string => {
     // Render skills grouped by category
     return `
       <div class="section">
-        <h2 class="section-title">${skills.title || "Skills"}</h2>
+        <h2 class="section-title">${skills.title || 'Skills'}</h2>
         ${categories
           .map(
             (category) => `
@@ -31,29 +31,29 @@ export const getSkillsHTML = (skills: Section): string => {
                 .map(
                   (skill) => `
                 <div class="skill-item">${skill}</div>
-              `
+              `,
                 )
-                .join("")}
+                .join('')}
             </div>
           </div>
-        `
+        `,
           )
-          .join("")}
+          .join('')}
       </div>
     `;
   } else {
     // Fallback to flat list if no categories
     return `
       <div class="section">
-        <h2 class="section-title">${skills.title || "Skills"}</h2>
+        <h2 class="section-title">${skills.title || 'Skills'}</h2>
         <div class="skill-items">
           ${skills.items
             .map(
               (item) => `
-            <div class="skill-item">${item.name || ""}</div>
-          `
+            <div class="skill-item">${item.name || ''}</div>
+          `,
             )
-            .join("")}
+            .join('')}
         </div>
       </div>
     `;

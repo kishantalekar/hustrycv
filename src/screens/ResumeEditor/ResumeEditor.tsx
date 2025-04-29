@@ -1,10 +1,10 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {View, Text} from 'react-native';
-import {PreviewScreen} from '../Preview/PreviewScreen';
-import {FormNavigator} from '../../navigation/FormNavigator';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {DownloadScreen} from '../Download/DownloadScreen';
 import {styles} from './ResumeEditor.styles';
+import {FormNavigator} from '../../navigation/FormNavigator';
+import {DownloadScreen} from '../Download/DownloadScreen';
+import {PreviewScreen} from '../Preview/PreviewScreen';
 
 const Tab = createBottomTabNavigator();
 

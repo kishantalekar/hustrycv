@@ -7,9 +7,9 @@ import {
   View,
 } from 'react-native';
 import {Card, TextInput, Text, Divider} from 'react-native-paper';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import {FONTS} from '../../../constants/fonts';
 import {useResumeStore} from '../../../store/useResumeStore';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import {globalStyles} from '../../../styles/globalStyles';
 
 export const PersonalInfoEditor = () => {

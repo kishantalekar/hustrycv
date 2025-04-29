@@ -9,9 +9,9 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import {FONTS} from '../../../constants/fonts';
 import {ProjectItem, useResumeStore} from '../../../store/useResumeStore';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import {globalStyles} from '../../../styles/globalStyles';
 
 export const ProjectsEditor = () => {

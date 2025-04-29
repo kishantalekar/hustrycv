@@ -1,7 +1,7 @@
 import React from 'react';
 import {View} from 'react-native';
-import type {Meta, StoryObj} from '@storybook/react';
 import {LottieAnimation} from '../../components/LottieAnimation/LottieAnimation';
+import type {Meta, StoryObj} from '@storybook/react';
 
 const meta = {
   title: 'Components/LottieAnimation',

@@ -1,3 +1,8 @@
+import {
+  useNavigation,
+  NavigationProp,
+  useFocusEffect,
+} from '@react-navigation/native';
 import React, {useCallback, useState} from 'react';
 import {
   View,
@@ -6,18 +11,13 @@ import {
   ActivityIndicator,
   FlatList,
 } from 'react-native';
-import {
-  useNavigation,
-  NavigationProp,
-  useFocusEffect,
-} from '@react-navigation/native';
 import Pdf from 'react-native-pdf';
-import {createInitialResume, useResumeStore} from '../../store/useResumeStore';
-import {generatePDF} from '../../utils/pdfUtils';
-import {getProfessionalResumeHTML} from '../../templates';
-import {navigate} from '../../utils/navigation';
-import {COLORS} from '../../theme';
 import {styles} from './Dashboard.styles';
+import {createInitialResume, useResumeStore} from '../../store/useResumeStore';
+import {getProfessionalResumeHTML} from '../../templates';
+import {COLORS} from '../../theme';
+import {navigate} from '../../utils/navigation';
+import {generatePDF} from '../../utils/pdfUtils';
 
 export const Dashboard = () => {
   const navigation = useNavigation<NavigationProp<any>>();
@@ -46,12 +46,12 @@ export const Dashboard = () => {
           {},
         );
 
-        if (isMounted) setLoadingPreviews(loading);
+        if (isMounted) {setLoadingPreviews(loading);}
 
         const previews: Record<string, string | null> = {};
 
         for (const resume of currentResumes) {
-          if (abortController.signal.aborted) break;
+          if (abortController.signal.aborted) {break;}
 
           try {
             const base64 = await generatePDF(getProfessionalResumeHTML(resume));
@@ -72,7 +72,7 @@ export const Dashboard = () => {
           }
         }
 
-        if (isMounted) setPdfPreviews(prev => ({...prev, ...previews}));
+        if (isMounted) {setPdfPreviews(prev => ({...prev, ...previews}));}
       };
 
       // Initial generation

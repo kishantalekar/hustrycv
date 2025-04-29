@@ -1,6 +1,6 @@
+import {v4 as uuidv4} from 'uuid';
 import {create} from 'zustand';
 import 'react-native-get-random-values';
-import {v4 as uuidv4} from 'uuid';
 import {
   extendedMockResumeData,
   mockResumeData,
@@ -252,6 +252,7 @@ export const createInitialResume = () => ({
 });
 
 const initialState: ResumeState = {
+  // @ts-ignore
   resumes: [extendedMockResumeData, mockResumeData],
   activeResumeId: uuidv4(),
   settings: {

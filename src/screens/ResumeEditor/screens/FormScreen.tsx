@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
-import {navigate} from '../../../utils/navigation';
 import {styles} from './FormScreen.styles';
+import {navigate} from '../../../utils/navigation';
 
 interface SectionsInterface {
   id: string;

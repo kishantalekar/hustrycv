@@ -1,16 +1,16 @@
+import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import {ResumePreview, TemplateSelector} from '@/components';
+import {FONTS} from '@/constants';
+import {useResumeStore} from '@/store/useResumeStore';
 import {
   getProfessionalResumeHTML,
   getTechnicalResumeHTML,
   getMinimalistResumeHTML,
 } from '@/templates';
 import {COLORS} from '@/theme';
-import {FONTS} from '@/constants';
-import {useResumeStore} from '@/store/useResumeStore';
 import {goBack} from '@/utils/navigation';
 
 export const PreviewScreen = () => {

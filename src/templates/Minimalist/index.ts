@@ -1,12 +1,12 @@
-import { ResumeData } from "../../components/ResumePreview/ResumePreview.types";
-import { getMinimalistStyles } from "./minimalistStyles";
-import { getCertificationsHTML } from "./CertificationsSection";
-import { getEducationHTML } from "./EducationSection";
-import { getPersonalInfoHTML } from "./PersonalInfoHeader";
-import { getProjectsHTML } from "./ProjectsSection";
-import { getSkillsHTML } from "./SkillsSection";
-import { getSummaryHTML } from "./SummarySection";
-import { getWorkExperienceHTML } from "./WorkExperienceSection";
+import { getCertificationsHTML } from './CertificationsSection';
+import { getEducationHTML } from './EducationSection';
+import { getMinimalistStyles } from './minimalistStyles';
+import { getPersonalInfoHTML } from './PersonalInfoHeader';
+import { getProjectsHTML } from './ProjectsSection';
+import { getSkillsHTML } from './SkillsSection';
+import { getSummaryHTML } from './SummarySection';
+import { getWorkExperienceHTML } from './WorkExperienceSection';
+import { ResumeData } from '../../components/ResumePreview/ResumePreview.types';
 
 export const getMinimalistResumeHTML = (resumeData: ResumeData): string => {
   if (!resumeData) {
@@ -22,19 +22,19 @@ export const getMinimalistResumeHTML = (resumeData: ResumeData): string => {
   // Dummy data for additional sections
   const languagesData = {
     items: [
-      { name: "JavaScript", level: "Expert" },
-      { name: "TypeScript", level: "Advanced" },
-      { name: "Python", level: "Intermediate" },
-      { name: "Go", level: "Beginner" },
+      { name: 'JavaScript', level: 'Expert' },
+      { name: 'TypeScript', level: 'Advanced' },
+      { name: 'Python', level: 'Intermediate' },
+      { name: 'Go', level: 'Beginner' },
     ],
   };
 
   const interestsData = {
     items: [
-      { name: "Open Source Development" },
-      { name: "Machine Learning" },
-      { name: "UI/UX Design" },
-      { name: "Tech Blogging" },
+      { name: 'Open Source Development' },
+      { name: 'Machine Learning' },
+      { name: 'UI/UX Design' },
+      { name: 'Tech Blogging' },
     ],
   };
 
@@ -48,9 +48,9 @@ export const getMinimalistResumeHTML = (resumeData: ResumeData): string => {
     : {};
 
   const metricsData = [
-    { value: "5+", label: "Years Experience" },
-    { value: "20+", label: "Projects Completed" },
-    { value: "10+", label: "Open Source Contributions" },
+    { value: '5+', label: 'Years Experience' },
+    { value: '20+', label: 'Projects Completed' },
+    { value: '10+', label: 'Open Source Contributions' },
   ];
 
   return `
@@ -146,24 +146,24 @@ export const getMinimalistResumeHTML = (resumeData: ResumeData): string => {
       </head>
       <body>
         <div class="a4-page">
-          ${resumeData.basics ? getPersonalInfoHTML(resumeData.basics) : ""}
-          ${resumeData.basics?.summary ? getSummaryHTML(resumeData.basics) : ""}
+          ${resumeData.basics ? getPersonalInfoHTML(resumeData.basics) : ''}
+          ${resumeData.basics?.summary ? getSummaryHTML(resumeData.basics) : ''}
           <div class="content-grid">
             <div class="main-column">
               ${
                 resumeData.sections?.work?.items.length
                   ? getWorkExperienceHTML(resumeData.sections.work)
-                  : ""
+                  : ''
               }
               ${
                 resumeData.sections?.projects?.items.length
                   ? getProjectsHTML(resumeData.sections.projects)
-                  : ""
+                  : ''
               }
               ${
                 resumeData.sections?.education?.items.length
                   ? getEducationHTML(resumeData.sections.education)
-                  : ""
+                  : ''
               }
             </div>
             <div class="side-column">
@@ -174,17 +174,17 @@ export const getMinimalistResumeHTML = (resumeData: ResumeData): string => {
                   ${
                     contactData.email
                       ? `<div class="contact-item"><span class="contact-label">Email:</span> ${contactData.email}</div>`
-                      : ""
+                      : ''
                   }
                   ${
                     contactData.phone
                       ? `<div class="contact-item"><span class="contact-label">Phone:</span> ${contactData.phone}</div>`
-                      : ""
+                      : ''
                   }
                   ${
                     contactData.url
                       ? `<div class="contact-item"><span class="contact-label">Website:</span> ${contactData.url}</div>`
-                      : ""
+                      : ''
                   }
                   ${
                     contactData.profiles
@@ -192,13 +192,13 @@ export const getMinimalistResumeHTML = (resumeData: ResumeData): string => {
                         (profile) => `
                     <div class="contact-item">
                       <span class="contact-label">${
-                        profile.network || ""
+                        profile.network || ''
                       }:</span> 
-                      ${profile.username || ""}
+                      ${profile.username || ''}
                     </div>
-                  `
+                  `,
                       )
-                      .join("") || ""
+                      .join('') || ''
                   }
                 </div>
               </div>
@@ -207,7 +207,7 @@ export const getMinimalistResumeHTML = (resumeData: ResumeData): string => {
               ${
                 resumeData.sections?.skills?.items.length
                   ? getSkillsHTML(resumeData.sections.skills)
-                  : ""
+                  : ''
               }
               
               <!-- Languages Section -->
@@ -221,9 +221,9 @@ export const getMinimalistResumeHTML = (resumeData: ResumeData): string => {
                       <span class="language-name">${item.name}</span>
                       <span class="language-level">${item.level}</span>
                     </div>
-                  `
+                  `,
                     )
-                    .join("")}
+                    .join('')}
                 </div>
               </div>
               
@@ -231,7 +231,7 @@ export const getMinimalistResumeHTML = (resumeData: ResumeData): string => {
               ${
                 resumeData.sections?.certifications?.items.length
                   ? getCertificationsHTML(resumeData.sections.certifications)
-                  : ""
+                  : ''
               }
               
               <!-- Key Metrics Section -->
@@ -245,9 +245,9 @@ export const getMinimalistResumeHTML = (resumeData: ResumeData): string => {
                       <span class="metric-value">${metric.value}</span>
                       <span class="metric-label">${metric.label}</span>
                     </div>
-                  `
+                  `,
                     )
-                    .join("")}
+                    .join('')}
                 </div>
               </div>
               
@@ -259,9 +259,9 @@ export const getMinimalistResumeHTML = (resumeData: ResumeData): string => {
                     .map(
                       (item) => `
                     <div class="interest-item">${item.name}</div>
-                  `
+                  `,
                     )
-                    .join("")}
+                    .join('')}
                 </div>
               </div>
               

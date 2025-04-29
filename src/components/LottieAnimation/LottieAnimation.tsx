@@ -1,5 +1,5 @@
-import React from 'react';
 import LottieView, {AnimationObject} from 'lottie-react-native';
+import React from 'react';
 import {StyleSheet, ViewStyle} from 'react-native';
 
 interface LottieAnimationProps {

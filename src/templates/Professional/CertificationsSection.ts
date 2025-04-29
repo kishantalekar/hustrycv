@@ -1,5 +1,5 @@
-import { getResumeStyles } from "../styles/resumeStyles";
-import { getExternalLinkIcon } from "../icons/externalLink";
+import { getExternalLinkIcon } from '../icons/externalLink';
+import { getResumeStyles } from '../styles/resumeStyles';
 
 export const getCertificationsHTML = (certifications: any) => {
   const styles = getResumeStyles();
@@ -21,9 +21,9 @@ export const getCertificationsHTML = (certifications: any) => {
           </a>
           <div class="text-regular"> - ${cert.authority}</div>
         </div>
-      `
+      `,
         )
-        .join("")}
+        .join('')}
     </div>  
     `;
 };

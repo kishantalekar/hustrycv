@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {View, ScrollView, Text, StyleSheet} from 'react-native';
-import {FONTS} from '../../constants';
-import {COLORS, SPACING, BORDER_RADIUS, SHADOW, TYPOGRAPHY} from '../../theme';
-import {generatePDF} from '../../utils/pdfUtils';
-import {ResumePreviewProps} from './ResumePreview.types';
 import Pdf from 'react-native-pdf';
+import {FONTS} from '@/constants';
+import {SPACING, COLORS, TYPOGRAPHY, BORDER_RADIUS, SHADOW} from '@/theme';
+import {generatePDF} from '@/utils/pdfUtils';
+import {ResumePreviewProps} from './ResumePreview.types';
 
 export function ResumePreview({
   resumeData,
-  style,
+  // style,
   selectedTemplate,
   templates,
 }: Readonly<ResumePreviewProps>) {

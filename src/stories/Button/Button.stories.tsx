@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
-import {Button} from '../../components/Button';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {Button} from '../../components/Button';
 import {COLORS} from '../../theme';
 
 export default {

@@ -8,7 +8,8 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "storybook-generate": "sb-rn-get-stories"
+    "storybook-generate": "sb-rn-get-stories",
+    "eslint-fix": "npx eslint --fix 'src/**/*.{ts,tsx}'"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^5.1.2",

@@ -1,8 +1,8 @@
-import {StyleSheet, Platform, Dimensions} from 'react-native';
-import {COLORS, SPACING, BORDER_RADIUS, SHADOW} from '../theme';
+import {StyleSheet} from 'react-native';
 import {FONTS} from '../constants';
+import {COLORS, SPACING, BORDER_RADIUS, SHADOW} from '../theme';
 
-const {width, height} = Dimensions.get('window');
+// const {width, height} = Dimensions.get('window');
 
 export const globalStyles = StyleSheet.create({
   // Layout styles

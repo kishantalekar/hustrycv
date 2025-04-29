@@ -1,5 +1,5 @@
-import { Project } from "@/app/resume.types";
-import { githubIcon } from "../icons/icons";
+import {Project} from '@/components/ResumePreview/ResumePreview.types';
+import {githubIcon} from '../icons/icons';
 // TODO: add skills in project section and dates in project section
 export const getProjectsHTML = (projects: any) => {
   const projectItem = (item: Project) => {
@@ -37,10 +37,10 @@ export const getProjectsHTML = (projects: any) => {
                     .map(
                       (highlight: string) => `
               <li class="bulleted-point" style=";"><span class="text-regular">${highlight}</span></li>
-            `
+            `,
                     )
-                    .join("")
-                : ""
+                    .join('')
+                : ''
             }
           </ul>
       <!--Highlights end-->
@@ -57,9 +57,9 @@ export const getProjectsHTML = (projects: any) => {
         .map(
           (item: any) => `
         ${projectItem(item)}
-      `
+      `,
         )
-        .join("")}
+        .join('')}
     </div>
     </div>
   `;

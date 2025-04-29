@@ -1,11 +1,11 @@
-import { getResumeStyles, SPACING } from "../styles/resumeStyles";
-import { Basics } from "../../components/ResumePreview/ResumePreview.types";
+import { Basics } from '../../components/ResumePreview/ResumePreview.types';
+import { getResumeStyles, SPACING } from '../styles/resumeStyles';
 
 export const getPersonalInfoHTML = (basics: Basics) => {
   const styles = getResumeStyles();
   const links = [basics.email, basics.linkedin, basics.github]
     .map((link) => `<a href="${link}" style="${styles.link}">${link}</a>`)
-    .join(" | ");
+    .join(' | ');
   return `
   <div class="text-center mb-16">
     <h1 class="header">

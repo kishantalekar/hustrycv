@@ -1,13 +1,13 @@
-import { ResumeData } from "../../components/ResumePreview/ResumePreview.types";
-import { getTechnicalStyles } from "./technicalStyles";
-import { getCertificationsHTML } from "./CertificationsSection";
-import { getEducationHTML } from "./EducationSection";
-import { getPersonalInfoHTML } from "./PersonalInfoHeader";
-import { getProjectsHTML } from "./ProjectsSection";
-import { getSkillsHTML } from "./SkillsSection";
-import { getSummaryHTML } from "./SummarySection";
-import { getWorkExperienceHTML } from "./WorkExperienceSection";
-import { getTechStackHTML } from "./TechStackSection";
+import { getCertificationsHTML } from './CertificationsSection';
+import { getEducationHTML } from './EducationSection';
+import { getPersonalInfoHTML } from './PersonalInfoHeader';
+import { getProjectsHTML } from './ProjectsSection';
+import { getSkillsHTML } from './SkillsSection';
+import { getSummaryHTML } from './SummarySection';
+import { getTechnicalStyles } from './technicalStyles';
+import { getTechStackHTML } from './TechStackSection';
+import { getWorkExperienceHTML } from './WorkExperienceSection';
+import { ResumeData } from '../../components/ResumePreview/ResumePreview.types';
 
 export const getTechnicalResumeHTML = (resumeData: ResumeData): string => {
   if (!resumeData) {
@@ -24,30 +24,30 @@ export const getTechnicalResumeHTML = (resumeData: ResumeData): string => {
   const techStackData = {
     categories: [
       {
-        name: "Frontend",
+        name: 'Frontend',
         skills: [
-          { name: "React", level: 90 },
-          { name: "TypeScript", level: 85 },
-          { name: "CSS/SCSS", level: 80 },
-          { name: "Next.js", level: 75 },
+          { name: 'React', level: 90 },
+          { name: 'TypeScript', level: 85 },
+          { name: 'CSS/SCSS', level: 80 },
+          { name: 'Next.js', level: 75 },
         ],
       },
       {
-        name: "Backend",
+        name: 'Backend',
         skills: [
-          { name: "Node.js", level: 85 },
-          { name: "Express", level: 80 },
-          { name: "Python", level: 70 },
-          { name: "MongoDB", level: 75 },
+          { name: 'Node.js', level: 85 },
+          { name: 'Express', level: 80 },
+          { name: 'Python', level: 70 },
+          { name: 'MongoDB', level: 75 },
         ],
       },
       {
-        name: "DevOps",
+        name: 'DevOps',
         skills: [
-          { name: "Docker", level: 70 },
-          { name: "AWS", level: 65 },
-          { name: "CI/CD", level: 75 },
-          { name: "Kubernetes", level: 60 },
+          { name: 'Docker', level: 70 },
+          { name: 'AWS', level: 65 },
+          { name: 'CI/CD', level: 75 },
+          { name: 'Kubernetes', level: 60 },
         ],
       },
     ],
@@ -55,9 +55,9 @@ export const getTechnicalResumeHTML = (resumeData: ResumeData): string => {
 
   // Professional achievements
   const achievementsData = [
-    { metric: "99.9%", description: "System uptime maintained" },
-    { metric: "60%", description: "Reduction in build time" },
-    { metric: "500K+", description: "Active users supported" },
+    { metric: '99.9%', description: 'System uptime maintained' },
+    { metric: '60%', description: 'Reduction in build time' },
+    { metric: '500K+', description: 'Active users supported' },
   ];
 
   // Contact information
@@ -174,32 +174,32 @@ export const getTechnicalResumeHTML = (resumeData: ResumeData): string => {
       </head>
       <body>
         <div class="a4-page">
-          ${resumeData.basics ? getPersonalInfoHTML(resumeData.basics) : ""}
+          ${resumeData.basics ? getPersonalInfoHTML(resumeData.basics) : ''}
           
           <div class="content-grid">
             <div class="main-column">
               ${
                 resumeData.basics?.summary
                   ? getSummaryHTML(resumeData.basics)
-                  : ""
+                  : ''
               }
               
               ${
                 resumeData.sections?.work?.items.length
                   ? getWorkExperienceHTML(resumeData.sections.work)
-                  : ""
+                  : ''
               }
               
               ${
                 resumeData.sections?.projects?.items.length
                   ? getProjectsHTML(resumeData.sections.projects)
-                  : ""
+                  : ''
               }
               
               ${
                 resumeData.sections?.education?.items.length
                   ? getEducationHTML(resumeData.sections.education)
-                  : ""
+                  : ''
               }
             </div>
             
@@ -214,17 +214,17 @@ export const getTechnicalResumeHTML = (resumeData: ResumeData): string => {
                   ${
                     contactData.email
                       ? `<div class="contact-item"><span class="contact-label">Email:</span> ${contactData.email}</div>`
-                      : ""
+                      : ''
                   }
                   ${
                     contactData.phone
                       ? `<div class="contact-item"><span class="contact-label">Phone:</span> ${contactData.phone}</div>`
-                      : ""
+                      : ''
                   }
                   ${
                     contactData.url
                       ? `<div class="contact-item"><span class="contact-label">Website:</span> ${contactData.url}</div>`
-                      : ""
+                      : ''
                   }
                   ${
                     contactData.profiles
@@ -232,13 +232,13 @@ export const getTechnicalResumeHTML = (resumeData: ResumeData): string => {
                         (profile) => `
                     <div class="contact-item">
                       <span class="contact-label">${
-                        profile.network || ""
+                        profile.network || ''
                       }:</span> 
-                      ${profile.username || ""}
+                      ${profile.username || ''}
                     </div>
-                  `
+                  `,
                       )
-                      .join("") || ""
+                      .join('') || ''
                   }
                 </div>
               </div>
@@ -247,7 +247,7 @@ export const getTechnicalResumeHTML = (resumeData: ResumeData): string => {
               ${
                 resumeData.sections?.skills?.items.length
                   ? getSkillsHTML(resumeData.sections.skills)
-                  : ""
+                  : ''
               }
               
               <!-- Technical Achievements Section -->
@@ -261,9 +261,9 @@ export const getTechnicalResumeHTML = (resumeData: ResumeData): string => {
                       <div class="achievement-metric">${achievement.metric}</div>
                       <div class="achievement-description">${achievement.description}</div>
                     </div>
-                  `
+                  `,
                     )
-                    .join("")}
+                    .join('')}
                 </div>
               </div>
               
@@ -271,7 +271,7 @@ export const getTechnicalResumeHTML = (resumeData: ResumeData): string => {
               ${
                 resumeData.sections?.certifications?.items.length
                   ? getCertificationsHTML(resumeData.sections.certifications)
-                  : ""
+                  : ''
               }
             </div>
           </div>

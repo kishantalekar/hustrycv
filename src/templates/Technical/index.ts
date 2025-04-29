@@ -1,1 +1,1 @@
-export { getTechnicalResumeHTML } from "./TechnicalTemplate";
+export { getTechnicalResumeHTML } from './TechnicalTemplate';

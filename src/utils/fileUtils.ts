@@ -1,6 +1,6 @@
-import RNFS from 'react-native-fs';
-import FileViewer from 'react-native-file-viewer';
 import {Platform, ToastAndroid} from 'react-native';
+import FileViewer from 'react-native-file-viewer';
+import RNFS from 'react-native-fs';
 
 export const getDownloadPath = () => {
   return Platform.OS === 'android'

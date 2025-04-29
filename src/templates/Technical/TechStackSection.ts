@@ -26,14 +26,14 @@ export const getTechStackHTML = (techStackData: TechStackData) => {
               .map(
                 (skill) => `
               <span class="tech-tag">${skill.name}</span>
-            `
+            `,
               )
-              .join("")}
+              .join('')}
           </div>
         </div>
-      `
+      `,
         )
-        .join("")}
+        .join('')}
     </div>
   `;
 };

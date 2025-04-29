@@ -7,13 +7,13 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
+import Pdf from 'react-native-pdf';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {styles} from './DownloadScreen.styles';
 import {useResumeStore} from '../../store/useResumeStore';
-import {createAndSavePDF, generatePDF} from '../../utils/pdfUtils';
 import {getProfessionalResumeHTML} from '../../templates';
 import {navigate} from '../../utils/navigation';
-import Pdf from 'react-native-pdf';
-import {styles} from './DownloadScreen.styles';
+import {createAndSavePDF, generatePDF} from '../../utils/pdfUtils';
 
 export const DownloadScreen = () => {
   const {resumes, activeResumeId} = useResumeStore();

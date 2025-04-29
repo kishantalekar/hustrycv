@@ -1,8 +1,8 @@
 import React from 'react';
 import {Text, StyleSheet} from 'react-native';
+import {FONTS} from '@/constants';
+import {COLORS, typography} from '@/theme';
 import {TypographyProps, TypographyVariant} from './Typography.types';
-import {typography, COLORS} from '../../theme';
-import {FONTS} from '../../constants/fonts';
 
 export const Typography: React.FC<TypographyProps> = ({
   variant = TypographyVariant.BodyMedium,

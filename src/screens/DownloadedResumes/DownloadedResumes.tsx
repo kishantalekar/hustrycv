@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, FlatList, TouchableOpacity, Alert} from 'react-native';
+import {styles} from './DownloadedResumes.styles';
 import {
   loadDownloadedResumes,
   openResume,
   deleteResume,
 } from '../../utils/fileUtils';
-import {styles} from './DownloadedResumes.styles';
 interface DownloadedResume {
   name: string;
   path: string;

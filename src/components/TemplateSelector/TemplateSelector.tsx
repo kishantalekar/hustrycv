@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
-import {COLORS, SPACING, BORDER_RADIUS, TYPOGRAPHY, SHADOW} from '../../theme';
-import {FONTS} from '../../constants';
+import {FONTS} from '@/constants';
+import {SPACING, TYPOGRAPHY, COLORS, BORDER_RADIUS, SHADOW} from '@/theme';
 
 type Template = {
   id: string;
