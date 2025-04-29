@@ -6,7 +6,7 @@ import {generatePDF} from '../../utils/pdfUtils';
 import {ResumePreviewProps} from './ResumePreview.types';
 import Pdf from 'react-native-pdf';
 
-export default function ResumePreview({
+export function ResumePreview({
   resumeData,
   style,
   selectedTemplate,

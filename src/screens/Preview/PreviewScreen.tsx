@@ -2,7 +2,6 @@ import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {FONTS} from '../../constants';
-import ResumePreview from '../../components/ResumePreview/ResumePreview';
 import {useResumeStore} from '../../store/useResumeStore';
 import {goBack} from '../../utils/navigation';
 import {TemplateSelector} from '../../components/TemplateSelector/TemplateSelector';
@@ -11,6 +10,7 @@ import {COLORS} from '../../theme';
 import {getProfessionalResumeHTML} from '../../templates/Professional';
 import {getTechnicalResumeHTML} from '../../templates/Technical';
 import {getMinimalistResumeHTML} from '../../templates/Minimalist';
+import {ResumePreview} from '../../components';
 
 export const PreviewScreen = () => {
   const {resumes, activeResumeId} = useResumeStore();
