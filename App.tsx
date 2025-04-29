@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {AppNavigator} from './src/navigation/AppNavigator';
-import StorybookUIRoot from './.storybook';
 import {DevSettings} from 'react-native';
+import StorybookUIRoot from './.storybook';
+import {AppNavigator} from './src/navigation/AppNavigator';
 
 const App = () => {
-  const [storybookEnabled, setStorybookEnabled] = useState(false);
+  const [storybookEnabled, setStorybookEnabled] = useState(true);
 
   // Make toggle function available globally in dev mode
   useEffect(() => {

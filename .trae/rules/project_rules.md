@@ -1,113 +1,113 @@
-The application is a React Native application.
-Its uses the following technologies:
+# Blueprint Resume Project Rules
+
+## Technology Stack
 
 - React Native
 - TypeScript
 
-The project is Resume Builder.
+## Component Architecture
 
-the resume schema is as follows:
-example below:
+### Component Organization
 
-```
-const resumeData =export const mockResumeData = {
-  metadata: {
-    id: 'uuid',
-    templateId: 'classic_1',
-    version: '1.0',
-    createdAt: 'ISO 8601 date',
-    updatedAt: 'ISO 8601 date',
-  },
-  basics: {
-    name: 'John Doe',
-    email: 'john@example.com',
-    phone: '+1234567890',
-    location: 'New York, NY',
-    linkedin: 'linkedin.com/in/johndoe',
-    github: 'github.com/johndoe',
-    website: 'johndoe.com',
-  },
-  summary: 'Full-stack developer with 5+ years of experience...',
+1. Create reusable components for common UI elements:
+
+   - Form inputs (TextInput, Select, DatePicker)
+   - Section containers (WorkSection, EducationSection)
+   - List items (WorkItem, EducationItem, SkillItem)
+   - Preview components (ResumePreview)
+
+2. Component Structure:
+   - Each component should have its own directory
+   - Include index.ts for exports
+   - Separate types in ComponentName.types.ts
+   - Styles in ComponentName.styles.ts
+
+### State Management
+
+1. Use Zustand for global state management
+2. Follow the store pattern in useResumeStore.ts
+3. Separate concerns into different slices (metadata, basics, sections)
+
+### Templates
+
+1. Create modular template components
+2. Extract common styles into shared style utilities
+3. Use template-specific components for unique layouts
+
+## Code Reusability
+
+### DRY Principles
+
+1. Create shared interfaces for common data structures:
+
+   - Section interfaces (work, education, skills)
+   - Item interfaces (WorkItem, EducationItem)
+   - Basic information interfaces
+
+2. Utility Functions:
+   - Date formatting
+   - Input validation
+   - Data transformation
+
+### Styling Guidelines
+
+1. Use consistent styling patterns:
+
+   - Shared color palette
+   - Typography scale
+   - Spacing system
+
+2. Create reusable style components:
+   - Section containers
+   - Form layouts
+   - List items
+
+## Data Structure
+
+Follow the established resume schema:
+
+```typescript
+interface Resume {
+  metadata: Metadata;
+  basics: Basics;
   sections: {
-    work: {
-      type: 'work',
-      visible: true,
-      items: [
-        {
-          id: 'uuid',
-          company: 'Tech Corp',
-          position: 'Senior Developer',
-          location: 'Remote',
-          startDate: '2020-01',
-          endDate: '2023-05',
-          current: false,
-          highlights: [
-            'Led a team of 5 developers...',
-            'Built scalable APIs using Node.js...',
-          ],
-        },
-      ],
-    },
-    education: {
-      type: 'education',
-      visible: true,
-      items: [
-        {
-          id: 'uuid',
-          institution: 'MIT',
-          degree: 'B.S. Computer Science',
-          startDate: '2016-09',
-          endDate: '2020-05',
-          gpa: '3.8',
-        },
-      ],
-    },
-    skills: {
-      type: 'skills',
-      visible: true,
-      items: [
-        {
-          id: 'uuid',
-          name: 'React',
-          level: 'advanced',
-          keywords: ['Hooks', 'Redux'],
-        },
-      ],
-    },
-    projects: {
-      type: 'projects',
-      visible: true,
-      items: [
-        {
-          id: 'uuid',
-          name: 'E-Commerce Platform',
-          description: 'Built with Next.js and Stripe...',
-          url: 'github.com/project',
-          highlights: ['Increased conversion by 30%'],
-        },
-      ],
-    },
-    customSections: [
-      {
-        type: 'publications',
-        title: 'Publications',
-        visible: true,
-        items: [
-          {
-            id: 'uuid',
-            title: 'AI in Healthcare',
-            publisher: 'Journal of Tech',
-            date: '2022-03',
-          },
-        ],
-      },
-    ],
-  },
-  settings: {
-    atsOptimized: true,
-    font: 'Arial',
-    theme: 'dark',
-    language: 'en',
-  },
-};
+    work: Section<WorkItem>;
+    education: Section<EducationItem>;
+    skills: Section<SkillItem>;
+    projects: Section<ProjectItem>;
+    certifications: Section<CertificateItem>;
+    customSections: Section<CustomSectionItem>[];
+  };
+}
 ```
+
+## Best Practices
+
+1. Type Safety:
+
+   - Use TypeScript interfaces for all components
+   - Avoid any type
+   - Implement proper type guards
+
+2. Performance:
+
+   - Implement proper memoization
+   - Optimize re-renders
+   - Use proper list virtualization
+
+3. Accessibility:
+
+   - Follow WCAG guidelines
+   - Implement proper keyboard navigation
+   - Use semantic HTML elements
+
+4. Testing:
+
+   - Write unit tests for components
+   - Test utility functions
+   - Implement integration tests
+
+5. Error Handling:
+   - Implement proper error boundaries
+   - Add input validation
+   - Handle edge cases
