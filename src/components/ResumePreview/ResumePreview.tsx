@@ -41,14 +41,13 @@ export default function ResumePreview({
     <ScrollView
       style={styles.container}
       contentContainerStyle={styles.contentContainer}>
-      <View style={[styles.previewContainer, style]}>
-        {pdfBase64 && (
-          <Pdf
-            source={{uri: `data:application/pdf;base64,${pdfBase64}`}}
-            style={styles.pdfView}
-          />
-        )}
-      </View>
+      {pdfBase64 && (
+        <Pdf
+          source={{uri: `data:application/pdf;base64,${pdfBase64}`}}
+          style={styles.pdfView}
+          spacing={SPACING.lg}
+        />
+      )}
     </ScrollView>
   );
 }
@@ -60,8 +59,9 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     padding: SPACING.container,
-    alignItems: 'center',
-    minHeight: '100%',
+    justifyContent: 'flex-start',
+    minHeight: 'auto',
+    height: '100%',
   },
   emptyContainer: {
     flex: 1,
@@ -87,12 +87,9 @@ const styles = StyleSheet.create({
     fontSize: TYPOGRAPHY.size.md,
     fontFamily: FONTS.FIRA_SANS.REGULAR,
   },
-  previewContainer: {
-    backgroundColor: COLORS.background.secondary,
-    borderRadius: BORDER_RADIUS.lg,
-    ...SHADOW.medium,
-    height: 842,
-    width: '100%',
+
+  pdfView: {
+    flex: 1,
+    backgroundColor: COLORS.background.primary,
   },
-  pdfView: {flex: 1},
 });

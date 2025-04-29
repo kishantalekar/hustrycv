@@ -6,10 +6,13 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import {FONTS} from '../../../constants/fonts';
 import {ProjectItem, useResumeStore} from '../../../store/useResumeStore';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {globalStyles} from '../../../styles/globalStyles';
 
 export const ProjectsEditor = () => {
   const {getActiveResume, addProject, updateProject, removeProject} =
@@ -63,215 +66,222 @@ export const ProjectsEditor = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Your Projects</Text>
-        {projects?.items.map(project => (
-          <View key={project.id} style={styles.projectCard}>
-            <TouchableOpacity
-              style={styles.cardHeader}
-              onPress={() => toggleExpand(project.id)}>
-              <View>
-                <Text style={styles.projectName}>{project.name}</Text>
-                {project.url && (
-                  <Text style={styles.projectUrl}>{project.url}</Text>
-                )}
-              </View>
-              <Icon
-                name={expandedItems[project.id] ? 'expand-less' : 'expand-more'}
-                size={24}
-                color="#666"
-              />
-            </TouchableOpacity>
-            {expandedItems[project.id] && (
-              <View style={styles.cardContent}>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Project Name"
-                  placeholderTextColor="#999"
-                  value={project.name}
-                  onChangeText={text =>
-                    updateProject(project.id, {...project, name: text})
-                  }
-                />
-                <TextInput
-                  style={[styles.input, styles.multilineInput]}
-                  placeholder="Project Description"
-                  placeholderTextColor="#999"
-                  value={project.description}
-                  onChangeText={text =>
-                    updateProject(project.id, {...project, description: text})
-                  }
-                  multiline
-                />
-                <TextInput
-                  style={styles.input}
-                  placeholder="Project URL (optional)"
-                  placeholderTextColor="#999"
-                  value={project.url}
-                  onChangeText={text =>
-                    updateProject(project.id, {...project, url: text})
-                  }
-                />
-                <View style={styles.highlightsSection}>
-                  <Text style={styles.highlightsTitle}>Highlights:</Text>
-                  {project.highlights.map((highlight, index) => (
-                    <View key={index} style={styles.highlightItem}>
-                      <Text style={styles.projectDetail}>• {highlight}</Text>
-                      <TouchableOpacity
-                        onPress={() =>
-                          updateProject(project.id, {
-                            ...project,
-                            highlights: project.highlights.filter(
-                              (_, i) => i !== index,
-                            ),
-                          })
-                        }>
-                        <Icon name="close" size={20} color="#666" />
-                      </TouchableOpacity>
-                    </View>
-                  ))}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={globalStyles.keyboardAvoidingView}>
+      <ScrollView style={styles.container}>
+        <View style={styles.section}>
+          {projects?.items.map(project => (
+            <View key={project.id} style={styles.projectCard}>
+              <TouchableOpacity
+                style={styles.cardHeader}
+                onPress={() => toggleExpand(project.id)}>
+                <View>
+                  <Text style={styles.projectName}>{project.name}</Text>
+                  {project.url && (
+                    <Text style={styles.projectUrl}>{project.url}</Text>
+                  )}
                 </View>
-                <View style={styles.highlightsContainer}>
+                <Icon
+                  name={
+                    expandedItems[project.id] ? 'expand-less' : 'expand-more'
+                  }
+                  size={24}
+                  color="#666"
+                />
+              </TouchableOpacity>
+              {expandedItems[project.id] && (
+                <View style={styles.cardContent}>
                   <TextInput
                     style={styles.input}
-                    placeholder="Add Highlight"
+                    placeholder="Project Name"
                     placeholderTextColor="#999"
-                    value={newHighlight}
-                    onChangeText={setNewHighlight}
-                    onSubmitEditing={() => {
-                      if (newHighlight.trim()) {
-                        updateProject(project.id, {
-                          ...project,
-                          highlights: [
-                            ...project.highlights,
-                            newHighlight.trim(),
-                          ],
-                        });
-                        setNewHighlight('');
-                      }
-                    }}
+                    value={project.name}
+                    onChangeText={text =>
+                      updateProject(project.id, {...project, name: text})
+                    }
                   />
+                  <TextInput
+                    style={[styles.input, styles.multilineInput]}
+                    placeholder="Project Description"
+                    placeholderTextColor="#999"
+                    value={project.description}
+                    onChangeText={text =>
+                      updateProject(project.id, {...project, description: text})
+                    }
+                    multiline
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Project URL (optional)"
+                    placeholderTextColor="#999"
+                    value={project.url}
+                    onChangeText={text =>
+                      updateProject(project.id, {...project, url: text})
+                    }
+                  />
+                  <View style={styles.highlightsSection}>
+                    <Text style={styles.highlightsTitle}>Highlights:</Text>
+                    {project.highlights.map((highlight, index) => (
+                      <View key={index} style={styles.highlightItem}>
+                        <Text style={styles.projectDetail}>• {highlight}</Text>
+                        <TouchableOpacity
+                          onPress={() =>
+                            updateProject(project.id, {
+                              ...project,
+                              highlights: project.highlights.filter(
+                                (_, i) => i !== index,
+                              ),
+                            })
+                          }>
+                          <Icon name="close" size={20} color="#666" />
+                        </TouchableOpacity>
+                      </View>
+                    ))}
+                  </View>
+                  <View style={styles.highlightsContainer}>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Add Highlight"
+                      placeholderTextColor="#999"
+                      value={newHighlight}
+                      onChangeText={setNewHighlight}
+                      onSubmitEditing={() => {
+                        if (newHighlight.trim()) {
+                          updateProject(project.id, {
+                            ...project,
+                            highlights: [
+                              ...project.highlights,
+                              newHighlight.trim(),
+                            ],
+                          });
+                          setNewHighlight('');
+                        }
+                      }}
+                    />
+                  </View>
+                  <TouchableOpacity
+                    style={styles.deleteButton}
+                    onPress={() => removeProject(project.id)}>
+                    <Text style={styles.deleteButtonText}>Delete</Text>
+                  </TouchableOpacity>
                 </View>
-                <TouchableOpacity
-                  style={styles.deleteButton}
-                  onPress={() => removeProject(project.id)}>
-                  <Text style={styles.deleteButtonText}>Delete</Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          </View>
-        ))}
-      </View>
-
-      <View style={styles.section}>
-        {!showAddForm ? (
-          <TouchableOpacity
-            style={styles.addButton}
-            onPress={() => setShowAddForm(true)}>
-            <Text style={styles.addButtonText}>Add New Project</Text>
-          </TouchableOpacity>
-        ) : (
-          <View style={styles.inputContainer}>
-            <View style={styles.addFormHeader}>
-              {newProject.name ? (
-                <Text style={styles.newProjectTitle}>{newProject.name}</Text>
-              ) : (
-                <Text style={styles.addFormTitle}>Add New Project</Text>
               )}
             </View>
+          ))}
+        </View>
 
-            <TextInput
-              style={styles.input}
-              placeholder="Project Name *"
-              placeholderTextColor="#999"
-              value={newProject.name}
-              onChangeText={text =>
-                setNewProject(prev => ({...prev, name: text}))
-              }
-            />
-            <TextInput
-              style={[styles.input, styles.multilineInput]}
-              placeholder="Project Description *"
-              placeholderTextColor="#999"
-              value={newProject.description}
-              onChangeText={text =>
-                setNewProject(prev => ({...prev, description: text}))
-              }
-              multiline
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Project URL (optional)"
-              placeholderTextColor="#999"
-              value={newProject.url}
-              onChangeText={text =>
-                setNewProject(prev => ({...prev, url: text}))
-              }
-            />
+        <View style={styles.section}>
+          {!showAddForm ? (
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={() => setShowAddForm(true)}>
+              <Text style={styles.addButtonText}>Add New Project</Text>
+            </TouchableOpacity>
+          ) : (
+            <View style={styles.inputContainer}>
+              <View style={styles.addFormHeader}>
+                {newProject.name ? (
+                  <Text style={styles.newProjectTitle}>{newProject.name}</Text>
+                ) : (
+                  <Text style={styles.addFormTitle}>Add New Project</Text>
+                )}
+              </View>
 
-            <View style={styles.highlightsContainer}>
               <TextInput
                 style={styles.input}
-                placeholder="Add Highlight"
+                placeholder="Project Name *"
                 placeholderTextColor="#999"
-                value={newHighlight}
-                onChangeText={setNewHighlight}
+                value={newProject.name}
+                onChangeText={text =>
+                  setNewProject(prev => ({...prev, name: text}))
+                }
               />
-              <TouchableOpacity
-                style={[styles.formButton, styles.addHighlightButton]}
-                onPress={handleAddHighlight}>
-                <Text style={styles.addHighlightButtonText}>Add Highlight</Text>
-              </TouchableOpacity>
-            </View>
+              <TextInput
+                style={[styles.input, styles.multilineInput]}
+                placeholder="Project Description *"
+                placeholderTextColor="#999"
+                value={newProject.description}
+                onChangeText={text =>
+                  setNewProject(prev => ({...prev, description: text}))
+                }
+                multiline
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Project URL (optional)"
+                placeholderTextColor="#999"
+                value={newProject.url}
+                onChangeText={text =>
+                  setNewProject(prev => ({...prev, url: text}))
+                }
+              />
 
-            {newProject.highlights?.map((highlight, index) => (
-              <View key={index} style={styles.highlightItem}>
-                <Text style={styles.highlightText}>• {highlight}</Text>
+              <View style={styles.highlightsContainer}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Add Highlight"
+                  placeholderTextColor="#999"
+                  value={newHighlight}
+                  onChangeText={setNewHighlight}
+                />
                 <TouchableOpacity
-                  onPress={() =>
-                    setNewProject(prev => ({
-                      ...prev,
-                      highlights: prev.highlights?.filter(
-                        (_, i) => i !== index,
-                      ),
-                    }))
-                  }>
-                  <Icon name="close" size={20} color="#666" />
+                  style={[styles.formButton, styles.addHighlightButton]}
+                  onPress={handleAddHighlight}>
+                  <Text style={styles.addHighlightButtonText}>
+                    Add Highlight
+                  </Text>
                 </TouchableOpacity>
               </View>
-            ))}
 
-            <View style={styles.formButtons}>
-              <TouchableOpacity
-                style={[styles.formButton, styles.cancelButton]}
-                onPress={() => {
-                  setShowAddForm(false);
-                  setNewProject({
-                    name: '',
-                    description: '',
-                    url: '',
-                    highlights: [],
-                  });
-                }}>
-                <Text style={styles.cancelButtonText}>Cancel</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.formButton,
-                  styles.saveButton,
-                  (!newProject.name || !newProject.description) &&
-                    styles.disabledButton,
-                ]}
-                onPress={handleAddProject}
-                disabled={!newProject.name || !newProject.description}>
-                <Text style={styles.saveButtonText}>Save Project</Text>
-              </TouchableOpacity>
+              {newProject.highlights?.map((highlight, index) => (
+                <View key={index} style={styles.highlightItem}>
+                  <Text style={styles.highlightText}>• {highlight}</Text>
+                  <TouchableOpacity
+                    onPress={() =>
+                      setNewProject(prev => ({
+                        ...prev,
+                        highlights: prev.highlights?.filter(
+                          (_, i) => i !== index,
+                        ),
+                      }))
+                    }>
+                    <Icon name="close" size={20} color="#666" />
+                  </TouchableOpacity>
+                </View>
+              ))}
+
+              <View style={styles.formButtons}>
+                <TouchableOpacity
+                  style={[styles.formButton, styles.cancelButton]}
+                  onPress={() => {
+                    setShowAddForm(false);
+                    setNewProject({
+                      name: '',
+                      description: '',
+                      url: '',
+                      highlights: [],
+                    });
+                  }}>
+                  <Text style={styles.cancelButtonText}>Cancel</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.formButton,
+                    styles.saveButton,
+                    (!newProject.name || !newProject.description) &&
+                      styles.disabledButton,
+                  ]}
+                  onPress={handleAddProject}
+                  disabled={!newProject.name || !newProject.description}>
+                  <Text style={styles.saveButtonText}>Save Project</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-        )}
-      </View>
-    </ScrollView>
+          )}
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

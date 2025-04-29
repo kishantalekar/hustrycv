@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   TextInput,
   Text,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import {FONTS} from '../../../constants/fonts';
 import {useResumeStore} from '../../../store/useResumeStore';
@@ -57,211 +59,218 @@ export const WorkExperienceEditor = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Work Experience</Text>
-        {workExperience?.items.map(experience => (
-          <View key={experience.id} style={styles.experienceCard}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.keyboardAvoidingView}>
+      <ScrollView style={styles.container}>
+        <View style={styles.section}>
+          {workExperience?.items.map(experience => (
+            <View key={experience.id} style={styles.experienceCard}>
+              <TouchableOpacity
+                style={styles.cardHeader}
+                onPress={() => toggleExpand(experience.id)}>
+                <View>
+                  <Text style={styles.companyName}>{experience.company}</Text>
+                  <Text style={styles.position}>{experience.position}</Text>
+                  {experience.location && (
+                    <Text style={styles.location}>{experience.location}</Text>
+                  )}
+                </View>
+                <Icon
+                  name={
+                    expandedItems[experience.id] ? 'expand-less' : 'expand-more'
+                  }
+                  size={24}
+                  color="#666"
+                />
+              </TouchableOpacity>
+              {expandedItems[experience.id] && (
+                <View style={styles.cardContent}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Company Name"
+                    placeholderTextColor="#999"
+                    value={experience.company}
+                    onChangeText={text =>
+                      updateWorkExperience(experience.id, {
+                        ...experience,
+                        company: text,
+                      })
+                    }
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Position"
+                    placeholderTextColor="#999"
+                    value={experience.position}
+                    onChangeText={text =>
+                      updateWorkExperience(experience.id, {
+                        ...experience,
+                        position: text,
+                      })
+                    }
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Location (optional)"
+                    placeholderTextColor="#999"
+                    value={experience.location}
+                    onChangeText={text =>
+                      updateWorkExperience(experience.id, {
+                        ...experience,
+                        location: text,
+                      })
+                    }
+                  />
+                  <View style={styles.row}>
+                    <TextInput
+                      style={[styles.input, styles.flex1]}
+                      placeholder="Start Date (MM/YYYY)"
+                      placeholderTextColor="#999"
+                      value={experience.startDate}
+                      onChangeText={text =>
+                        updateWorkExperience(experience.id, {
+                          ...experience,
+                          startDate: text,
+                        })
+                      }
+                    />
+                    <TextInput
+                      style={[styles.input, styles.flex1]}
+                      placeholder="End Date (MM/YYYY)"
+                      placeholderTextColor="#999"
+                      value={experience.endDate}
+                      onChangeText={text =>
+                        updateWorkExperience(experience.id, {
+                          ...experience,
+                          endDate: text,
+                        })
+                      }
+                    />
+                  </View>
+                  <TouchableOpacity
+                    style={styles.deleteButton}
+                    onPress={() => removeWorkExperience(experience.id)}>
+                    <Text style={styles.deleteButtonText}>Delete</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </View>
+          ))}
+        </View>
+
+        <View style={styles.section}>
+          {!showAddForm ? (
             <TouchableOpacity
-              style={styles.cardHeader}
-              onPress={() => toggleExpand(experience.id)}>
-              <View>
-                <Text style={styles.companyName}>{experience.company}</Text>
-                <Text style={styles.position}>{experience.position}</Text>
-                {experience.location && (
-                  <Text style={styles.location}>{experience.location}</Text>
+              style={styles.addButton}
+              onPress={() => setShowAddForm(true)}>
+              <Text style={styles.addButtonText}>Add New Experience</Text>
+            </TouchableOpacity>
+          ) : (
+            <View style={styles.inputContainer}>
+              <View style={styles.addFormHeader}>
+                {newExperience.company ? (
+                  <Text style={styles.newExperienceTitle}>
+                    {newExperience.company}
+                  </Text>
+                ) : (
+                  <Text style={styles.addFormTitle}>Add New Experience</Text>
+                )}
+                {newExperience.position && (
+                  <Text style={styles.position}>{newExperience.position}</Text>
                 )}
               </View>
-              <Icon
-                name={
-                  expandedItems[experience.id] ? 'expand-less' : 'expand-more'
+
+              <TextInput
+                style={styles.input}
+                placeholder="Company Name *"
+                placeholderTextColor="#999"
+                value={newExperience.company}
+                onChangeText={text =>
+                  setNewExperience(prev => ({...prev, company: text}))
                 }
-                size={24}
-                color="#666"
               />
-            </TouchableOpacity>
-            {expandedItems[experience.id] && (
-              <View style={styles.cardContent}>
+              <TextInput
+                style={styles.input}
+                placeholder="Position *"
+                placeholderTextColor="#999"
+                value={newExperience.position}
+                onChangeText={text =>
+                  setNewExperience(prev => ({...prev, position: text}))
+                }
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Location (optional)"
+                placeholderTextColor="#999"
+                value={newExperience.location}
+                onChangeText={text =>
+                  setNewExperience(prev => ({...prev, location: text}))
+                }
+              />
+              <View style={styles.row}>
                 <TextInput
-                  style={styles.input}
-                  placeholder="Company Name"
+                  style={[styles.input, styles.flex1]}
+                  placeholder="Start Date (MM/YYYY) *"
                   placeholderTextColor="#999"
-                  value={experience.company}
+                  value={newExperience.startDate}
                   onChangeText={text =>
-                    updateWorkExperience(experience.id, {
-                      ...experience,
-                      company: text,
-                    })
+                    setNewExperience(prev => ({...prev, startDate: text}))
                   }
                 />
                 <TextInput
-                  style={styles.input}
-                  placeholder="Position"
+                  style={[styles.input, styles.flex1]}
+                  placeholder="End Date (MM/YYYY)"
                   placeholderTextColor="#999"
-                  value={experience.position}
+                  value={newExperience.endDate}
                   onChangeText={text =>
-                    updateWorkExperience(experience.id, {
-                      ...experience,
-                      position: text,
-                    })
+                    setNewExperience(prev => ({...prev, endDate: text}))
                   }
                 />
-                <TextInput
-                  style={styles.input}
-                  placeholder="Location (optional)"
-                  placeholderTextColor="#999"
-                  value={experience.location}
-                  onChangeText={text =>
-                    updateWorkExperience(experience.id, {
-                      ...experience,
-                      location: text,
-                    })
-                  }
-                />
-                <View style={styles.row}>
-                  <TextInput
-                    style={[styles.input, styles.flex1]}
-                    placeholder="Start Date (MM/YYYY)"
-                    placeholderTextColor="#999"
-                    value={experience.startDate}
-                    onChangeText={text =>
-                      updateWorkExperience(experience.id, {
-                        ...experience,
-                        startDate: text,
-                      })
-                    }
-                  />
-                  <TextInput
-                    style={[styles.input, styles.flex1]}
-                    placeholder="End Date (MM/YYYY)"
-                    placeholderTextColor="#999"
-                    value={experience.endDate}
-                    onChangeText={text =>
-                      updateWorkExperience(experience.id, {
-                        ...experience,
-                        endDate: text,
-                      })
-                    }
-                  />
-                </View>
+              </View>
+
+              <View style={styles.formButtons}>
                 <TouchableOpacity
-                  style={styles.deleteButton}
-                  onPress={() => removeWorkExperience(experience.id)}>
-                  <Text style={styles.deleteButtonText}>Delete</Text>
+                  style={[styles.formButton, styles.cancelButton]}
+                  onPress={() => {
+                    setShowAddForm(false);
+                    setNewExperience({
+                      company: '',
+                      position: '',
+                      location: '',
+                      startDate: '',
+                      endDate: '',
+                      current: false,
+                      highlights: [],
+                    });
+                  }}>
+                  <Text style={styles.cancelButtonText}>Cancel</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.formButton,
+                    styles.saveButton,
+                    (!newExperience.company || !newExperience.position) &&
+                      styles.disabledButton,
+                  ]}
+                  onPress={handleAddExperience}
+                  disabled={!newExperience.company || !newExperience.position}>
+                  <Text style={styles.saveButtonText}>Save Experience</Text>
                 </TouchableOpacity>
               </View>
-            )}
-          </View>
-        ))}
-      </View>
-
-      <View style={styles.section}>
-        {!showAddForm ? (
-          <TouchableOpacity
-            style={styles.addButton}
-            onPress={() => setShowAddForm(true)}>
-            <Text style={styles.addButtonText}>Add New Experience</Text>
-          </TouchableOpacity>
-        ) : (
-          <View style={styles.inputContainer}>
-            <View style={styles.addFormHeader}>
-              {newExperience.company ? (
-                <Text style={styles.newExperienceTitle}>
-                  {newExperience.company}
-                </Text>
-              ) : (
-                <Text style={styles.addFormTitle}>Add New Experience</Text>
-              )}
-              {newExperience.position && (
-                <Text style={styles.position}>{newExperience.position}</Text>
-              )}
             </View>
-
-            <TextInput
-              style={styles.input}
-              placeholder="Company Name *"
-              placeholderTextColor="#999"
-              value={newExperience.company}
-              onChangeText={text =>
-                setNewExperience(prev => ({...prev, company: text}))
-              }
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Position *"
-              placeholderTextColor="#999"
-              value={newExperience.position}
-              onChangeText={text =>
-                setNewExperience(prev => ({...prev, position: text}))
-              }
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Location (optional)"
-              placeholderTextColor="#999"
-              value={newExperience.location}
-              onChangeText={text =>
-                setNewExperience(prev => ({...prev, location: text}))
-              }
-            />
-            <View style={styles.row}>
-              <TextInput
-                style={[styles.input, styles.flex1]}
-                placeholder="Start Date (MM/YYYY) *"
-                placeholderTextColor="#999"
-                value={newExperience.startDate}
-                onChangeText={text =>
-                  setNewExperience(prev => ({...prev, startDate: text}))
-                }
-              />
-              <TextInput
-                style={[styles.input, styles.flex1]}
-                placeholder="End Date (MM/YYYY)"
-                placeholderTextColor="#999"
-                value={newExperience.endDate}
-                onChangeText={text =>
-                  setNewExperience(prev => ({...prev, endDate: text}))
-                }
-              />
-            </View>
-
-            <View style={styles.formButtons}>
-              <TouchableOpacity
-                style={[styles.formButton, styles.cancelButton]}
-                onPress={() => {
-                  setShowAddForm(false);
-                  setNewExperience({
-                    company: '',
-                    position: '',
-                    location: '',
-                    startDate: '',
-                    endDate: '',
-                    current: false,
-                    highlights: [],
-                  });
-                }}>
-                <Text style={styles.cancelButtonText}>Cancel</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.formButton,
-                  styles.saveButton,
-                  (!newExperience.company || !newExperience.position) &&
-                    styles.disabledButton,
-                ]}
-                onPress={handleAddExperience}
-                disabled={!newExperience.company || !newExperience.position}>
-                <Text style={styles.saveButtonText}>Save Experience</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        )}
-      </View>
-    </ScrollView>
+          )}
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
+  keyboardAvoidingView: {
+    flex: 1,
+    backgroundColor: '#F5F5F5',
+  },
   container: {
     flex: 1,
     backgroundColor: '#F5F5F5',

@@ -6,10 +6,13 @@ import {
   TouchableOpacity,
   TextInput,
   Text,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import {FONTS} from '../../../constants/fonts';
 import {useResumeStore} from '../../../store/useResumeStore';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {globalStyles} from '../../../styles/globalStyles';
 
 export const SkillsEditor = () => {
   const {getActiveResume, addSkill, updateSkill, removeSkill} =
@@ -67,207 +70,214 @@ export const SkillsEditor = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Your Skills</Text>
-        {skills?.items.map(skill => (
-          <View key={skill.id} style={styles.skillCard}>
-            <TouchableOpacity
-              style={styles.cardHeader}
-              onPress={() => toggleExpand(skill.id)}>
-              <View>
-                <Text style={styles.skillName}>{skill.name}</Text>
-                <Text style={styles.skillLevel}>
-                  {skill.level.charAt(0).toUpperCase() + skill.level.slice(1)}
-                </Text>
-              </View>
-              <Icon
-                name={expandedItems[skill.id] ? 'expand-less' : 'expand-more'}
-                size={24}
-                color="#666"
-              />
-            </TouchableOpacity>
-            {expandedItems[skill.id] && (
-              <View style={styles.cardContent}>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Skill Name"
-                  placeholderTextColor="#999"
-                  value={skill.name}
-                  onChangeText={text =>
-                    updateSkill(skill.id, {...skill, name: text})
-                  }
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={globalStyles.keyboardAvoidingView}>
+      <ScrollView style={styles.container}>
+        <View style={styles.section}>
+          {skills?.items.map(skill => (
+            <View key={skill.id} style={styles.skillCard}>
+              <TouchableOpacity
+                style={styles.cardHeader}
+                onPress={() => toggleExpand(skill.id)}>
+                <View>
+                  <Text style={styles.skillName}>{skill.name}</Text>
+                  <Text style={styles.skillLevel}>
+                    {skill.level.charAt(0).toUpperCase() + skill.level.slice(1)}
+                  </Text>
+                </View>
+                <Icon
+                  name={expandedItems[skill.id] ? 'expand-less' : 'expand-more'}
+                  size={24}
+                  color="#666"
                 />
-                <Text style={styles.label}>Level:</Text>
-                <View style={styles.levelSelector}>
-                  {['beginner', 'intermediate', 'advanced'].map(level => (
-                    <TouchableOpacity
-                      key={level}
-                      style={[
-                        styles.levelChip,
-                        skill.level === level && styles.selectedLevelChip,
-                      ]}
-                      onPress={() => updateSkill(skill.id, {...skill, level})}>
-                      <Text
-                        style={[
-                          styles.levelChipText,
-                          skill.level === level && styles.selectedLevelChipText,
-                        ]}>
-                        {level.charAt(0).toUpperCase() + level.slice(1)}
-                      </Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-                <View style={styles.keywordsSection}>
-                  <Text style={styles.keywordsTitle}>Keywords:</Text>
-                  <View style={styles.keywordsList}>
-                    {skill.keywords.map((keyword, index) => (
-                      <View key={index} style={styles.keywordItem}>
-                        <Text style={styles.skillDetail}>• {keyword}</Text>
-                        <TouchableOpacity
-                          onPress={() =>
-                            updateSkill(skill.id, {
-                              ...skill,
-                              keywords: skill.keywords.filter(
-                                (_, i) => i !== index,
-                              ),
-                            })
-                          }>
-                          <Icon name="close" size={20} color="#666" />
-                        </TouchableOpacity>
-                      </View>
-                    ))}
-                  </View>
-                </View>
-                <View style={styles.keywordsContainer}>
+              </TouchableOpacity>
+              {expandedItems[skill.id] && (
+                <View style={styles.cardContent}>
                   <TextInput
                     style={styles.input}
-                    placeholder="Add Keyword"
+                    placeholder="Skill Name"
                     placeholderTextColor="#999"
-                    value={newKeyword}
-                    onChangeText={setNewKeyword}
-                    onSubmitEditing={() => {
-                      if (newKeyword.trim()) {
-                        updateSkill(skill.id, {
-                          ...skill,
-                          keywords: [...skill.keywords, newKeyword.trim()],
-                        });
-                        setNewKeyword('');
-                      }
-                    }}
+                    value={skill.name}
+                    onChangeText={text =>
+                      updateSkill(skill.id, {...skill, name: text})
+                    }
                   />
+                  <Text style={styles.label}>Level:</Text>
+                  <View style={styles.levelSelector}>
+                    {['beginner', 'intermediate', 'advanced'].map(level => (
+                      <TouchableOpacity
+                        key={level}
+                        style={[
+                          styles.levelChip,
+                          skill.level === level && styles.selectedLevelChip,
+                        ]}
+                        onPress={() =>
+                          updateSkill(skill.id, {...skill, level})
+                        }>
+                        <Text
+                          style={[
+                            styles.levelChipText,
+                            skill.level === level &&
+                              styles.selectedLevelChipText,
+                          ]}>
+                          {level.charAt(0).toUpperCase() + level.slice(1)}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                  <View style={styles.keywordsSection}>
+                    <Text style={styles.keywordsTitle}>Keywords:</Text>
+                    <View style={styles.keywordsList}>
+                      {skill.keywords.map((keyword, index) => (
+                        <View key={index} style={styles.keywordItem}>
+                          <Text style={styles.skillDetail}>• {keyword}</Text>
+                          <TouchableOpacity
+                            onPress={() =>
+                              updateSkill(skill.id, {
+                                ...skill,
+                                keywords: skill.keywords.filter(
+                                  (_, i) => i !== index,
+                                ),
+                              })
+                            }>
+                            <Icon name="close" size={20} color="#666" />
+                          </TouchableOpacity>
+                        </View>
+                      ))}
+                    </View>
+                  </View>
+                  <View style={styles.keywordsContainer}>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Add Keyword"
+                      placeholderTextColor="#999"
+                      value={newKeyword}
+                      onChangeText={setNewKeyword}
+                      onSubmitEditing={() => {
+                        if (newKeyword.trim()) {
+                          updateSkill(skill.id, {
+                            ...skill,
+                            keywords: [...skill.keywords, newKeyword.trim()],
+                          });
+                          setNewKeyword('');
+                        }
+                      }}
+                    />
+                  </View>
+                  <TouchableOpacity
+                    style={styles.deleteButton}
+                    onPress={() => removeSkill(skill.id)}>
+                    <Text style={styles.deleteButtonText}>Delete</Text>
+                  </TouchableOpacity>
                 </View>
-                <TouchableOpacity
-                  style={styles.deleteButton}
-                  onPress={() => removeSkill(skill.id)}>
-                  <Text style={styles.deleteButtonText}>Delete</Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          </View>
-        ))}
-      </View>
-
-      <View style={styles.section}>
-        {!showAddForm ? (
-          <TouchableOpacity
-            style={styles.addButton}
-            onPress={() => setShowAddForm(true)}>
-            <Text style={styles.addButtonText}>Add New Skill</Text>
-          </TouchableOpacity>
-        ) : (
-          <View style={styles.inputContainer}>
-            <View style={styles.addFormHeader}>
-              {newSkill.name ? (
-                <Text style={styles.newSkillTitle}>{newSkill.name}</Text>
-              ) : (
-                <Text style={styles.addFormTitle}>Add New Skill</Text>
               )}
             </View>
+          ))}
+        </View>
 
-            <TextInput
-              style={styles.input}
-              placeholder="Skill Name *"
-              placeholderTextColor="#999"
-              value={newSkill.name}
-              onChangeText={text =>
-                setNewSkill(prev => ({...prev, name: text}))
-              }
-            />
+        <View style={styles.section}>
+          {!showAddForm ? (
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={() => setShowAddForm(true)}>
+              <Text style={styles.addButtonText}>Add New Skill</Text>
+            </TouchableOpacity>
+          ) : (
+            <View style={styles.inputContainer}>
+              <View style={styles.addFormHeader}>
+                {newSkill.name ? (
+                  <Text style={styles.newSkillTitle}>{newSkill.name}</Text>
+                ) : (
+                  <Text style={styles.addFormTitle}>Add New Skill</Text>
+                )}
+              </View>
 
-            <Text style={styles.label}>Level:</Text>
-            <View style={styles.levelSelector}>
-              {['beginner', 'intermediate', 'advanced'].map(level => (
-                <TouchableOpacity
-                  key={level}
-                  style={[
-                    styles.levelChip,
-                    newSkill.level === level && styles.selectedLevelChip,
-                  ]}
-                  onPress={() => setNewSkill(prev => ({...prev, level}))}>
-                  <Text
-                    style={[
-                      styles.levelChipText,
-                      newSkill.level === level && styles.selectedLevelChipText,
-                    ]}>
-                    {level.charAt(0).toUpperCase() + level.slice(1)}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-
-            <View style={styles.keywordsContainer}>
               <TextInput
                 style={styles.input}
-                placeholder="Add Keyword"
+                placeholder="Skill Name *"
                 placeholderTextColor="#999"
-                value={newKeyword}
-                onChangeText={setNewKeyword}
+                value={newSkill.name}
+                onChangeText={text =>
+                  setNewSkill(prev => ({...prev, name: text}))
+                }
               />
-              <TouchableOpacity
-                style={[styles.formButton, styles.addKeywordButton]}
-                onPress={handleAddKeyword}>
-                <Text style={styles.addKeywordButtonText}>Add Keyword</Text>
-              </TouchableOpacity>
-            </View>
 
-            {newSkill.keywords.map((keyword, index) => (
-              <View key={index} style={styles.keywordItem}>
-                <Text style={styles.keywordText}>• {keyword}</Text>
-                <TouchableOpacity onPress={() => handleRemoveKeyword(index)}>
-                  <Icon name="close" size={20} color="#666" />
+              <Text style={styles.label}>Level:</Text>
+              <View style={styles.levelSelector}>
+                {['beginner', 'intermediate', 'advanced'].map(level => (
+                  <TouchableOpacity
+                    key={level}
+                    style={[
+                      styles.levelChip,
+                      newSkill.level === level && styles.selectedLevelChip,
+                    ]}
+                    onPress={() => setNewSkill(prev => ({...prev, level}))}>
+                    <Text
+                      style={[
+                        styles.levelChipText,
+                        newSkill.level === level &&
+                          styles.selectedLevelChipText,
+                      ]}>
+                      {level.charAt(0).toUpperCase() + level.slice(1)}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+
+              <View style={styles.keywordsContainer}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Add Keyword"
+                  placeholderTextColor="#999"
+                  value={newKeyword}
+                  onChangeText={setNewKeyword}
+                />
+                <TouchableOpacity
+                  style={[styles.formButton, styles.addKeywordButton]}
+                  onPress={handleAddKeyword}>
+                  <Text style={styles.addKeywordButtonText}>Add Keyword</Text>
                 </TouchableOpacity>
               </View>
-            ))}
 
-            <View style={styles.formButtons}>
-              <TouchableOpacity
-                style={[styles.formButton, styles.cancelButton]}
-                onPress={() => {
-                  setShowAddForm(false);
-                  setNewSkill({
-                    name: '',
-                    level: 'intermediate',
-                    keywords: [],
-                  });
-                }}>
-                <Text style={styles.cancelButtonText}>Cancel</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.formButton,
-                  styles.saveButton,
-                  !newSkill.name && styles.disabledButton,
-                ]}
-                onPress={handleAddSkill}
-                disabled={!newSkill.name}>
-                <Text style={styles.saveButtonText}>Save Skill</Text>
-              </TouchableOpacity>
+              {newSkill.keywords.map((keyword, index) => (
+                <View key={index} style={styles.keywordItem}>
+                  <Text style={styles.keywordText}>• {keyword}</Text>
+                  <TouchableOpacity onPress={() => handleRemoveKeyword(index)}>
+                    <Icon name="close" size={20} color="#666" />
+                  </TouchableOpacity>
+                </View>
+              ))}
+
+              <View style={styles.formButtons}>
+                <TouchableOpacity
+                  style={[styles.formButton, styles.cancelButton]}
+                  onPress={() => {
+                    setShowAddForm(false);
+                    setNewSkill({
+                      name: '',
+                      level: 'intermediate',
+                      keywords: [],
+                    });
+                  }}>
+                  <Text style={styles.cancelButtonText}>Cancel</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.formButton,
+                    styles.saveButton,
+                    !newSkill.name && styles.disabledButton,
+                  ]}
+                  onPress={handleAddSkill}
+                  disabled={!newSkill.name}>
+                  <Text style={styles.saveButtonText}>Save Skill</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-        )}
-      </View>
-    </ScrollView>
+          )}
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

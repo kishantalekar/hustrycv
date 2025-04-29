@@ -6,10 +6,13 @@ import {
   TouchableOpacity,
   TextInput,
   Text,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import {FONTS} from '../../../constants/fonts';
 import {useResumeStore} from '../../../store/useResumeStore';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {globalStyles} from '../../../styles/globalStyles';
 
 export const EducationEditor = () => {
   const {getActiveResume, addEducation, updateEducation, removeEducation} =
@@ -49,188 +52,191 @@ export const EducationEditor = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Education</Text>
-        {education?.items?.map(edu => (
-          <View key={edu.id} style={styles.educationCard}>
-            <TouchableOpacity
-              style={styles.cardHeader}
-              onPress={() => toggleExpand(edu.id)}>
-              <View>
-                <Text style={styles.institutionName}>{edu.institution}</Text>
-                <Text style={styles.degree}>{edu.degree}</Text>
-                {edu.gpa && <Text style={styles.gpa}>GPA: {edu.gpa}</Text>}
-              </View>
-              <Icon
-                name={expandedItems[edu.id] ? 'expand-less' : 'expand-more'}
-                size={24}
-                color="#666"
-              />
-            </TouchableOpacity>
-            {expandedItems[edu.id] && (
-              <View style={styles.cardContent}>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Institution Name"
-                  placeholderTextColor="#999"
-                  value={edu.institution}
-                  onChangeText={text =>
-                    updateEducation(edu.id, {...edu, institution: text})
-                  }
-                />
-                <TextInput
-                  style={styles.input}
-                  placeholder="Degree"
-                  placeholderTextColor="#999"
-                  value={edu.degree}
-                  onChangeText={text =>
-                    updateEducation(edu.id, {...edu, degree: text})
-                  }
-                />
-                <View style={styles.row}>
-                  <TextInput
-                    style={[styles.input, styles.flex1]}
-                    placeholder="Start Date (MM/YYYY)"
-                    placeholderTextColor="#999"
-                    value={edu.startDate}
-                    onChangeText={text =>
-                      updateEducation(edu.id, {...edu, startDate: text})
-                    }
-                  />
-                  <TextInput
-                    style={[styles.input, styles.flex1]}
-                    placeholder="End Date (MM/YYYY)"
-                    placeholderTextColor="#999"
-                    value={edu.endDate}
-                    onChangeText={text =>
-                      updateEducation(edu.id, {...edu, endDate: text})
-                    }
-                  />
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={globalStyles.keyboardAvoidingView}>
+      <ScrollView style={styles.container}>
+        <View style={styles.section}>
+          {education?.items?.map(edu => (
+            <View key={edu.id} style={styles.educationCard}>
+              <TouchableOpacity
+                style={styles.cardHeader}
+                onPress={() => toggleExpand(edu.id)}>
+                <View>
+                  <Text style={styles.institutionName}>{edu.institution}</Text>
+                  <Text style={styles.degree}>{edu.degree}</Text>
+                  {edu.gpa && <Text style={styles.gpa}>GPA: {edu.gpa}</Text>}
                 </View>
-                <TextInput
-                  style={styles.input}
-                  placeholder="GPA (Optional)"
-                  placeholderTextColor="#999"
-                  value={edu.gpa}
-                  onChangeText={text =>
-                    updateEducation(edu.id, {...edu, gpa: text})
-                  }
-                  keyboardType="decimal-pad"
+                <Icon
+                  name={expandedItems[edu.id] ? 'expand-less' : 'expand-more'}
+                  size={24}
+                  color="#666"
                 />
+              </TouchableOpacity>
+              {expandedItems[edu.id] && (
+                <View style={styles.cardContent}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Institution Name"
+                    placeholderTextColor="#999"
+                    value={edu.institution}
+                    onChangeText={text =>
+                      updateEducation(edu.id, {...edu, institution: text})
+                    }
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Degree"
+                    placeholderTextColor="#999"
+                    value={edu.degree}
+                    onChangeText={text =>
+                      updateEducation(edu.id, {...edu, degree: text})
+                    }
+                  />
+                  <View style={styles.row}>
+                    <TextInput
+                      style={[styles.input, styles.flex1]}
+                      placeholder="Start Date (MM/YYYY)"
+                      placeholderTextColor="#999"
+                      value={edu.startDate}
+                      onChangeText={text =>
+                        updateEducation(edu.id, {...edu, startDate: text})
+                      }
+                    />
+                    <TextInput
+                      style={[styles.input, styles.flex1]}
+                      placeholder="End Date (MM/YYYY)"
+                      placeholderTextColor="#999"
+                      value={edu.endDate}
+                      onChangeText={text =>
+                        updateEducation(edu.id, {...edu, endDate: text})
+                      }
+                    />
+                  </View>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="GPA (Optional)"
+                    placeholderTextColor="#999"
+                    value={edu.gpa}
+                    onChangeText={text =>
+                      updateEducation(edu.id, {...edu, gpa: text})
+                    }
+                    keyboardType="decimal-pad"
+                  />
+                  <TouchableOpacity
+                    style={styles.deleteButton}
+                    onPress={() => removeEducation(edu.id)}>
+                    <Text style={styles.deleteButtonText}>Delete</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </View>
+          ))}
+        </View>
+
+        <View style={styles.section}>
+          {!showAddForm ? (
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={() => setShowAddForm(true)}>
+              <Text style={styles.addButtonText}>Add New Education</Text>
+            </TouchableOpacity>
+          ) : (
+            <View style={styles.inputContainer}>
+              <View style={styles.addFormHeader}>
+                {newEducation.institution ? (
+                  <Text style={styles.newEducationTitle}>
+                    {newEducation.institution}
+                  </Text>
+                ) : (
+                  <Text style={styles.addFormTitle}>Add New Education</Text>
+                )}
+                {newEducation.degree && (
+                  <Text style={styles.degree}>{newEducation.degree}</Text>
+                )}
+              </View>
+
+              <TextInput
+                style={styles.input}
+                placeholder="Institution Name *"
+                placeholderTextColor="#999"
+                value={newEducation.institution}
+                onChangeText={text =>
+                  setNewEducation(prev => ({...prev, institution: text}))
+                }
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Degree *"
+                placeholderTextColor="#999"
+                value={newEducation.degree}
+                onChangeText={text =>
+                  setNewEducation(prev => ({...prev, degree: text}))
+                }
+              />
+              <View style={styles.row}>
+                <TextInput
+                  style={[styles.input, styles.flex1]}
+                  placeholder="Start Date (MM/YYYY) *"
+                  placeholderTextColor="#999"
+                  value={newEducation.startDate}
+                  onChangeText={text =>
+                    setNewEducation(prev => ({...prev, startDate: text}))
+                  }
+                />
+                <TextInput
+                  style={[styles.input, styles.flex1]}
+                  placeholder="End Date (MM/YYYY)"
+                  placeholderTextColor="#999"
+                  value={newEducation.endDate}
+                  onChangeText={text =>
+                    setNewEducation(prev => ({...prev, endDate: text}))
+                  }
+                />
+              </View>
+              <TextInput
+                style={styles.input}
+                placeholder="GPA (Optional)"
+                placeholderTextColor="#999"
+                value={newEducation.gpa}
+                onChangeText={text =>
+                  setNewEducation(prev => ({...prev, gpa: text}))
+                }
+                keyboardType="decimal-pad"
+              />
+
+              <View style={styles.formButtons}>
                 <TouchableOpacity
-                  style={styles.deleteButton}
-                  onPress={() => removeEducation(edu.id)}>
-                  <Text style={styles.deleteButtonText}>Delete</Text>
+                  style={[styles.formButton, styles.cancelButton]}
+                  onPress={() => {
+                    setShowAddForm(false);
+                    setNewEducation({
+                      institution: '',
+                      degree: '',
+                      startDate: '',
+                      endDate: '',
+                      gpa: '',
+                    });
+                  }}>
+                  <Text style={styles.cancelButtonText}>Cancel</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.formButton,
+                    styles.saveButton,
+                    (!newEducation.institution || !newEducation.degree) &&
+                      styles.disabledButton,
+                  ]}
+                  onPress={handleAddEducation}
+                  disabled={!newEducation.institution || !newEducation.degree}>
+                  <Text style={styles.saveButtonText}>Save Education</Text>
                 </TouchableOpacity>
               </View>
-            )}
-          </View>
-        ))}
-      </View>
-
-      <View style={styles.section}>
-        {!showAddForm ? (
-          <TouchableOpacity
-            style={styles.addButton}
-            onPress={() => setShowAddForm(true)}>
-            <Text style={styles.addButtonText}>Add New Education</Text>
-          </TouchableOpacity>
-        ) : (
-          <View style={styles.inputContainer}>
-            <View style={styles.addFormHeader}>
-              {newEducation.institution ? (
-                <Text style={styles.newEducationTitle}>
-                  {newEducation.institution}
-                </Text>
-              ) : (
-                <Text style={styles.addFormTitle}>Add New Education</Text>
-              )}
-              {newEducation.degree && (
-                <Text style={styles.degree}>{newEducation.degree}</Text>
-              )}
             </View>
-
-            <TextInput
-              style={styles.input}
-              placeholder="Institution Name *"
-              placeholderTextColor="#999"
-              value={newEducation.institution}
-              onChangeText={text =>
-                setNewEducation(prev => ({...prev, institution: text}))
-              }
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Degree *"
-              placeholderTextColor="#999"
-              value={newEducation.degree}
-              onChangeText={text =>
-                setNewEducation(prev => ({...prev, degree: text}))
-              }
-            />
-            <View style={styles.row}>
-              <TextInput
-                style={[styles.input, styles.flex1]}
-                placeholder="Start Date (MM/YYYY) *"
-                placeholderTextColor="#999"
-                value={newEducation.startDate}
-                onChangeText={text =>
-                  setNewEducation(prev => ({...prev, startDate: text}))
-                }
-              />
-              <TextInput
-                style={[styles.input, styles.flex1]}
-                placeholder="End Date (MM/YYYY)"
-                placeholderTextColor="#999"
-                value={newEducation.endDate}
-                onChangeText={text =>
-                  setNewEducation(prev => ({...prev, endDate: text}))
-                }
-              />
-            </View>
-            <TextInput
-              style={styles.input}
-              placeholder="GPA (Optional)"
-              placeholderTextColor="#999"
-              value={newEducation.gpa}
-              onChangeText={text =>
-                setNewEducation(prev => ({...prev, gpa: text}))
-              }
-              keyboardType="decimal-pad"
-            />
-
-            <View style={styles.formButtons}>
-              <TouchableOpacity
-                style={[styles.formButton, styles.cancelButton]}
-                onPress={() => {
-                  setShowAddForm(false);
-                  setNewEducation({
-                    institution: '',
-                    degree: '',
-                    startDate: '',
-                    endDate: '',
-                    gpa: '',
-                  });
-                }}>
-                <Text style={styles.cancelButtonText}>Cancel</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.formButton,
-                  styles.saveButton,
-                  (!newEducation.institution || !newEducation.degree) &&
-                    styles.disabledButton,
-                ]}
-                onPress={handleAddEducation}
-                disabled={!newEducation.institution || !newEducation.degree}>
-                <Text style={styles.saveButtonText}>Save Education</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        )}
-      </View>
-    </ScrollView>
+          )}
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

@@ -10,6 +10,7 @@ import {Card, TextInput, Text, Divider} from 'react-native-paper';
 import {FONTS} from '../../../constants/fonts';
 import {useResumeStore} from '../../../store/useResumeStore';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {globalStyles} from '../../../styles/globalStyles';
 
 export const PersonalInfoEditor = () => {
   const {getActiveResume, updateBasics} = useResumeStore();
@@ -18,12 +19,8 @@ export const PersonalInfoEditor = () => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.keyboardAvoidingView}>
+      style={globalStyles.keyboardAvoidingView}>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-        <Text style={styles.sectionTitle} variant="headlineMedium">
-          Personal Information
-        </Text>
-
         <Card style={styles.card}>
           <Card.Content>
             <View style={styles.iconInputContainer}>

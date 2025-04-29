@@ -6,10 +6,13 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import {FONTS} from '../../../constants/fonts';
 import {useResumeStore} from '../../../store/useResumeStore';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {globalStyles} from '../../../styles/globalStyles';
 
 export const CertificationsEditor = () => {
   const {
@@ -51,185 +54,188 @@ export const CertificationsEditor = () => {
     }
   };
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Your Certifications</Text>
-        {certifications?.items.map(cert => (
-          <View key={cert.id} style={styles.certificationCard}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={globalStyles.keyboardAvoidingView}>
+      <ScrollView style={styles.container}>
+        <View style={styles.section}>
+          {certifications?.items.map(cert => (
+            <View key={cert.id} style={styles.certificationCard}>
+              <TouchableOpacity
+                style={styles.cardHeader}
+                onPress={() => toggleExpand(cert.id)}>
+                <View>
+                  <Text style={styles.certificationName}>{cert.name}</Text>
+                  <Text style={styles.certificationDate}>{cert.issueDate}</Text>
+                </View>
+                <Icon
+                  name={expandedItems[cert.id] ? 'expand-less' : 'expand-more'}
+                  size={24}
+                  color="#666"
+                />
+              </TouchableOpacity>
+              {expandedItems[cert.id] && (
+                <View style={styles.cardContent}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Certification Name"
+                    placeholderTextColor="#999"
+                    value={cert.name}
+                    onChangeText={text =>
+                      updateCertification(cert.id, {...cert, name: text})
+                    }
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Authority"
+                    placeholderTextColor="#999"
+                    value={cert.authority}
+                    onChangeText={text =>
+                      updateCertification(cert.id, {...cert, authority: text})
+                    }
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Certification URL/Code"
+                    placeholderTextColor="#999"
+                    value={cert.certificationUrlOrCode}
+                    onChangeText={text =>
+                      updateCertification(cert.id, {
+                        ...cert,
+                        certificationUrlOrCode: text,
+                      })
+                    }
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Issue Date (e.g., 2023-09)"
+                    placeholderTextColor="#999"
+                    value={cert.issueDate}
+                    onChangeText={text =>
+                      updateCertification(cert.id, {...cert, issueDate: text})
+                    }
+                  />
+                  <TextInput
+                    style={[styles.input, styles.multilineInput]}
+                    placeholder="Description"
+                    placeholderTextColor="#999"
+                    value={cert.description}
+                    onChangeText={text =>
+                      updateCertification(cert.id, {...cert, description: text})
+                    }
+                    multiline
+                  />
+                  <TouchableOpacity
+                    style={styles.deleteButton}
+                    onPress={() => removeCertification(cert.id)}>
+                    <Text style={styles.deleteButtonText}>Delete</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </View>
+          ))}
+        </View>
+
+        <View style={styles.section}>
+          {!showAddForm ? (
             <TouchableOpacity
-              style={styles.cardHeader}
-              onPress={() => toggleExpand(cert.id)}>
-              <View>
-                <Text style={styles.certificationName}>{cert.name}</Text>
-                <Text style={styles.certificationDate}>{cert.issueDate}</Text>
-              </View>
-              <Icon
-                name={expandedItems[cert.id] ? 'expand-less' : 'expand-more'}
-                size={24}
-                color="#666"
-              />
+              style={styles.addButton}
+              onPress={() => setShowAddForm(true)}>
+              <Text style={styles.addButtonText}>Add New Certification</Text>
             </TouchableOpacity>
-            {expandedItems[cert.id] && (
-              <View style={styles.cardContent}>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Certification Name"
-                  placeholderTextColor="#999"
-                  value={cert.name}
-                  onChangeText={text =>
-                    updateCertification(cert.id, {...cert, name: text})
-                  }
-                />
-                <TextInput
-                  style={styles.input}
-                  placeholder="Authority"
-                  placeholderTextColor="#999"
-                  value={cert.authority}
-                  onChangeText={text =>
-                    updateCertification(cert.id, {...cert, authority: text})
-                  }
-                />
-                <TextInput
-                  style={styles.input}
-                  placeholder="Certification URL/Code"
-                  placeholderTextColor="#999"
-                  value={cert.certificationUrlOrCode}
-                  onChangeText={text =>
-                    updateCertification(cert.id, {
-                      ...cert,
-                      certificationUrlOrCode: text,
-                    })
-                  }
-                />
-                <TextInput
-                  style={styles.input}
-                  placeholder="Issue Date (e.g., 2023-09)"
-                  placeholderTextColor="#999"
-                  value={cert.issueDate}
-                  onChangeText={text =>
-                    updateCertification(cert.id, {...cert, issueDate: text})
-                  }
-                />
-                <TextInput
-                  style={[styles.input, styles.multilineInput]}
-                  placeholder="Description"
-                  placeholderTextColor="#999"
-                  value={cert.description}
-                  onChangeText={text =>
-                    updateCertification(cert.id, {...cert, description: text})
-                  }
-                  multiline
-                />
+          ) : (
+            <View style={styles.inputContainer}>
+              <View style={styles.addFormHeader}>
+                {newCertification.name ? (
+                  <Text style={styles.newCertificationTitle}>
+                    {newCertification.name}
+                  </Text>
+                ) : (
+                  <Text style={styles.addFormTitle}>Add New Certification</Text>
+                )}
+                {!!newCertification.issueDate && (
+                  <Text style={styles.newCertificationDate}>
+                    {newCertification.issueDate}
+                  </Text>
+                )}
+              </View>
+
+              <TextInput
+                style={styles.input}
+                placeholder="Certification Name *"
+                placeholderTextColor="#999"
+                value={newCertification.name}
+                onChangeText={text =>
+                  setNewCertification(prev => ({...prev, name: text}))
+                }
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Issuing Authority *"
+                placeholderTextColor="#999"
+                value={newCertification.authority}
+                onChangeText={text =>
+                  setNewCertification(prev => ({...prev, authority: text}))
+                }
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Certification URL or Code"
+                placeholderTextColor="#999"
+                value={newCertification.certificationUrlOrCode}
+                onChangeText={text =>
+                  setNewCertification(prev => ({
+                    ...prev,
+                    certificationUrlOrCode: text,
+                  }))
+                }
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Issue Date (e.g., 2023-09) *"
+                placeholderTextColor="#999"
+                value={newCertification.issueDate}
+                onChangeText={text =>
+                  setNewCertification(prev => ({...prev, issueDate: text}))
+                }
+              />
+              <TextInput
+                style={[styles.input, styles.multilineInput]}
+                placeholder="Description (optional)"
+                placeholderTextColor="#999"
+                value={newCertification.description}
+                onChangeText={text =>
+                  setNewCertification(prev => ({...prev, description: text}))
+                }
+                multiline
+              />
+
+              <View style={styles.formButtons}>
                 <TouchableOpacity
-                  style={styles.deleteButton}
-                  onPress={() => removeCertification(cert.id)}>
-                  <Text style={styles.deleteButtonText}>Delete</Text>
+                  style={[styles.formButton, styles.cancelButton]}
+                  // onPress={handleCancelAdd}
+                >
+                  <Text style={styles.cancelButtonText}>Cancel</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.formButton,
+                    styles.saveButton,
+                    (!newCertification.name || !newCertification.authority) &&
+                      styles.disabledButton,
+                  ]}
+                  onPress={handleAddCertification}
+                  disabled={
+                    !newCertification.name || !newCertification.authority
+                  }>
+                  <Text style={styles.saveButtonText}>Save Certification</Text>
                 </TouchableOpacity>
               </View>
-            )}
-          </View>
-        ))}
-      </View>
-
-      <View style={styles.section}>
-        {!showAddForm ? (
-          <TouchableOpacity
-            style={styles.addButton}
-            onPress={() => setShowAddForm(true)}>
-            <Text style={styles.addButtonText}>Add New Certification</Text>
-          </TouchableOpacity>
-        ) : (
-          <View style={styles.inputContainer}>
-            <View style={styles.addFormHeader}>
-              {newCertification.name ? (
-                <Text style={styles.newCertificationTitle}>
-                  {newCertification.name}
-                </Text>
-              ) : (
-                <Text style={styles.addFormTitle}>Add New Certification</Text>
-              )}
-              {!!newCertification.issueDate && (
-                <Text style={styles.newCertificationDate}>
-                  {newCertification.issueDate}
-                </Text>
-              )}
             </View>
-
-            <TextInput
-              style={styles.input}
-              placeholder="Certification Name *"
-              placeholderTextColor="#999"
-              value={newCertification.name}
-              onChangeText={text =>
-                setNewCertification(prev => ({...prev, name: text}))
-              }
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Issuing Authority *"
-              placeholderTextColor="#999"
-              value={newCertification.authority}
-              onChangeText={text =>
-                setNewCertification(prev => ({...prev, authority: text}))
-              }
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Certification URL or Code"
-              placeholderTextColor="#999"
-              value={newCertification.certificationUrlOrCode}
-              onChangeText={text =>
-                setNewCertification(prev => ({
-                  ...prev,
-                  certificationUrlOrCode: text,
-                }))
-              }
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Issue Date (e.g., 2023-09) *"
-              placeholderTextColor="#999"
-              value={newCertification.issueDate}
-              onChangeText={text =>
-                setNewCertification(prev => ({...prev, issueDate: text}))
-              }
-            />
-            <TextInput
-              style={[styles.input, styles.multilineInput]}
-              placeholder="Description (optional)"
-              placeholderTextColor="#999"
-              value={newCertification.description}
-              onChangeText={text =>
-                setNewCertification(prev => ({...prev, description: text}))
-              }
-              multiline
-            />
-
-            <View style={styles.formButtons}>
-              <TouchableOpacity
-                style={[styles.formButton, styles.cancelButton]}
-                // onPress={handleCancelAdd}
-              >
-                <Text style={styles.cancelButtonText}>Cancel</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.formButton,
-                  styles.saveButton,
-                  (!newCertification.name || !newCertification.authority) &&
-                    styles.disabledButton,
-                ]}
-                onPress={handleAddCertification}
-                disabled={
-                  !newCertification.name || !newCertification.authority
-                }>
-                <Text style={styles.saveButtonText}>Save Certification</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        )}
-      </View>
-    </ScrollView>
+          )}
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
