@@ -1,8 +1,9 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {View, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {FormNavigator} from '@/navigation/FormNavigator';
+import {COLORS} from '@/theme';
 import {styles} from './ResumeEditor.styles';
-import {FormNavigator} from '../../navigation/FormNavigator';
 import {DownloadScreen} from '../Download/DownloadScreen';
 import {PreviewScreen} from '../Preview/PreviewScreen';
 
@@ -20,7 +21,10 @@ export const ResumeEditor = () => {
       screenOptions={{
         tabBarStyle: styles.tabBar,
         tabBarLabelStyle: styles.tabBarLabel,
+        tabBarActiveTintColor: COLORS.primary,
+        tabBarInactiveTintColor: COLORS.text.secondary,
         headerShown: false,
+        tabBarItemStyle: styles.tabBarItem,
       }}>
       <Tab.Screen
         name="Form"
