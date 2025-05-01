@@ -14,7 +14,8 @@ export const mockResumeData = {
     linkedin: 'linkedin.com/in/johndoe',
     github: 'github.com/johndoe',
     website: 'johndoe.com',
-    summary: 'Full-stack developer with 5+ years of experience...',
+    summary:
+      ' <p>Senior Full-stack Engineer with 8+ years of experience specializing in cloud architecture and distributed systems. Proven track record of leading high-performance teams and delivering scalable solutions for enterprise clients. Strong expertise in modern JavaScript frameworks, cloud services, and agile methodologies.</p>',
   },
   sections: {
     work: {
@@ -116,7 +117,7 @@ export const extendedMockResumeData = {
     github: 'github.com/sarahj-dev',
     website: 'sarahjohnson.dev',
     summary:
-      'Senior Full-stack Engineer with 8+ years of experience specializing in cloud architecture and distributed systems. Proven track record of leading high-performance teams and delivering scalable solutions for enterprise clients. Strong expertise in modern JavaScript frameworks, cloud services, and agile methodologies.',
+      '<p>Senior Full-stack Engineer with 8+ years of experience specializing in cloud architecture and distributed systems. Proven track record of leading high-performance teams and delivering scalable solutions for enterprise clients. Strong expertise in modern JavaScript frameworks, cloud services, and agile methodologies.</p>',
   },
   sections: {
     work: {

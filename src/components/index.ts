@@ -1,6 +1,6 @@
 export * from './Button';
 export * from './LottieAnimation';
 export * from './Typography';
-export * from './LottieAnimation';
+export * from './DateInputRow';
 export * from './TemplateSelector/TemplateSelector';
 export * from './ResumePreview';

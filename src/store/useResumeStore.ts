@@ -1,6 +1,19 @@
 import {v4 as uuidv4} from 'uuid';
 import {create} from 'zustand';
 import 'react-native-get-random-values';
+import {Basics} from '@/components/ResumePreview/ResumePreview.types';
+import {
+  Resume,
+  Metadata,
+  WorkItem,
+  EducationItem,
+  SkillItem,
+  ProjectItem,
+  Section,
+  CustomSectionItem,
+  Settings,
+  CertificateItem,
+} from '@/types';
 import {
   extendedMockResumeData,
   mockResumeData,
@@ -8,98 +21,6 @@ import {
 } from '../assets/resume_mock_data';
 // https:chat.deepseek.com/a/chat/s/608ca039-1c33-4769-af31-fec567a8ef63 for section up and down schema
 // Type definitions -----------------------------------------------------------
-interface Metadata {
-  id: string;
-  templateId: string;
-  version: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface Basics {
-  name: string;
-  email: string;
-  phone: string;
-  location: string;
-  linkedin: string;
-  github: string;
-  website: string;
-  summary: string;
-}
-
-interface WorkItem {
-  id: string;
-  company: string;
-  position: string;
-  location: string;
-  startDate: string;
-  endDate: string;
-  current: boolean;
-  highlights: string[];
-}
-
-interface EducationItem {
-  id: string;
-  institution: string;
-  degree: string;
-  startDate: string;
-  endDate: string;
-  gpa?: string;
-}
-
-interface SkillItem {
-  id: string;
-  name: string;
-  level: string;
-  keywords: string[];
-}
-
-export interface ProjectItem {
-  id: string;
-  name: string;
-  description: string;
-  url: string;
-  highlights: string[];
-}
-
-export interface CertificateItem {
-  id: string;
-  name: string;
-  authority: string;
-  certificationUrlOrCode: string;
-  issueDate: string;
-  description: string;
-}
-interface CustomSectionItem {
-  id: string;
-  [key: string]: any;
-}
-
-interface Section<T> {
-  type: string;
-  visible: boolean;
-  items: T[];
-}
-
-interface Settings {
-  atsOptimized: boolean;
-  font: string;
-  theme: 'light' | 'dark';
-  language: string;
-}
-
-export interface Resume {
-  metadata: Metadata;
-  basics: Basics;
-  sections: {
-    work: Section<WorkItem>;
-    education: Section<EducationItem>;
-    skills: Section<SkillItem>;
-    projects: Section<ProjectItem>;
-    certifications: Section<CertificateItem>;
-    customSections: Section<CustomSectionItem>[];
-  };
-}
 
 interface ResumeState {
   resumes: Resume[];
@@ -114,25 +35,25 @@ interface ResumeState {
   updateBasics: (basics: Partial<Basics>) => void;
 
   // Work Experience
-  addWorkExperience: (experience: Omit<WorkItem, 'id'>) => void;
+  addWorkExperience: (experience: Omit<WorkItem, 'id'>) => string;
   updateWorkExperience: (id: string, experience: Partial<WorkItem>) => void;
   removeWorkExperience: (id: string) => void; // New function
   toggleWorkVisibility: (visible: boolean) => void;
 
   // Education
-  addEducation: (education: Omit<EducationItem, 'id'>) => void;
+  addEducation: (education: Omit<EducationItem, 'id'>) => string;
   updateEducation: (id: string, education: Partial<EducationItem>) => void;
   removeEducation: (id: string) => void; // New function
   toggleEducationVisibility: (visible: boolean) => void;
 
   // Skills
-  addSkill: (skill: Omit<SkillItem, 'id'>) => void;
+  addSkill: (skill: Omit<SkillItem, 'id'>) => string;
   updateSkill: (id: string, skill: Partial<SkillItem>) => void;
   removeSkill: (id: string) => void; // New function
   toggleSkillsVisibility: (visible: boolean) => void;
 
   // Projects
-  addProject: (project: Omit<ProjectItem, 'id'>) => void;
+  addProject: (project: Omit<ProjectItem, 'id'>) => string;
   updateProject: (id: string, project: Partial<ProjectItem>) => void;
   removeProject: (id: string) => void; // New function
   toggleProjectsVisibility: (visible: boolean) => void;
@@ -147,6 +68,15 @@ interface ResumeState {
   ) => void;
   removeCustomSection: (index: number) => void; // New function
   toggleCustomSectionVisibility: (index: number, visible: boolean) => void;
+
+  // Certifications
+  addCertification: (certification: Omit<CertificateItem, 'id'>) => string;
+  updateCertification: (
+    id: string,
+    certification: Partial<CertificateItem>,
+  ) => void;
+  removeCertification: (id: string) => void;
+  toggleCertificationVisibility: (visible: boolean) => void;
 
   // Settings
   updateSettings: (settings: Partial<Settings>) => void;
@@ -203,53 +133,6 @@ interface ResumeState {
  */
 // Initial State -------------------------------------------------------------
 // @ts-ignore
-export const createInitialResume = () => ({
-  metadata: {
-    id: uuidv4(),
-    templateId: 'classic_1',
-    version: '1.0',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  basics: {
-    name: '',
-    email: '',
-    phone: '',
-    location: '',
-    linkedin: '',
-    github: '',
-    website: '',
-    summary: '',
-  },
-  sections: {
-    work: {
-      type: 'work',
-      visible: true,
-      items: [],
-    },
-    education: {
-      type: 'education',
-      visible: true,
-      items: [],
-    },
-    skills: {
-      type: 'skills',
-      visible: true,
-      items: [],
-    },
-    projects: {
-      type: 'projects',
-      visible: true,
-      items: [],
-    },
-    certifications: {
-      type: 'certifications',
-      visible: true,
-      items: [],
-    },
-    customSections: [],
-  },
-});
 
 const initialState: ResumeState = {
   // @ts-ignore
@@ -327,7 +210,8 @@ export const useResumeStore = create<ResumeState>((set, get) => ({
     })),
 
   // Work Experience Actions
-  addWorkExperience: experience =>
+  addWorkExperience: experience => {
+    const newId = uuidv4();
     set(state => ({
       resumes: state.resumes.map(resume =>
         resume.metadata.id === state.activeResumeId
@@ -339,7 +223,7 @@ export const useResumeStore = create<ResumeState>((set, get) => ({
                   ...resume.sections.work,
                   items: [
                     ...resume.sections.work.items,
-                    {...experience, id: uuidv4()},
+                    {...experience, id: newId},
                   ],
                 },
               },
@@ -350,7 +234,9 @@ export const useResumeStore = create<ResumeState>((set, get) => ({
             }
           : resume,
       ),
-    })),
+    }));
+    return newId;
+  },
 
   updateWorkExperience: (id, experience) =>
     set(state => ({
@@ -416,7 +302,8 @@ export const useResumeStore = create<ResumeState>((set, get) => ({
     })),
 
   // Education Actions
-  addEducation: education =>
+  addEducation: education => {
+    const newId = uuidv4();
     set(state => ({
       resumes: state.resumes.map(resume =>
         resume.metadata.id === state.activeResumeId
@@ -428,7 +315,7 @@ export const useResumeStore = create<ResumeState>((set, get) => ({
                   ...resume.sections.education,
                   items: [
                     ...resume.sections.education.items,
-                    {...education, id: uuidv4()},
+                    {...education, id: newId},
                   ],
                 },
               },
@@ -439,7 +326,9 @@ export const useResumeStore = create<ResumeState>((set, get) => ({
             }
           : resume,
       ),
-    })),
+    }));
+    return newId;
+  },
 
   updateEducation: (id, education) =>
     set(state => ({
@@ -505,7 +394,8 @@ export const useResumeStore = create<ResumeState>((set, get) => ({
     })),
 
   // Skills Actions
-  addSkill: skill =>
+  addSkill: skill => {
+    const newId = uuidv4();
     set(state => ({
       resumes: state.resumes.map(resume =>
         resume.metadata.id === state.activeResumeId
@@ -517,7 +407,7 @@ export const useResumeStore = create<ResumeState>((set, get) => ({
                   ...resume.sections.skills,
                   items: [
                     ...resume.sections.skills.items,
-                    {...skill, id: uuidv4()},
+                    {...skill, id: newId},
                   ],
                 },
               },
@@ -528,7 +418,9 @@ export const useResumeStore = create<ResumeState>((set, get) => ({
             }
           : resume,
       ),
-    })),
+    }));
+    return newId;
+  },
 
   updateSkill: (id, skill) =>
     set(state => ({
@@ -594,7 +486,8 @@ export const useResumeStore = create<ResumeState>((set, get) => ({
     })),
 
   // Projects Actions
-  addProject: project =>
+  addProject: project => {
+    const newId = uuidv4();
     set(state => ({
       resumes: state.resumes.map(resume =>
         resume.metadata.id === state.activeResumeId
@@ -606,7 +499,7 @@ export const useResumeStore = create<ResumeState>((set, get) => ({
                   ...resume.sections.projects,
                   items: [
                     ...resume.sections.projects.items,
-                    {...project, id: uuidv4()},
+                    {...project, id: newId},
                   ],
                 },
               },
@@ -617,7 +510,9 @@ export const useResumeStore = create<ResumeState>((set, get) => ({
             }
           : resume,
       ),
-    })),
+    }));
+    return newId;
+  },
 
   updateProject: (id, project) =>
     set(state => ({
@@ -763,6 +658,98 @@ export const useResumeStore = create<ResumeState>((set, get) => ({
                 customSections: resume.sections.customSections.map((sec, i) =>
                   i === index ? {...sec, visible} : sec,
                 ),
+              },
+            }
+          : resume,
+      ),
+    })),
+
+  // Certifications Actions
+  addCertification: certification => {
+    const newId = uuidv4();
+    set(state => ({
+      resumes: state.resumes.map(resume =>
+        resume.metadata.id === state.activeResumeId
+          ? {
+              ...resume,
+              sections: {
+                ...resume.sections,
+                certifications: {
+                  ...resume.sections.certifications,
+                  items: [
+                    ...resume.sections.certifications.items,
+                    {...certification, id: newId},
+                  ],
+                },
+              },
+              metadata: {
+                ...resume.metadata,
+                updatedAt: new Date().toISOString(),
+              },
+            }
+          : resume,
+      ),
+    }));
+    return newId;
+  },
+
+  updateCertification: (id, certification) =>
+    set(state => ({
+      resumes: state.resumes.map(resume =>
+        resume.metadata.id === state.activeResumeId
+          ? {
+              ...resume,
+              sections: {
+                ...resume.sections,
+                certifications: {
+                  ...resume.sections.certifications,
+                  items: resume.sections.certifications.items.map(item =>
+                    item.id === id ? {...item, ...certification} : item,
+                  ),
+                },
+              },
+              metadata: {
+                ...resume.metadata,
+                updatedAt: new Date().toISOString(),
+              },
+            }
+          : resume,
+      ),
+    })),
+
+  removeCertification: id =>
+    set(state => ({
+      resumes: state.resumes.map(resume =>
+        resume.metadata.id === state.activeResumeId
+          ? {
+              ...resume,
+              sections: {
+                ...resume.sections,
+                certifications: {
+                  ...resume.sections.certifications,
+                  items: resume.sections.certifications.items.filter(
+                    item => item.id !== id,
+                  ),
+                },
+              },
+              metadata: {
+                ...resume.metadata,
+                updatedAt: new Date().toISOString(),
+              },
+            }
+          : resume,
+      ),
+    })),
+
+  toggleCertificationVisibility: visible =>
+    set(state => ({
+      resumes: state.resumes.map(resume =>
+        resume.metadata.id === state.activeResumeId
+          ? {
+              ...resume,
+              sections: {
+                ...resume.sections,
+                certifications: {...resume.sections.certifications, visible},
               },
             }
           : resume,

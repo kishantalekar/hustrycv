@@ -1,19 +1,26 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {
   StyleSheet,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  TouchableOpacity,
+  View,
+  useWindowDimensions,
 } from 'react-native';
 import {Card, Text, Divider} from 'react-native-paper';
+import {HTMLPreview} from '@/components/HTMLPreview/HTMLPreview';
 import {TextInput} from '@/components/TextInput';
 import {FONTS} from '@/constants';
+import {AppNavigationProp} from '@/navigation/AppNavigator';
 import {useResumeStore} from '@/store/useResumeStore';
 import {globalStyles} from '@/styles/globalStyles';
 
 export const PersonalInfoEditor = () => {
   const {getActiveResume, updateBasics} = useResumeStore();
-
+  const navigation = useNavigation<AppNavigationProp>();
+  const {width} = useWindowDimensions();
   const basics = getActiveResume().basics;
   return (
     <KeyboardAvoidingView
@@ -83,17 +90,22 @@ export const PersonalInfoEditor = () => {
 
             <Divider style={styles.divider} />
             <Text style={styles.subsectionTitle}>Professional Summary</Text>
-            <TextInput
-              label="Professional Summary"
-              multiline
-              numberOfLines={6}
-              value={basics.summary}
-              onChangeText={text => updateBasics({summary: text})}
-              placeholder="Write a brief summary highlighting your key professional achievements, skills, and career objectives..."
-              style={[styles.input, styles.summaryInput]}
-              textAlignVertical="top"
-              helperText="Share your professional journey and aspirations"
-            />
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('RichTextEditor', {
+                  initialContent: basics.summary || '',
+                  contentType: 'professional_summary',
+                })
+              }>
+              <Text style={styles.label}>Summary</Text>
+              <View style={styles.summaryPreview}>
+                <HTMLPreview
+                  html={basics.summary || ''}
+                  placeholder="Tap to edit your professional summary..."
+                  maxLines={3}
+                />
+              </View>
+            </TouchableOpacity>
           </Card.Content>
         </Card>
       </ScrollView>
@@ -102,10 +114,29 @@ export const PersonalInfoEditor = () => {
 };
 
 const styles = StyleSheet.create({
+  summaryPreview: {
+    backgroundColor: '#F8F8F8',
+    borderRadius: 8,
+    padding: 12,
+    marginTop: 4,
+    minHeight: 40,
+  },
+  summaryText: {
+    fontSize: 14,
+    fontFamily: FONTS.FIRA_SANS.REGULAR,
+    color: '#666',
+    lineHeight: 20,
+  },
   divider: {
     marginVertical: 24,
     height: 1,
     backgroundColor: '#E0E0E0',
+  },
+  label: {
+    fontSize: 16,
+    fontFamily: FONTS.FIRA_SANS.REGULAR,
+    color: '#666',
+    marginBottom: 8,
   },
   subsectionTitle: {
     fontSize: 18,

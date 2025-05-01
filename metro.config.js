@@ -10,7 +10,18 @@ const withStorybook = require('@storybook/react-native/metro/withStorybook');
  *
  * @type {import('@react-native/metro-config').MetroConfig}
  */
-const config = {};
+const config = {
+  resolver: {
+    sourceExts: ['jsx', 'js', 'ts', 'tsx', 'cjs', 'json'], //add here
+    resolverMainFields: ['react-native', 'browser', 'main', 'module'],
+    extraNodeModules: {
+      '@10play/tentap-editor/lib/module/index': path.resolve(
+        __dirname,
+        'node_modules/@10play/tentap-editor/lib/index.js',
+      ),
+    },
+  },
+};
 module.exports = withStorybook(
   mergeConfig(
     getDefaultConfig(__dirname),
