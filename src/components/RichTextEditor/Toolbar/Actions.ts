@@ -1,6 +1,12 @@
-import {ToolbarItem, Images} from '@10play/tentap-editor';
+import {Images} from '@10play/tentap-editor';
 import {Platform} from 'react-native';
-import {ToolbarContext} from '@/components/tapeditor/src/RichText/Toolbar/actions';
+import type {ToolbarItem} from '@10play/tentap-editor';
+
+export enum ToolbarContext {
+  Main,
+  Link,
+  Heading,
+}
 
 // bold italic underline strikethrough ordered and unordered list align .
 export const DEFAULT_TOOLBAR_ITEMS: ToolbarItem[] = [
