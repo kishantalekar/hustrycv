@@ -5,22 +5,61 @@
 - React Native
 - TypeScript
 
-## Component Architecture
+## Project Structure
 
 ### Component Organization
 
-1. Create reusable components for common UI elements:
+1. Core Components (`src/components/`):
 
-   - Form inputs (TextInput, Select, DatePicker)
-   - Section containers (WorkSection, EducationSection)
-   - List items (WorkItem, EducationItem, SkillItem)
-   - Preview components (ResumePreview)
+   - Common UI Elements:
+
+     - `src/components/Button/Button.tsx`
+     - `src/components/TextInput/TextInput.tsx`
+     - `src/components/Typography/Typography.tsx`
+
+   - Section Components:
+
+     - `src/components/WorkSection/`
+     - `src/components/EducationSection/`
+     - `src/components/SkillSection/`
+
+   - Preview Components:
+     - `src/components/ResumePreview/`
 
 2. Component Structure:
-   - Each component should have its own directory
-   - Include index.ts for exports
-   - Separate types in ComponentName.types.ts
-   - Styles in ComponentName.styles.ts
+   ```
+   src/components/ComponentName/
+   ├── index.ts
+   ├── ComponentName.tsx
+   ├── ComponentName.types.ts
+   └── ComponentName.styles.ts
+   ```
+
+### Assets and Resources
+
+1. Animations (`src/assets/animations/`):
+
+   - Lottie animation files
+   - Loading states
+   - Transitions
+
+2. Constants and Styles:
+   - `src/constants/fonts.ts`: Font definitions
+   - `src/styles/globalStyles.ts`: Global styling constants
+
+### Utilities
+
+1. Helper Functions (`src/utils/`):
+   - `fileUtils.ts`: File handling operations
+   - `navigation.ts`: Navigation helpers
+   - `pdfUtils.ts`: PDF generation and handling
+
+### Documentation
+
+1. Storybook (`src/stories/`):
+   - Component documentation
+   - Usage examples
+   - Interactive testing
 
 ### State Management
 
@@ -80,6 +119,61 @@ interface Resume {
   };
 }
 ```
+
+## Color System
+
+### Primary Colors
+
+1. Primary Orange (#FA6607):
+
+   - Use for primary buttons and key highlights
+   - Apply to main call-to-action elements
+   - Limit usage to ~10% of UI for maximum impact
+
+2. Accent Colors:
+
+   - Teal/Cyan (#00C2C4): Secondary buttons, link highlights
+   - Deep Blue (#1565C0): Navigation bars, info labels
+   - Success Green (#4CAF50): Positive actions, confirmation buttons
+
+3. Background and Text:
+   - Background (#F9FAFB): Main surface color
+   - Primary Text (#333333): Main content, headings
+   - Secondary Text (#828282): Supporting text, captions
+
+### Usage Guidelines
+
+1. Component Applications:
+
+   - Buttons:
+
+     - Primary: Orange (#FA6607) with white text
+     - Secondary: Teal (#00C2C4) or Blue (#1565C0)
+     - Success: Green (#4CAF50)
+
+   - Forms:
+
+     - Input borders: Light gray
+     - Focus state: Teal (#00C2C4)
+     - Placeholder text: Secondary gray (#828282)
+
+   - Navigation:
+     - Background: White or #F9FAFB
+     - Active items: Orange or Teal accents
+     - Inactive items: Dark gray or blue
+
+2. Hierarchy Rules:
+
+   - Follow 60-30-10 distribution:
+     - 60% neutral colors (backgrounds)
+     - 30% secondary colors (teal/blue)
+     - 10% primary orange (key actions)
+
+3. Accessibility:
+
+   - Maintain WCAG 2.0 contrast ratios (≥4.5:1)
+   - Use dark text (#333333) on light backgrounds
+   - Ensure sufficient contrast for all interactive elements
 
 ## Best Practices
 

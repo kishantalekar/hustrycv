@@ -4,13 +4,12 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
-  View,
 } from 'react-native';
-import {Card, TextInput, Text, Divider} from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import {FONTS} from '../../../constants/fonts';
-import {useResumeStore} from '../../../store/useResumeStore';
-import {globalStyles} from '../../../styles/globalStyles';
+import {Card, Text, Divider} from 'react-native-paper';
+import {TextInput} from '@/components/TextInput';
+import {FONTS} from '@/constants';
+import {useResumeStore} from '@/store/useResumeStore';
+import {globalStyles} from '@/styles/globalStyles';
 
 export const PersonalInfoEditor = () => {
   const {getActiveResume, updateBasics} = useResumeStore();
@@ -23,117 +22,69 @@ export const PersonalInfoEditor = () => {
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <Card style={styles.card}>
           <Card.Content>
-            <View style={styles.iconInputContainer}>
-              <Icon
-                name="person"
-                size={20}
-                color="#666"
-                style={styles.inputIcon}
-              />
-              <TextInput
-                mode="outlined"
-                label="Full Name"
-                value={basics.name}
-                onChangeText={text => updateBasics({name: text})}
-                placeholder="Enter your full name"
-                style={styles.input}
-              />
-            </View>
+            <TextInput
+              label="Full Name"
+              value={basics.name}
+              onChangeText={text => updateBasics({name: text})}
+              placeholder="Enter your full name"
+              style={styles.input}
+              leftIcon="person"
+            />
 
-            <View style={styles.iconInputContainer}>
-              <Icon
-                name="email"
-                size={20}
-                color="#666"
-                style={styles.inputIcon}
-              />
-              <TextInput
-                mode="outlined"
-                label="Email"
-                value={basics.email}
-                onChangeText={text => updateBasics({email: text})}
-                placeholder="Enter your email"
-                keyboardType="email-address"
-                style={styles.input}
-              />
-            </View>
+            <TextInput
+              label="Email"
+              value={basics.email}
+              onChangeText={text => updateBasics({email: text})}
+              placeholder="Enter your email"
+              keyboardType="email-address"
+              style={styles.input}
+              leftIcon="email"
+            />
 
-            <View style={styles.iconInputContainer}>
-              <Icon
-                name="phone"
-                size={20}
-                color="#666"
-                style={styles.inputIcon}
-              />
-              <TextInput
-                mode="outlined"
-                label="Phone"
-                placeholder="Enter your phone number"
-                keyboardType="phone-pad"
-                onChangeText={text => updateBasics({phone: text})}
-                value={basics.phone}
-                style={styles.input}
-              />
-            </View>
+            <TextInput
+              label="Phone"
+              placeholder="Enter your phone number"
+              keyboardType="phone-pad"
+              onChangeText={text => updateBasics({phone: text})}
+              value={basics.phone}
+              style={styles.input}
+              leftIcon="phone"
+            />
 
-            <View style={styles.iconInputContainer}>
-              <Icon
-                name="location-on"
-                size={20}
-                color="#666"
-                style={styles.inputIcon}
-              />
-              <TextInput
-                mode="outlined"
-                label="Location"
-                placeholder="City, Country"
-                value={basics.location}
-                onChangeText={text => updateBasics({location: text})}
-                style={styles.input}
-              />
-            </View>
+            <TextInput
+              label="Location"
+              placeholder="City, Country"
+              value={basics.location}
+              onChangeText={text => updateBasics({location: text})}
+              style={styles.input}
+              leftIcon="location-on"
+            />
 
             <Divider style={styles.divider} />
             <Text style={styles.subsectionTitle}>Professional Profiles</Text>
 
-            <View style={styles.iconInputContainer}>
-              <Icon
-                name="link"
-                size={20}
-                color="#666"
-                style={styles.inputIcon}
-              />
-              <TextInput
-                mode="outlined"
-                label="LinkedIn"
-                placeholder="LinkedIn profile URL"
-                value={basics.linkedin}
-                onChangeText={text => updateBasics({linkedin: text})}
-                style={styles.input}
-              />
-            </View>
+            <TextInput
+              label="LinkedIn"
+              placeholder="LinkedIn profile URL"
+              value={basics.linkedin}
+              onChangeText={text => updateBasics({linkedin: text})}
+              style={styles.input}
+              leftIcon="link"
+            />
 
-            <View style={styles.iconInputContainer}>
-              <Icon
-                name="code"
-                size={20}
-                color="#666"
-                style={styles.inputIcon}
-              />
-              <TextInput
-                mode="outlined"
-                label="GitHub"
-                placeholder="GitHub profile URL"
-                value={basics.github}
-                onChangeText={text => updateBasics({github: text})}
-                style={styles.input}
-              />
-            </View>
+            <TextInput
+              label="GitHub"
+              placeholder="GitHub profile URL"
+              value={basics.github}
+              onChangeText={text => updateBasics({github: text})}
+              style={styles.input}
+              leftIcon="code"
+            />
 
             <Divider style={styles.divider} />
             <Text style={styles.subsectionTitle}>Professional Summary</Text>
             <TextInput
-              mode="flat"
+              label="Professional Summary"
               multiline
               numberOfLines={6}
               value={basics.summary}
@@ -141,7 +92,7 @@ export const PersonalInfoEditor = () => {
               placeholder="Write a brief summary highlighting your key professional achievements, skills, and career objectives..."
               style={[styles.input, styles.summaryInput]}
               textAlignVertical="top"
-              placeholderTextColor="#999"
+              helperText="Share your professional journey and aspirations"
             />
           </Card.Content>
         </Card>
@@ -151,15 +102,6 @@ export const PersonalInfoEditor = () => {
 };
 
 const styles = StyleSheet.create({
-  iconInputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-    flex: 1,
-  },
-  inputIcon: {
-    marginRight: 12,
-  },
   divider: {
     marginVertical: 24,
     height: 1,
@@ -180,19 +122,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
   },
-  keyboardAvoidingView: {
-    flex: 1,
-    backgroundColor: '#F5F5F5',
-  },
   container: {
     flex: 1,
     padding: 16,
-  },
-  sectionTitle: {
-    marginBottom: 24,
-    fontFamily: FONTS.FIRA_SANS.BOLD,
-    fontSize: 28,
-    color: '#1A1A1A',
   },
   card: {
     marginBottom: 16,
@@ -212,6 +144,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     fontSize: 16,
     borderRadius: 8,
-    flex: 1,
   },
 });

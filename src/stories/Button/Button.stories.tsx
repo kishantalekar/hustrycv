@@ -144,6 +144,12 @@ export const FullWidth = () => {
         fullWidth
         style={styles.marginBottom}
       />
+      <Button
+        title="Full Width Danger"
+        variant="danger"
+        fullWidth
+        style={styles.marginBottom}
+      />
     </View>
   );
 };

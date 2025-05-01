@@ -4,14 +4,14 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  TextInput,
   Text,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {FONTS} from '../../../constants/fonts';
-import {useResumeStore} from '../../../store/useResumeStore';
+import {TextInput} from '@/components/TextInput';
+import {FONTS} from '@/constants';
+import {useResumeStore} from '@/store/useResumeStore';
 
 export const WorkExperienceEditor = () => {
   const {
@@ -87,9 +87,7 @@ export const WorkExperienceEditor = () => {
               {expandedItems[experience.id] && (
                 <View style={styles.cardContent}>
                   <TextInput
-                    style={styles.input}
-                    placeholder="Company Name"
-                    placeholderTextColor="#999"
+                    label="Company Name"
                     value={experience.company}
                     onChangeText={text =>
                       updateWorkExperience(experience.id, {
@@ -97,11 +95,10 @@ export const WorkExperienceEditor = () => {
                         company: text,
                       })
                     }
+                    leftIcon="business"
                   />
                   <TextInput
-                    style={styles.input}
-                    placeholder="Position"
-                    placeholderTextColor="#999"
+                    label="Position"
                     value={experience.position}
                     onChangeText={text =>
                       updateWorkExperience(experience.id, {
@@ -109,11 +106,10 @@ export const WorkExperienceEditor = () => {
                         position: text,
                       })
                     }
+                    leftIcon="work"
                   />
                   <TextInput
-                    style={styles.input}
-                    placeholder="Location (optional)"
-                    placeholderTextColor="#999"
+                    label="Location"
                     value={experience.location}
                     onChangeText={text =>
                       updateWorkExperience(experience.id, {
@@ -121,12 +117,12 @@ export const WorkExperienceEditor = () => {
                         location: text,
                       })
                     }
+                    leftIcon="location-on"
+                    helperText="Optional"
                   />
                   <View style={styles.row}>
                     <TextInput
-                      style={[styles.input, styles.flex1]}
-                      placeholder="Start Date (MM/YYYY)"
-                      placeholderTextColor="#999"
+                      label="Start Date"
                       value={experience.startDate}
                       onChangeText={text =>
                         updateWorkExperience(experience.id, {
@@ -134,11 +130,12 @@ export const WorkExperienceEditor = () => {
                           startDate: text,
                         })
                       }
+                      style={[styles.input, styles.flex1]}
+                      leftIcon="event"
+                      helperText="MM/YYYY"
                     />
                     <TextInput
-                      style={[styles.input, styles.flex1]}
-                      placeholder="End Date (MM/YYYY)"
-                      placeholderTextColor="#999"
+                      label="End Date"
                       value={experience.endDate}
                       onChangeText={text =>
                         updateWorkExperience(experience.id, {
@@ -146,6 +143,8 @@ export const WorkExperienceEditor = () => {
                           endDate: text,
                         })
                       }
+                      leftIcon="event"
+                      helperText="MM/YYYY or leave blank if current"
                     />
                   </View>
                   <TouchableOpacity
@@ -182,50 +181,54 @@ export const WorkExperienceEditor = () => {
               </View>
 
               <TextInput
-                style={styles.input}
-                placeholder="Company Name *"
-                placeholderTextColor="#999"
+                label="Company Name"
                 value={newExperience.company}
                 onChangeText={text =>
                   setNewExperience(prev => ({...prev, company: text}))
                 }
+                leftIcon="business"
+                helperText="Required"
+                error={!newExperience.company ? 'Company name is required' : ''}
               />
               <TextInput
-                style={styles.input}
-                placeholder="Position *"
-                placeholderTextColor="#999"
+                label="Position"
                 value={newExperience.position}
                 onChangeText={text =>
                   setNewExperience(prev => ({...prev, position: text}))
                 }
+                leftIcon="work"
+                helperText="Required"
+                error={!newExperience.position ? 'Position is required' : ''}
               />
               <TextInput
-                style={styles.input}
-                placeholder="Location (optional)"
-                placeholderTextColor="#999"
+                label="Location"
                 value={newExperience.location}
                 onChangeText={text =>
                   setNewExperience(prev => ({...prev, location: text}))
                 }
+                leftIcon="location-on"
+                helperText="Optional"
               />
               <View style={styles.row}>
                 <TextInput
-                  style={[styles.input, styles.flex1]}
-                  placeholder="Start Date (MM/YYYY) *"
-                  placeholderTextColor="#999"
+                  label="Start Date"
                   value={newExperience.startDate}
                   onChangeText={text =>
                     setNewExperience(prev => ({...prev, startDate: text}))
                   }
+                  leftIcon="event"
+                  helperText="MM/YYYY"
+                  containerStyle={styles.flex1}
                 />
                 <TextInput
-                  style={[styles.input, styles.flex1]}
-                  placeholder="End Date (MM/YYYY)"
-                  placeholderTextColor="#999"
+                  label="End Date"
                   value={newExperience.endDate}
                   onChangeText={text =>
                     setNewExperience(prev => ({...prev, endDate: text}))
                   }
+                  leftIcon="event"
+                  helperText="MM/YYYY"
+                  containerStyle={styles.flex1}
                 />
               </View>
 
@@ -337,6 +340,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     gap: 12,
+    justifyContent: 'space-between',
   },
   flex1: {
     flex: 1,

@@ -4,15 +4,15 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  TextInput,
   Text,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {FONTS} from '../../../constants/fonts';
-import {useResumeStore} from '../../../store/useResumeStore';
-import {globalStyles} from '../../../styles/globalStyles';
+import {TextInput} from '@/components/TextInput';
+import {FONTS} from '@/constants';
+import {useResumeStore} from '@/store/useResumeStore';
+import {globalStyles} from '@/styles/globalStyles';
 
 export const EducationEditor = () => {
   const {getActiveResume, addEducation, updateEducation, removeEducation} =
@@ -76,18 +76,14 @@ export const EducationEditor = () => {
               {expandedItems[edu.id] && (
                 <View style={styles.cardContent}>
                   <TextInput
-                    style={styles.input}
-                    placeholder="Institution Name"
-                    placeholderTextColor="#999"
+                    label="Institution Name"
                     value={edu.institution}
                     onChangeText={text =>
                       updateEducation(edu.id, {...edu, institution: text})
                     }
                   />
                   <TextInput
-                    style={styles.input}
-                    placeholder="Degree"
-                    placeholderTextColor="#999"
+                    label="Degree"
                     value={edu.degree}
                     onChangeText={text =>
                       updateEducation(edu.id, {...edu, degree: text})
@@ -95,18 +91,18 @@ export const EducationEditor = () => {
                   />
                   <View style={styles.row}>
                     <TextInput
-                      style={[styles.input, styles.flex1]}
-                      placeholder="Start Date (MM/YYYY)"
-                      placeholderTextColor="#999"
+                      label="Start Date"
+                      helperText="MM/YYYY"
+                      style={styles.flex1}
                       value={edu.startDate}
                       onChangeText={text =>
                         updateEducation(edu.id, {...edu, startDate: text})
                       }
                     />
                     <TextInput
-                      style={[styles.input, styles.flex1]}
-                      placeholder="End Date (MM/YYYY)"
-                      placeholderTextColor="#999"
+                      label="End Date"
+                      helperText="MM/YYYY"
+                      style={styles.flex1}
                       value={edu.endDate}
                       onChangeText={text =>
                         updateEducation(edu.id, {...edu, endDate: text})
@@ -114,9 +110,8 @@ export const EducationEditor = () => {
                     />
                   </View>
                   <TextInput
-                    style={styles.input}
-                    placeholder="GPA (Optional)"
-                    placeholderTextColor="#999"
+                    label="GPA"
+                    helperText="Optional"
                     value={edu.gpa}
                     onChangeText={text =>
                       updateEducation(edu.id, {...edu, gpa: text})
@@ -157,37 +152,41 @@ export const EducationEditor = () => {
               </View>
 
               <TextInput
-                style={styles.input}
-                placeholder="Institution Name *"
-                placeholderTextColor="#999"
+                label="Institution Name"
+                helperText="Required"
                 value={newEducation.institution}
                 onChangeText={text =>
                   setNewEducation(prev => ({...prev, institution: text}))
                 }
+                error={
+                  !newEducation.institution
+                    ? 'Institution name is required'
+                    : ''
+                }
               />
               <TextInput
-                style={styles.input}
-                placeholder="Degree *"
-                placeholderTextColor="#999"
+                label="Degree"
+                helperText="Required"
                 value={newEducation.degree}
                 onChangeText={text =>
                   setNewEducation(prev => ({...prev, degree: text}))
                 }
+                error={!newEducation.degree ? 'Degree is required' : ''}
               />
               <View style={styles.row}>
                 <TextInput
-                  style={[styles.input, styles.flex1]}
-                  placeholder="Start Date (MM/YYYY) *"
-                  placeholderTextColor="#999"
+                  label="Start Date"
+                  helperText="MM/YYYY"
+                  style={styles.flex1}
                   value={newEducation.startDate}
                   onChangeText={text =>
                     setNewEducation(prev => ({...prev, startDate: text}))
                   }
                 />
                 <TextInput
-                  style={[styles.input, styles.flex1]}
-                  placeholder="End Date (MM/YYYY)"
-                  placeholderTextColor="#999"
+                  label="End Date"
+                  helperText="MM/YYYY"
+                  style={styles.flex1}
                   value={newEducation.endDate}
                   onChangeText={text =>
                     setNewEducation(prev => ({...prev, endDate: text}))
@@ -195,9 +194,8 @@ export const EducationEditor = () => {
                 />
               </View>
               <TextInput
-                style={styles.input}
-                placeholder="GPA (Optional)"
-                placeholderTextColor="#999"
+                label="GPA"
+                helperText="Optional"
                 value={newEducation.gpa}
                 onChangeText={text =>
                   setNewEducation(prev => ({...prev, gpa: text}))

@@ -4,15 +4,15 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  TextInput,
   Text,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {FONTS} from '../../../constants/fonts';
-import {useResumeStore} from '../../../store/useResumeStore';
-import {globalStyles} from '../../../styles/globalStyles';
+import {TextInput} from '@/components/TextInput';
+import {FONTS} from '@/constants';
+import {useResumeStore} from '@/store/useResumeStore';
+import {globalStyles} from '@/styles/globalStyles';
 
 export const SkillsEditor = () => {
   const {getActiveResume, addSkill, updateSkill, removeSkill} =
@@ -95,9 +95,7 @@ export const SkillsEditor = () => {
               {expandedItems[skill.id] && (
                 <View style={styles.cardContent}>
                   <TextInput
-                    style={styles.input}
-                    placeholder="Skill Name"
-                    placeholderTextColor="#999"
+                    label="Skill Name"
                     value={skill.name}
                     onChangeText={text =>
                       updateSkill(skill.id, {...skill, name: text})
@@ -149,9 +147,8 @@ export const SkillsEditor = () => {
                   </View>
                   <View style={styles.keywordsContainer}>
                     <TextInput
-                      style={styles.input}
-                      placeholder="Add Keyword"
-                      placeholderTextColor="#999"
+                      label="Add Keyword"
+                      helperText="Press enter to add"
                       value={newKeyword}
                       onChangeText={setNewKeyword}
                       onSubmitEditing={() => {
@@ -194,13 +191,13 @@ export const SkillsEditor = () => {
               </View>
 
               <TextInput
-                style={styles.input}
-                placeholder="Skill Name *"
-                placeholderTextColor="#999"
+                label="Skill Name"
+                helperText="Required"
                 value={newSkill.name}
                 onChangeText={text =>
                   setNewSkill(prev => ({...prev, name: text}))
                 }
+                error={!newSkill.name ? 'Skill name is required' : ''}
               />
 
               <Text style={styles.label}>Level:</Text>
@@ -227,9 +224,8 @@ export const SkillsEditor = () => {
 
               <View style={styles.keywordsContainer}>
                 <TextInput
-                  style={styles.input}
-                  placeholder="Add Keyword"
-                  placeholderTextColor="#999"
+                  label="Add Keyword"
+                  helperText="Press enter to add"
                   value={newKeyword}
                   onChangeText={setNewKeyword}
                 />

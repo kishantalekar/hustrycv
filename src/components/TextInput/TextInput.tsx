@@ -21,12 +21,13 @@ export const TextInput: React.FC<TextInputProps> = ({
   onRightIconPress,
   onLeftIconPress,
   style,
+  containerStyle,
   ...props
 }) => {
   const isOutlined = variant === TextInputVariant.Outlined;
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       {label && (
         <Typography
           variant={TypographyVariant.LabelLarge}
@@ -72,11 +73,18 @@ export const TextInput: React.FC<TextInputProps> = ({
           </TouchableOpacity>
         )}
       </View>
-      {(error || helperText) && (
+      {helperText && !error && (
         <Typography
           variant={TypographyVariant.BodySmall}
-          style={[styles.helperText, error && styles.errorText]}>
-          {error || helperText}
+          style={styles.helperText}>
+          {helperText}
+        </Typography>
+      )}
+      {error && (
+        <Typography
+          variant={TypographyVariant.BodySmall}
+          style={[styles.helperText, styles.errorText]}>
+          {error}
         </Typography>
       )}
     </View>

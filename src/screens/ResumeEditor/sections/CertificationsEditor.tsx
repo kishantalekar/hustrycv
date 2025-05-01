@@ -5,14 +5,14 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  TextInput,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {FONTS} from '../../../constants/fonts';
-import {useResumeStore} from '../../../store/useResumeStore';
-import {globalStyles} from '../../../styles/globalStyles';
+import {TextInput} from '@/components/TextInput';
+import {FONTS} from '@/constants';
+import {useResumeStore} from '@/store/useResumeStore';
+import {globalStyles} from '@/styles/globalStyles';
 
 export const CertificationsEditor = () => {
   const {
@@ -77,27 +77,24 @@ export const CertificationsEditor = () => {
               {expandedItems[cert.id] && (
                 <View style={styles.cardContent}>
                   <TextInput
-                    style={styles.input}
-                    placeholder="Certification Name"
-                    placeholderTextColor="#999"
+                    label="Certification Name"
+                    placeholder="Enter certification name"
                     value={cert.name}
                     onChangeText={text =>
                       updateCertification(cert.id, {...cert, name: text})
                     }
                   />
                   <TextInput
-                    style={styles.input}
-                    placeholder="Authority"
-                    placeholderTextColor="#999"
+                    label="Authority"
+                    placeholder="Enter issuing authority"
                     value={cert.authority}
                     onChangeText={text =>
                       updateCertification(cert.id, {...cert, authority: text})
                     }
                   />
                   <TextInput
-                    style={styles.input}
-                    placeholder="Certification URL/Code"
-                    placeholderTextColor="#999"
+                    label="Certification URL/Code"
+                    placeholder="Enter URL or certification code"
                     value={cert.certificationUrlOrCode}
                     onChangeText={text =>
                       updateCertification(cert.id, {
@@ -107,23 +104,22 @@ export const CertificationsEditor = () => {
                     }
                   />
                   <TextInput
-                    style={styles.input}
-                    placeholder="Issue Date (e.g., 2023-09)"
-                    placeholderTextColor="#999"
+                    label="Issue Date"
+                    placeholder="e.g., 2023-09"
                     value={cert.issueDate}
                     onChangeText={text =>
                       updateCertification(cert.id, {...cert, issueDate: text})
                     }
                   />
                   <TextInput
-                    style={[styles.input, styles.multilineInput]}
-                    placeholder="Description"
-                    placeholderTextColor="#999"
+                    label="Description"
+                    placeholder="Enter certification description"
                     value={cert.description}
                     onChangeText={text =>
                       updateCertification(cert.id, {...cert, description: text})
                     }
                     multiline
+                    style={{height: 80}}
                   />
                   <TouchableOpacity
                     style={styles.deleteButton}
@@ -161,27 +157,30 @@ export const CertificationsEditor = () => {
               </View>
 
               <TextInput
-                style={styles.input}
-                placeholder="Certification Name *"
-                placeholderTextColor="#999"
+                label="Certification Name *"
+                placeholder="Enter certification name"
                 value={newCertification.name}
                 onChangeText={text =>
                   setNewCertification(prev => ({...prev, name: text}))
                 }
+                error={
+                  !newCertification.name ? 'Certification name is required' : ''
+                }
               />
               <TextInput
-                style={styles.input}
-                placeholder="Issuing Authority *"
-                placeholderTextColor="#999"
+                label="Issuing Authority *"
+                placeholder="Enter issuing authority"
                 value={newCertification.authority}
                 onChangeText={text =>
                   setNewCertification(prev => ({...prev, authority: text}))
                 }
+                error={
+                  !newCertification.authority ? 'Authority is required' : ''
+                }
               />
               <TextInput
-                style={styles.input}
-                placeholder="Certification URL or Code"
-                placeholderTextColor="#999"
+                label="Certification URL or Code"
+                placeholder="Enter URL or certification code"
                 value={newCertification.certificationUrlOrCode}
                 onChangeText={text =>
                   setNewCertification(prev => ({
@@ -191,23 +190,25 @@ export const CertificationsEditor = () => {
                 }
               />
               <TextInput
-                style={styles.input}
-                placeholder="Issue Date (e.g., 2023-09) *"
-                placeholderTextColor="#999"
+                label="Issue Date *"
+                placeholder="e.g., 2023-09"
                 value={newCertification.issueDate}
                 onChangeText={text =>
                   setNewCertification(prev => ({...prev, issueDate: text}))
                 }
+                error={
+                  !newCertification.issueDate ? 'Issue date is required' : ''
+                }
               />
               <TextInput
-                style={[styles.input, styles.multilineInput]}
-                placeholder="Description (optional)"
-                placeholderTextColor="#999"
+                label="Description"
+                placeholder="Enter certification description (optional)"
                 value={newCertification.description}
                 onChangeText={text =>
                   setNewCertification(prev => ({...prev, description: text}))
                 }
                 multiline
+                style={{height: 80}}
               />
 
               <View style={styles.formButtons}>
@@ -324,20 +325,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
   },
-  input: {
-    borderWidth: 1,
-    borderColor: '#DDD',
-    borderRadius: 4,
-    padding: 12,
-    marginBottom: 12,
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
-    fontSize: 15,
-    color: '#333',
-  },
-  multilineInput: {
-    height: 80,
-    textAlignVertical: 'top',
-  },
+
   // addButton: {
   //   backgroundColor: '#007AFF',
   //   padding: 12,

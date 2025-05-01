@@ -4,7 +4,7 @@ import StorybookUIRoot from './.storybook';
 import {AppNavigator} from './src/navigation/AppNavigator';
 
 const App = () => {
-  const [storybookEnabled, setStorybookEnabled] = useState(true);
+  const [storybookEnabled, setStorybookEnabled] = useState(false);
 
   // Make toggle function available globally in dev mode
   useEffect(() => {

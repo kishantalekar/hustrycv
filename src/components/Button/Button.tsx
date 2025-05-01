@@ -10,7 +10,12 @@ import {
 import {FONTS} from '@/constants';
 import {COLORS, BORDER_RADIUS, SHADOW} from '../../theme';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'text';
+export type ButtonVariant =
+  | 'primary'
+  | 'secondary'
+  | 'outline'
+  | 'text'
+  | 'danger';
 export type ButtonSize = 'small' | 'medium' | 'large';
 
 export interface ButtonProps extends TouchableOpacityProps {
@@ -48,6 +53,8 @@ export const Button: React.FC<ButtonProps> = ({
       case 'outline':
       case 'text':
         return 'transparent';
+      case 'danger':
+        return COLORS.danger;
       default:
         return COLORS.primary;
     }
@@ -65,6 +72,8 @@ export const Button: React.FC<ButtonProps> = ({
         return COLORS.primary;
       case 'text':
         return COLORS.primary;
+      case 'danger':
+        return COLORS.dangerText;
       default:
         return COLORS.white;
     }

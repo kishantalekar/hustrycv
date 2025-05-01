@@ -4,35 +4,48 @@ import {FONTS} from '../constants';
 const {width, height} = Dimensions.get('window');
 
 export const COLORS = {
-  // Primary Colors
-  primary: '#007AFF',
-  secondary: '#DC3545',
+  // Primary Colors (10% usage)
+  primary: '#FA6607', // Orange - Main CTAs
+  secondary: '#00C2C4', // Teal - Secondary actions
+  accent: '#1565C0', // Deep Blue - Navigation, info
+  success: '#4CAF50', // Green - Success actions
   white: '#FFFFFF',
 
-  // Background Colors
+  danger: '#E53935', // Delete button
+  dangerHover: '#D32F2F', // Hover/pressed state
+  dangerBackground: '#FFCDD2', // Light red background for warnings
+  dangerText: '#FFFFFF',
+  // Background Colors (60% usage)
   background: {
-    primary: '#F5F5F5',
-    secondary: '#FFFFFF',
+    primary: '#F9FAFB', // Main surface color
+    secondary: '#FFFFFF', // Card backgrounds
   },
 
-  // Text Colors
+  // Text Colors (30% usage)
   text: {
-    primary: '#333333',
-    secondary: '#666666',
+    primary: '#333333', // Main content, headings
+    secondary: '#828282', // Supporting text, captions
     light: '#FFFFFF',
   },
 
   // Status Colors
   status: {
     error: '#FF3B30',
-    success: '#34C759',
+    success: '#4CAF50',
     warning: '#FFCC00',
   },
 
   // Border & Shadow
-  border: '#E5E5E5',
-  shadow: '#000000',
-  preview: '#E8E8E8',
+  border: '#E0E0E0', // Light gray for borders
+  shadow: 'rgba(0, 0, 0, 0.08)', // Subtle depth
+  preview: '#F5F5F5', // Light background for previews
+
+  // Interactive States
+  hover: {
+    primary: '#FF7B2C', // Lighter orange
+    secondary: '#00D6D8', // Lighter teal
+  },
+  focus: '#00C2C4', // Teal for focus states
 };
 
 export const SPACING = {

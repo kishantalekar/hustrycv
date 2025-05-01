@@ -5,14 +5,14 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  TextInput,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {FONTS} from '../../../constants/fonts';
-import {ProjectItem, useResumeStore} from '../../../store/useResumeStore';
-import {globalStyles} from '../../../styles/globalStyles';
+import {TextInput} from '@/components/TextInput';
+import {FONTS} from '@/constants';
+import {useResumeStore, ProjectItem} from '@/store/useResumeStore';
+import {globalStyles} from '@/styles/globalStyles';
 
 export const ProjectsEditor = () => {
   const {getActiveResume, addProject, updateProject, removeProject} =
@@ -93,28 +93,26 @@ export const ProjectsEditor = () => {
               {expandedItems[project.id] && (
                 <View style={styles.cardContent}>
                   <TextInput
-                    style={styles.input}
-                    placeholder="Project Name"
-                    placeholderTextColor="#999"
+                    label="Project Name"
+                    placeholder="Enter project name"
                     value={project.name}
                     onChangeText={text =>
                       updateProject(project.id, {...project, name: text})
                     }
                   />
                   <TextInput
-                    style={[styles.input, styles.multilineInput]}
-                    placeholder="Project Description"
-                    placeholderTextColor="#999"
+                    label="Project Description"
+                    placeholder="Enter project description"
                     value={project.description}
                     onChangeText={text =>
                       updateProject(project.id, {...project, description: text})
                     }
                     multiline
+                    style={{height: 80}}
                   />
                   <TextInput
-                    style={styles.input}
-                    placeholder="Project URL (optional)"
-                    placeholderTextColor="#999"
+                    label="Project URL"
+                    placeholder="Enter project URL (optional)"
                     value={project.url}
                     onChangeText={text =>
                       updateProject(project.id, {...project, url: text})
@@ -141,9 +139,8 @@ export const ProjectsEditor = () => {
                   </View>
                   <View style={styles.highlightsContainer}>
                     <TextInput
-                      style={styles.input}
-                      placeholder="Add Highlight"
-                      placeholderTextColor="#999"
+                      label="Add Highlight"
+                      placeholder="Enter project highlight"
                       value={newHighlight}
                       onChangeText={setNewHighlight}
                       onSubmitEditing={() => {
@@ -189,28 +186,27 @@ export const ProjectsEditor = () => {
               </View>
 
               <TextInput
-                style={styles.input}
-                placeholder="Project Name *"
-                placeholderTextColor="#999"
+                label="Project Name *"
+                placeholder="Enter project name"
                 value={newProject.name}
                 onChangeText={text =>
                   setNewProject(prev => ({...prev, name: text}))
                 }
+                error={!newProject.name ? 'Project name is required' : ''}
               />
               <TextInput
-                style={[styles.input, styles.multilineInput]}
-                placeholder="Project Description *"
-                placeholderTextColor="#999"
+                label="Project Description *"
+                placeholder="Enter project description"
                 value={newProject.description}
                 onChangeText={text =>
                   setNewProject(prev => ({...prev, description: text}))
                 }
                 multiline
+                style={{height: 80}}
               />
               <TextInput
-                style={styles.input}
-                placeholder="Project URL (optional)"
-                placeholderTextColor="#999"
+                label="Project URL"
+                placeholder="Enter project URL (optional)"
                 value={newProject.url}
                 onChangeText={text =>
                   setNewProject(prev => ({...prev, url: text}))
@@ -219,9 +215,8 @@ export const ProjectsEditor = () => {
 
               <View style={styles.highlightsContainer}>
                 <TextInput
-                  style={styles.input}
-                  placeholder="Add Highlight"
-                  placeholderTextColor="#999"
+                  label="Add Highlight"
+                  placeholder="Enter project highlight"
                   value={newHighlight}
                   onChangeText={setNewHighlight}
                 />

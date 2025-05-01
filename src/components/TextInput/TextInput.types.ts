@@ -1,4 +1,8 @@
-import {TextInputProps as RNTextInputProps} from 'react-native';
+import {
+  TextInputProps as RNTextInputProps,
+  StyleProp,
+  ViewStyle,
+} from 'react-native';
 
 export enum TextInputVariant {
   Outlined = 'outlined',
@@ -46,4 +50,6 @@ export interface TextInputProps extends RNTextInputProps {
    * Callback when left icon is pressed
    */
   onLeftIconPress?: () => void;
+
+  containerStyle?: StyleProp<ViewStyle>;
 }
