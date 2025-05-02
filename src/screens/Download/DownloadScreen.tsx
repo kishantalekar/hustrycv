@@ -9,13 +9,13 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useResumeStore} from '@/store/useResumeStore';
 import {globalStyles} from '@/styles/globalStyles';
+import {getTemplateById} from '@/templates';
+import {COLORS, SPACING} from '@/theme';
 import {getResumeFileName} from '@/utils/fileUtils';
+import {createAndSavePDF} from '@/utils/pdfUtils';
 import {styles} from './DownloadScreen.styles';
-import {useResumeStore} from '../../store/useResumeStore';
-import {getProfessionalResumeHTML} from '../../templates';
-import {COLORS, SPACING} from '../../theme';
-import {createAndSavePDF} from '../../utils/pdfUtils';
 
 export const DownloadScreen = () => {
   const {resumes, activeResumeId} = useResumeStore();
@@ -34,7 +34,9 @@ export const DownloadScreen = () => {
       const fileName = getResumeFileName(
         activeResume?.basics?.name || 'My Resume',
       );
-      await createAndSavePDF(getProfessionalResumeHTML(activeResume), fileName);
+      const template = getTemplateById(activeResume?.metadata?.templateId);
+
+      await createAndSavePDF(template.getHTML(activeResume), fileName);
       Alert.alert('Success', 'Resume saved successfully!');
     } catch (error) {
       Alert.alert('Error', 'Failed to save resume. Please try again.');

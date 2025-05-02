@@ -1,7 +1,7 @@
 export const mockResumeData = {
   metadata: {
     id: 'uuid',
-    templateId: 'classic_1',
+    templateId: 'professional',
     version: '1.0',
     createdAt: 'ISO 8601 date',
     updatedAt: 'ISO 8601 date',
@@ -103,7 +103,7 @@ export const mockResumeData = {
 export const extendedMockResumeData = {
   metadata: {
     id: 'uuid-extended',
-    templateId: 'modern_1',
+    templateId: 'technical',
     version: '1.0',
     createdAt: '2023-12-20T10:00:00Z',
     updatedAt: '2023-12-21T15:30:00Z',

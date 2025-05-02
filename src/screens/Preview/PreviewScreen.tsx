@@ -5,45 +5,23 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {ResumePreview, TemplateSelector} from '@/components';
 import {FONTS} from '@/constants';
 import {useResumeStore} from '@/store/useResumeStore';
-import {
-  getProfessionalResumeHTML,
-  getTechnicalResumeHTML,
-  getMinimalistResumeHTML,
-} from '@/templates';
+import {resumeTemplates} from '@/templates';
 import {COLORS} from '@/theme';
 import {goBack} from '@/utils/navigation';
 
 export const PreviewScreen = () => {
-  const {resumes, activeResumeId} = useResumeStore();
+  const {resumes, activeResumeId, updateResumeTemplateId} = useResumeStore();
   const activeResume = resumes.find(
     resume => resume.metadata.id === activeResumeId,
   );
-  const [selectedTemplate, setSelectedTemplate] = useState('professional');
+  const [selectedTemplate, setSelectedTemplate] = useState(
+    activeResume?.metadata.templateId ?? 'professional',
+  );
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
-
-  const templates = [
-    {
-      id: 'professional',
-      name: 'Professional',
-      image: require('../../assets/templates/professional.png'),
-      getHTML: getProfessionalResumeHTML,
-    },
-    {
-      id: 'technical',
-      name: 'Technical',
-      image: require('../../assets/templates/technical.png'),
-      getHTML: getTechnicalResumeHTML,
-    },
-    {
-      id: 'minimalist',
-      name: 'Minimalist',
-      image: require('../../assets/templates/minimalist.png'),
-      getHTML: getMinimalistResumeHTML,
-    },
-  ];
 
   const handleTemplateSelect = (templateId: string) => {
     setSelectedTemplate(templateId);
+    updateResumeTemplateId(templateId);
   };
 
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -69,7 +47,7 @@ export const PreviewScreen = () => {
       <ResumePreview
         resumeData={activeResume}
         selectedTemplate={selectedTemplate}
-        templates={templates}
+        templates={resumeTemplates}
       />
       <BottomSheet
         ref={bottomSheetRef}
@@ -96,7 +74,7 @@ export const PreviewScreen = () => {
           <TemplateSelector
             selectedTemplate={selectedTemplate}
             onSelectTemplate={handleTemplateSelect}
-            templates={templates}
+            templates={resumeTemplates}
           />
         </BottomSheetView>
       </BottomSheet>

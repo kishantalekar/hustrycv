@@ -30,6 +30,7 @@ interface ResumeState {
   getActiveResume: () => Resume;
   setActiveResume: (id: string) => void;
   addResume: (newResume: Resume) => void;
+  updateResumeTemplateId: (id: string) => void;
   // Actions ----------------------------------------------------------------
   updateMetadata: (metadata: Partial<Metadata>) => void;
   updateBasics: (basics: Partial<Basics>) => void;
@@ -161,6 +162,21 @@ export const useResumeStore = create<ResumeState>((set, get) => ({
   addResume: (newResume: Resume) =>
     set(state => ({
       resumes: [...state.resumes, newResume],
+    })),
+  updateResumeTemplateId: templateId =>
+    set(state => ({
+      resumes: state.resumes.map(resume =>
+        resume.metadata.id === state.activeResumeId
+          ? {
+              ...resume,
+              metadata: {
+                ...resume.metadata,
+                templateId,
+                updatedAt: new Date().toISOString(),
+              },
+            }
+          : resume,
+      ),
     })),
 
   removeResume: (id: string) =>
