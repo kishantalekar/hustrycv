@@ -63,3 +63,8 @@ export const deleteResume = async (path: string) => {
     return false;
   }
 };
+
+export const getResumeFileName = (name: string): string => {
+  const sanitizedName = name.replace(/[^a-zA-Z0-9]/g, '_');
+  return `${sanitizedName}_Resume.pdf`;
+};

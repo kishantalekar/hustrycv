@@ -1,4 +1,5 @@
 import {Platform, ToastAndroid, PermissionsAndroid} from 'react-native';
+import RNFetchBlob from 'react-native-blob-util';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 
 export const requestStoragePermission = async () => {
@@ -25,57 +26,65 @@ export const requestStoragePermission = async () => {
     return false;
   }
 };
+
 export const generatePDF = async (html: string) => {
-  const fontUri = require('../assets/fonts/FiraSans-Regular.ttf');
-
-  const options = {
-    html,
-    base64: true,
-    fonts: [fontUri],
-  };
-
-  const file = await RNHTMLtoPDF.convert(options);
-  if (file.base64) {
-    return file.base64;
-  }
-  return null;
-};
-export const createAndSavePDF = async (html: string) => {
   try {
-    const hasPermission = await requestStoragePermission();
-    if (!hasPermission) {
-      if (Platform.OS === 'android') {
-        ToastAndroid.show(
-          'Storage permission required to save PDF',
-          ToastAndroid.LONG,
-        );
-      }
-      return;
-    }
-
     if (!html.trim()) {
       throw new Error('No content to export');
     }
 
     const options = {
       html,
-      fileName: `Resume_${Date.now()}`,
-      directory: Platform.OS === 'android' ? 'Download' : 'Documents',
-      padding: 12,
-      bgColor: '#ffffff',
+      base64: true,
     };
 
     const file = await RNHTMLtoPDF.convert(options);
-    if (file.filePath) {
-      if (Platform.OS === 'android') {
-        ToastAndroid.show('PDF saved to Downloads folder', ToastAndroid.LONG);
-      }
-      return file.filePath;
+    if (!file.base64) {
+      throw new Error('Failed to generate PDF');
     }
+    return file.base64;
+  } catch (error) {
+    console.error('Error in generatePDF:', error);
+    throw error;
+  }
+};
+
+export const createAndSavePDF = async (html: string, fileName: string) => {
+  try {
+    if (!html.trim()) {
+      throw new Error('No content to export');
+    }
+
+    const options = {
+      html,
+      fileName,
+      directory: 'Download', // This ensures the file is saved in the Downloads directory
+    };
+
+    const file = await RNHTMLtoPDF.convert(options);
+    if (!file.filePath) {
+      throw new Error('Failed to generate PDF');
+    }
+
+    if (Platform.OS === 'android') {
+      // Use the direct file path from RNHTMLtoPDF
+      await RNFetchBlob.android.addCompleteDownload({
+        title: fileName,
+        description: 'Resume PDF',
+        mime: 'application/pdf',
+        path: file.filePath,
+        showNotification: true,
+      });
+
+      ToastAndroid.show('PDF saved to Downloads folder', ToastAndroid.LONG);
+    }
+
+    return file.filePath;
   } catch (error) {
     console.error('Error generating PDF:', error);
     if (Platform.OS === 'android') {
       ToastAndroid.show('Failed to save PDF', ToastAndroid.LONG);
     }
+    throw error;
   }
 };

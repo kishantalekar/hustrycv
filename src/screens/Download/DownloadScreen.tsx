@@ -1,43 +1,28 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
-  ActivityIndicator,
   ScrollView,
   Alert,
+  StatusBar,
 } from 'react-native';
-import Pdf from 'react-native-pdf';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {globalStyles} from '@/styles/globalStyles';
+import {getResumeFileName} from '@/utils/fileUtils';
 import {styles} from './DownloadScreen.styles';
 import {useResumeStore} from '../../store/useResumeStore';
 import {getProfessionalResumeHTML} from '../../templates';
-import {navigate} from '../../utils/navigation';
-import {createAndSavePDF, generatePDF} from '../../utils/pdfUtils';
+import {COLORS, SPACING} from '../../theme';
+import {createAndSavePDF} from '../../utils/pdfUtils';
 
 export const DownloadScreen = () => {
   const {resumes, activeResumeId} = useResumeStore();
   const activeResume = resumes.find(
     resume => resume.metadata.id === activeResumeId,
   );
-  const [pdfBase64, setPdfBase64] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [downloadStarted, setDownloadStarted] = useState(false);
-
-  useEffect(() => {
-    if (activeResume) {
-      setIsLoading(true);
-      generatePDF(getProfessionalResumeHTML(activeResume))
-        .then(base64 => {
-          if (base64) {
-            setPdfBase64(base64);
-          }
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    }
-  }, [activeResume]);
 
   const handleDownload = async () => {
     if (!activeResume) {
@@ -46,10 +31,14 @@ export const DownloadScreen = () => {
 
     setDownloadStarted(true);
     try {
-      await createAndSavePDF(getProfessionalResumeHTML(activeResume));
+      const fileName = getResumeFileName(
+        activeResume?.basics?.name || 'My Resume',
+      );
+      await createAndSavePDF(getProfessionalResumeHTML(activeResume), fileName);
       Alert.alert('Success', 'Resume saved successfully!');
     } catch (error) {
       Alert.alert('Error', 'Failed to save resume. Please try again.');
+      console.log('Error saving resume:', error);
     } finally {
       setDownloadStarted(false);
     }
@@ -66,79 +55,151 @@ export const DownloadScreen = () => {
   if (!activeResume) {
     return (
       <View style={styles.emptyContainer}>
-        <Icon name="file-document-outline" size={80} color="#CCCCCC" />
+        <StatusBar
+          backgroundColor={COLORS.background.primary}
+          barStyle="dark-content"
+        />
+        <Icon
+          name="file-document-outline"
+          size={80}
+          color={COLORS.text.secondary}
+        />
         <Text style={styles.emptyText}>No resume data available</Text>
+        <Text
+          style={[
+            styles.subtitle,
+            {textAlign: 'center', marginTop: SPACING.sm},
+          ]}>
+          Please create or select a resume to continue
+        </Text>
       </View>
     );
   }
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Your Resume</Text>
-        <Text style={styles.subtitle}>
-          Download, share or email your professional resume
-        </Text>
-      </View>
-
-      <View style={styles.previewContainer}>
-        {isLoading ? (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#007AFF" />
-            <Text style={styles.loadingText}>Generating preview...</Text>
-          </View>
-        ) : pdfBase64 ? (
-          <Pdf
-            source={{uri: `data:application/pdf;base64,${pdfBase64}`}}
-            style={styles.pdfView}
-            onError={error => console.log('PDF Error:', error)}
-          />
-        ) : (
-          <View style={styles.errorContainer}>
-            <Icon name="alert-circle-outline" size={60} color="#FF3B30" />
-            <Text style={styles.errorText}>Failed to generate preview</Text>
-          </View>
-        )}
-      </View>
-
-      <View style={styles.actionsContainer}>
-        <TouchableOpacity
-          style={[
-            styles.actionButton,
-            styles.downloadButton,
-            downloadStarted && styles.disabledButton,
-          ]}
-          onPress={handleDownload}
-          disabled={downloadStarted || isLoading}>
-          <Icon name="download" size={24} color="white" />
-          <Text style={styles.actionButtonText}>
-            {downloadStarted ? 'Downloading...' : 'Download PDF'}
+    <SafeAreaView style={globalStyles.container}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        <StatusBar
+          backgroundColor={COLORS.background.primary}
+          barStyle="dark-content"
+        />
+        <View style={styles.header}>
+          <Text style={styles.title}>Your Resume</Text>
+          <Text style={styles.subtitle}>
+            Ready to showcase your professional resume
           </Text>
-        </TouchableOpacity>
-
-        <View style={styles.secondaryActionsRow}>
-          <TouchableOpacity
-            style={[styles.actionButton, styles.shareButton]}
-            onPress={handleShare}>
-            <Icon name="share-variant" size={24} color="white" />
-            <Text style={styles.actionButtonText}>Share</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.actionButton, styles.emailButton]}
-            onPress={handleEmail}>
-            <Icon name="email-outline" size={24} color="white" />
-            <Text style={styles.actionButtonText}>Email</Text>
-          </TouchableOpacity>
         </View>
-      </View>
 
-      <TouchableOpacity
-        style={styles.viewDownloadsButton}
-        onPress={() => navigate('DownloadedResumes')}>
-        <Icon name="folder-open-outline" size={20} color="white" />
-        <Text style={styles.viewDownloadsText}>View Downloaded Resumes</Text>
-      </TouchableOpacity>
-    </ScrollView>
+        <View style={styles.actionsCard}>
+          <View style={styles.resumeInfoSection}>
+            <Icon
+              name="file-document-outline"
+              size={40}
+              color={COLORS.primary}
+            />
+            <View style={styles.resumeInfoText}>
+              <Text style={styles.resumeName}>
+                {activeResume.basics.name || 'My Resume'}
+              </Text>
+              <Text style={styles.resumeDate}>
+                Last updated:{' '}
+                {new Date(activeResume.metadata.updatedAt).toLocaleDateString()}
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.actionIconsContainer}>
+            <TouchableOpacity
+              style={styles.actionIconButton}
+              onPress={handleDownload}
+              disabled={downloadStarted}
+              activeOpacity={0.7}>
+              <View
+                style={[styles.iconCircle, {backgroundColor: COLORS.primary}]}>
+                <Icon name="download" size={24} color={COLORS.text.light} />
+              </View>
+              <Text style={styles.iconText}>
+                {downloadStarted ? 'Saving...' : 'Save PDF'}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.actionIconButton}
+              onPress={handleEmail}
+              activeOpacity={0.7}>
+              <View
+                style={[
+                  styles.iconCircle,
+                  {backgroundColor: COLORS.secondary},
+                ]}>
+                <Icon
+                  name="email-outline"
+                  size={24}
+                  color={COLORS.text.light}
+                />
+              </View>
+              <Text style={styles.iconText}>Email</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.actionIconButton}
+              onPress={handleShare}
+              activeOpacity={0.7}>
+              <View
+                style={[styles.iconCircle, {backgroundColor: COLORS.accent}]}>
+                <Icon
+                  name="share-variant"
+                  size={24}
+                  color={COLORS.text.light}
+                />
+              </View>
+              <Text style={styles.iconText}>Share</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View style={styles.shareCard}>
+          <View style={styles.shareHeaderRow}>
+            <Icon name="account-group" size={24} color={COLORS.primary} />
+            <Text style={styles.shareTitle}>Share with friends</Text>
+          </View>
+
+          <Text style={styles.shareDescription}>
+            Help your friends create professional resumes by sharing this app
+            with them.
+          </Text>
+
+          <View style={styles.socialButtonsContainer}>
+            <TouchableOpacity
+              style={[styles.socialButton, {backgroundColor: '#3b5998'}]}
+              onPress={handleShare}
+              activeOpacity={0.7}>
+              <Icon name="facebook" size={20} color={COLORS.white} />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.socialButton, {backgroundColor: '#1DA1F2'}]}
+              onPress={handleShare}
+              activeOpacity={0.7}>
+              <Icon name="twitter" size={20} color={COLORS.white} />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.socialButton, {backgroundColor: '#25D366'}]}
+              onPress={handleShare}
+              activeOpacity={0.7}>
+              <Icon name="whatsapp" size={20} color={COLORS.white} />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.socialButton, {backgroundColor: '#0e76a8'}]}
+              onPress={handleShare}
+              activeOpacity={0.7}>
+              <Icon name="linkedin" size={20} color={COLORS.white} />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
