@@ -1,6 +1,10 @@
 import {v4 as uuidv4} from 'uuid';
 import {SocialLink} from './social.types';
 
+interface BaseItem {
+  id: string;
+  keywords?: string[];
+}
 export interface Metadata {
   id: string;
   templateId: string;
@@ -18,8 +22,7 @@ export interface Basics {
   socials: SocialLink[];
 }
 
-export interface WorkItem {
-  id: string;
+export interface WorkItem extends BaseItem {
   company: string;
   position: string;
   location: string;
@@ -30,8 +33,7 @@ export interface WorkItem {
   status: string;
 }
 
-export interface EducationItem {
-  id: string;
+export interface EducationItem extends BaseItem {
   institution: string;
   degree: string;
   startDate: string;
@@ -39,21 +41,38 @@ export interface EducationItem {
   gpa?: string;
 }
 
-export interface SkillItem {
-  id: string;
+export interface SkillItem extends BaseItem {
   name: string;
   level: string;
   keywords: string[];
 }
 
-export interface ProjectItem {
+export interface LinkItem {
+  id: string;
+  label: string;
+  url: string;
+  icon: string;
+  iconVariant?:
+    | 'material'
+    | 'octicon'
+    | 'fontawesome'
+    | 'ionicon'
+    | 'antdesign';
+}
+
+export interface ProjectItem extends BaseItem {
   id: string;
   name: string;
   description: string;
   url: string;
+  links: LinkItem[];
+  startDate?: string;
+  endDate?: string;
+  status: string;
+  current: boolean;
 }
 
-export interface CertificateItem {
+export interface CertificateItem extends BaseItem {
   id: string;
   name: string;
   authority: string;

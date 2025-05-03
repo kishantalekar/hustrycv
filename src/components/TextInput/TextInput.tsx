@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {FONTS} from '@/constants';
 import {COLORS, SPACING, BORDER_RADIUS, TYPOGRAPHY} from '@/theme';
 import {TextInputProps, TextInputVariant} from './TextInput.types';
+import {CustomIcon} from '../CustomIcon';
 import {Typography, TypographyVariant} from '../Typography';
 
 export const TextInput: React.FC<TextInputProps> = ({
@@ -22,6 +23,7 @@ export const TextInput: React.FC<TextInputProps> = ({
   onLeftIconPress,
   style,
   containerStyle,
+  iconVariant = 'material',
   ...props
 }) => {
   const isOutlined = variant === TextInputVariant.Outlined;
@@ -48,7 +50,8 @@ export const TextInput: React.FC<TextInputProps> = ({
             onPress={onLeftIconPress}
             disabled={!onLeftIconPress}
             style={styles.iconContainer}>
-            <Icon
+            <CustomIcon
+              variant={iconVariant}
               name={leftIcon}
               size={20}
               color={error ? COLORS.status.error : COLORS.text.secondary}

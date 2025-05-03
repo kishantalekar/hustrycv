@@ -7,6 +7,7 @@ import React from 'react';
 import {Dashboard} from '@/screens';
 import {PreviewScreen} from '@/screens/Preview/PreviewScreen';
 import {ResumeEditor} from '@/screens/ResumeEditor/ResumeEditor';
+import {ProjectConfigScreen} from '@/screens/ResumeEditor/screens/ProjectConfigScreen';
 import {
   ContentType,
   RichTextEditorScreen,
@@ -26,6 +27,10 @@ export type RootStackParamList = {
     itemId?: string; // ID for work experience or project items
   };
   SocialProfiles: undefined;
+  ProjectConfig: {
+    project: any;
+    updateProject: (id: string, project: any) => void;
+  };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -57,6 +62,11 @@ export const AppNavigator = () => {
           name="SocialProfiles"
           component={SocialProfilesScreen}
           options={{title: 'Social Profiles'}}
+        />
+        <Stack.Screen
+          name="ProjectConfig"
+          component={ProjectConfigScreen}
+          options={{title: 'Project Configuration'}}
         />
       </Stack.Navigator>
     </NavigationContainer>

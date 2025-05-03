@@ -1,7 +1,12 @@
 import {StyleSheet} from 'react-native';
 import {FONTS} from '@/constants';
+import {COLORS} from '@/theme';
 
 export const styles = StyleSheet.create({
+  configButton: {
+    marginVertical: 16,
+    backgroundColor: COLORS.primary,
+  },
   label: {
     fontSize: 14,
     fontFamily: FONTS.FIRA_SANS.REGULAR,
@@ -62,6 +67,8 @@ export const styles = StyleSheet.create({
     padding: 16,
     borderTopWidth: 1,
     borderTopColor: '#EEE',
+    display: 'flex',
+    gap: 8,
   },
   projectDetail: {
     fontSize: 14,

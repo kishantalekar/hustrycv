@@ -5,12 +5,12 @@ export interface DateInputRowProps {
   /**
    * The start date value
    */
-  startDate: string;
+  startDate?: string;
 
   /**
    * The end date value
    */
-  endDate: string;
+  endDate?: string;
 
   /**
    * Callback function when start date changes

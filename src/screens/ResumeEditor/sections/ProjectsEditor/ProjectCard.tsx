@@ -1,17 +1,17 @@
 import {View, TouchableOpacity, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {Button} from '@/components';
+import {Button, Checkbox, DateInputRow} from '@/components';
 import {HTMLPreview} from '@/components/HTMLPreview/HTMLPreview';
-import {Project} from '@/components/ResumePreview/ResumePreview.types';
 import {TextInput} from '@/components/TextInput';
-import {ProjectItem} from '@/store/useResumeStore';
+import {COLORS} from '@/theme';
+import {ProjectItem} from '@/types';
 import {styles} from './ProjectsEditor.styles';
 
 interface ProjectCardProps {
   project: ProjectItem;
   expandedItemId: string;
   toggleExpand: (id: string) => void;
-  updateProject: (id: string, project: Project) => void;
+  updateProject: (id: string, project: ProjectItem) => void;
   removeProject: (id: string) => void;
   navigation: any;
 }
@@ -54,6 +54,57 @@ export function ProjectCard({
               updateProject(project.id, {...project, name: text})
             }
           />
+          <DateInputRow
+            startDate={project.startDate}
+            endDate={project.endDate}
+            onStartDateChange={text =>
+              updateProject(project.id, {
+                ...project,
+                startDate: text,
+              })
+            }
+            onEndDateChange={text =>
+              updateProject(project.id, {
+                ...project,
+                endDate: text,
+              })
+            }
+            current={project.current}
+          />
+          <Checkbox
+            checked={project.current}
+            onValueChange={isCurrentlyWorking => {
+              updateProject(project.id, {
+                ...project,
+                current: isCurrentlyWorking,
+                endDate: isCurrentlyWorking ? 'Present' : '',
+              });
+            }}
+            label="I currently work here"
+            color={COLORS.primary}
+          />
+
+          {/* <Button
+            title="Configure Project"
+            onPress={() =>
+              navigation.navigate('ProjectConfig', {
+                id: project.id,
+              })
+            }
+            style={styles.configButton}
+          /> */}
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('ProjectConfig', {
+                id: project.id,
+              })
+            }>
+            <Text style={styles.descriptionPreview}>
+              {project?.links?.length
+                ? `${project?.links.length} project links added`
+                : 'tap to add project links'}
+            </Text>
+          </TouchableOpacity>
           <Text style={styles.label}>Description</Text>
           <TouchableOpacity
             onPress={() =>
@@ -71,14 +122,6 @@ export function ProjectCard({
               />
             </View>
           </TouchableOpacity>
-          <TextInput
-            label="Project URL"
-            placeholder="Enter project URL (optional)"
-            value={project.url}
-            onChangeText={text =>
-              updateProject(project.id, {...project, url: text})
-            }
-          />
 
           <Button
             title="Delete"

@@ -1,17 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
-import {
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Text,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import {View, ScrollView, KeyboardAvoidingView, Platform} from 'react-native';
 import {Button} from '@/components';
-import {HTMLPreview} from '@/components/HTMLPreview/HTMLPreview';
-import {TextInput} from '@/components/TextInput';
 import {AppNavigationProp} from '@/navigation/AppNavigator';
 import {useResumeStore} from '@/store/useResumeStore';
 import {WorkExperienceCard} from './components/WorkExperienceCard';
@@ -67,6 +57,7 @@ export const WorkExperienceEditor = () => {
                 endDate: '',
                 current: false,
                 description: '',
+                status: '',
               });
               setExpandedItems(prev => ({
                 ...prev,

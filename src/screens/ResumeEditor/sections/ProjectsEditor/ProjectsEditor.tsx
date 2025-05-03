@@ -48,6 +48,10 @@ export const ProjectsEditor = () => {
                 name: '',
                 description: '',
                 url: '',
+                status: '',
+                keywords: [],
+                links: [],
+                current: false,
               });
               setExpandedItemId(id);
             }}

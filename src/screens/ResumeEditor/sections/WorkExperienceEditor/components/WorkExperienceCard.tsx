@@ -1,9 +1,10 @@
 import React from 'react';
 import {View, TouchableOpacity, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {Button, DateInputRow} from '@/components';
+import {Button, DateInputRow, Checkbox} from '@/components';
 import {HTMLPreview} from '@/components/HTMLPreview/HTMLPreview';
 import {TextInput} from '@/components/TextInput';
+import {COLORS} from '@/theme';
 import {WorkItem} from '@/types';
 import {styles} from '../WorkExperienceEditor.styles';
 
@@ -102,27 +103,18 @@ export function WorkExperienceCard({
             }
             current={experience.current}
           />
-          <View style={styles.checkboxContainer}>
-            <TouchableOpacity
-              style={styles.checkbox}
-              onPress={() => {
-                const isCurrentlyWorking = !experience.current;
-                updateWorkExperience(experience.id, {
-                  ...experience,
-                  current: isCurrentlyWorking,
-                  endDate: isCurrentlyWorking ? 'Present' : '',
-                });
-              }}>
-              <Icon
-                name={
-                  experience.current ? 'check-box' : 'check-box-outline-blank'
-                }
-                size={24}
-                color="#FA6607"
-              />
-            </TouchableOpacity>
-            <Text style={styles.checkboxLabel}>I currently work here</Text>
-          </View>
+          <Checkbox
+            checked={experience.current}
+            onValueChange={isCurrentlyWorking => {
+              updateWorkExperience(experience.id, {
+                ...experience,
+                current: isCurrentlyWorking,
+                endDate: isCurrentlyWorking ? 'Present' : '',
+              });
+            }}
+            label="I currently work here"
+            color={COLORS.primary}
+          />
           <Text style={styles.label}>Description</Text>
           <TouchableOpacity
             onPress={() =>

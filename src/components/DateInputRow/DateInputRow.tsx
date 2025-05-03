@@ -1,7 +1,6 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
 import React, {useState} from 'react';
 import {View, Modal, TouchableOpacity, Text, Platform} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import {TextInput} from '@/components/TextInput';
 import {styles} from './DateInputRow.styles';
 import {DateInputRowProps} from './DateInputRow.types';

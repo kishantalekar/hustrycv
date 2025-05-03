@@ -5,7 +5,8 @@ export type IconVariant =
   | 'octicon'
   | 'fontawesome'
   | 'ionicon'
-  | 'antdesign';
+  | 'antdesign'
+  | 'ionicons';
 
 export interface CustomIconProps extends Omit<IconProps, 'name'> {
   variant?: IconVariant;

@@ -3,6 +3,7 @@ import {
   StyleProp,
   ViewStyle,
 } from 'react-native';
+import {IconVariant} from '../CustomIcon';
 
 export enum TextInputVariant {
   Outlined = 'outlined',
@@ -52,4 +53,5 @@ export interface TextInputProps extends RNTextInputProps {
   onLeftIconPress?: () => void;
 
   containerStyle?: StyleProp<ViewStyle>;
+  iconVariant?: IconVariant;
 }

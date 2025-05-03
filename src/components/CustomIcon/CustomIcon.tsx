@@ -17,7 +17,7 @@ export const CustomIcon: React.FC<CustomIconProps> = ({
     fontawesome: FontAwesome,
     ionicon: Ionicons,
     antdesign: AntDesign,
+    ionicons: Ionicons,
   }[variant];
-
   return <IconComponent name={name} {...props} />;
 };
