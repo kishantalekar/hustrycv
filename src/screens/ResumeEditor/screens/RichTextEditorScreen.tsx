@@ -6,7 +6,6 @@ import {Header} from '@/components/Header';
 import {RichTextEditor} from '@/components/RichTextEditor/RichTextEditor';
 import {RootStackParamList} from '@/navigation/AppNavigator';
 import {useResumeStore} from '@/store/useResumeStore';
-import {COLORS} from '@/theme';
 
 export type ContentType =
   | 'professional_summary'
@@ -17,7 +16,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'RichTextEditor'>;
 
 export const RichTextEditorScreen = ({route, navigation}: Props) => {
   const {initialContent, contentType, itemId} = route.params;
-  const {updateBasics, updateWorkExperience, updateProject} = useResumeStore();
+  const {updateBasics, updateWorkExperience} = useResumeStore();
 
   const handleContentChange = (text: string) => {
     switch (contentType) {

@@ -1,6 +1,6 @@
 import React from 'react';
 import {View} from 'react-native';
-import {LottieAnimation} from '../../components/LottieAnimation/LottieAnimation';
+import {LottieAnimation} from '@/components';
 import type {Meta, StoryObj} from '@storybook/react';
 
 const meta = {

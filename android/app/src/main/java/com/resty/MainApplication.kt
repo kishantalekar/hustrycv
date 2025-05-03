@@ -1,4 +1,4 @@
-package com.blueprintresume
+package com.resty
 
 import android.app.Application
 import com.facebook.react.PackageList

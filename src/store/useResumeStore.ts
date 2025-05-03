@@ -1,7 +1,6 @@
 import {v4 as uuidv4} from 'uuid';
 import {create} from 'zustand';
 import 'react-native-get-random-values';
-import {Basics} from '@/components/ResumePreview/ResumePreview.types';
 import {
   Resume,
   Metadata,
@@ -13,6 +12,7 @@ import {
   CustomSectionItem,
   Settings,
   CertificateItem,
+  Basics,
 } from '@/types';
 import {
   extendedMockResumeData,
@@ -82,58 +82,6 @@ interface ResumeState {
   // Settings
   updateSettings: (settings: Partial<Settings>) => void;
 }
-
-/**
- *
- * metadata: {
-    id: uuidv4(),
-    templateId: 'classic_1',
-    version: '1.0',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  basics: {
-    name: '',
-    email: '',
-    phone: '',
-    location: '',
-    linkedin: '',
-    github: '',
-    website: '',
-    summary: '',
-  },
-  sections: {
-    work: {
-      type: 'work',
-      visible: true,
-      items: [],
-    },
-    education: {
-      type: 'education',
-      visible: true,
-      items: [],
-    },
-    skills: {
-      type: 'skills',
-      visible: true,
-      items: [],
-    },
-    projects: {
-      type: 'projects',
-      visible: true,
-      items: [],
-    },
-    certifications: {
-      type: 'certifications',
-      visible: true,
-      items: [],
-    },
-    customSections: [],
-  },
- *
- */
-// Initial State -------------------------------------------------------------
-// @ts-ignore
 
 const initialState: ResumeState = {
   // @ts-ignore

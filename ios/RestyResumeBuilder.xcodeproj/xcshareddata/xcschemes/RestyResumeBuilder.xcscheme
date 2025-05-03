@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "blueprintresume.app"
-               BlueprintName = "blueprintresume"
-               ReferencedContainer = "container:blueprintresume.xcodeproj">
+               BuildableName = "RestyResumeBuilder.app"
+               BlueprintName = "RestyResumeBuilder"
+               ReferencedContainer = "container:RestyResumeBuilder.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "blueprintresumeTests.xctest"
-               BlueprintName = "blueprintresumeTests"
-               ReferencedContainer = "container:blueprintresume.xcodeproj">
+               BuildableName = "RestyResumeBuilderTests.xctest"
+               BlueprintName = "RestyResumeBuilderTests"
+               ReferencedContainer = "container:RestyResumeBuilder.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "blueprintresume.app"
-            BlueprintName = "blueprintresume"
-            ReferencedContainer = "container:blueprintresume.xcodeproj">
+            BuildableName = "RestyResumeBuilder.app"
+            BlueprintName = "RestyResumeBuilder"
+            ReferencedContainer = "container:RestyResumeBuilder.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "blueprintresume.app"
-            BlueprintName = "blueprintresume"
-            ReferencedContainer = "container:blueprintresume.xcodeproj">
+            BuildableName = "RestyResumeBuilder.app"
+            BlueprintName = "RestyResumeBuilder"
+            ReferencedContainer = "container:RestyResumeBuilder.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

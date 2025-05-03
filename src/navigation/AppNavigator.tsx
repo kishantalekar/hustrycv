@@ -11,6 +11,7 @@ import {
   ContentType,
   RichTextEditorScreen,
 } from '@/screens/ResumeEditor/screens/RichTextEditorScreen';
+import {SocialProfilesScreen} from '@/screens/ResumeEditor/screens/SocialProfilesScreen';
 import {navigationRef} from '@/utils/navigation';
 import DownloadedResumes from '../screens/DownloadedResumes/DownloadedResumes';
 
@@ -24,6 +25,7 @@ export type RootStackParamList = {
     contentType: ContentType;
     itemId?: string; // ID for work experience or project items
   };
+  SocialProfiles: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -50,6 +52,11 @@ export const AppNavigator = () => {
           name="RichTextEditor"
           component={RichTextEditorScreen}
           options={{title: 'Edit Summary'}}
+        />
+        <Stack.Screen
+          name="SocialProfiles"
+          component={SocialProfilesScreen}
+          options={{title: 'Social Profiles'}}
         />
       </Stack.Navigator>
     </NavigationContainer>

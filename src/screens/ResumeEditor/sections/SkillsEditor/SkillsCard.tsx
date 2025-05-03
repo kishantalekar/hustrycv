@@ -2,7 +2,7 @@ import {View, TouchableOpacity, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Button} from '@/components';
 import {TextInput} from '@/components/TextInput';
-import {SkillItem} from '@/store/useResumeStore';
+import {SkillItem} from '@/types';
 import {styles} from './SkillsEditor.styles';
 
 interface SkillCardProps {
@@ -30,7 +30,7 @@ export function SkillsCard({
         onPress={() => toggleExpand(skill.id)}>
         <View>
           <Text style={styles.skillName}>
-            {skill.name.length ? skill.name : 'Skill'}
+            {skill.name.length ? skill.name : 'Category'}
           </Text>
           <Text style={styles.skillLevel}>
             {skill.level.charAt(0).toUpperCase() + skill.level.slice(1)}
@@ -45,7 +45,7 @@ export function SkillsCard({
       {expandedItemId === skill.id && (
         <View style={styles.cardContent}>
           <TextInput
-            label="Skill Name"
+            label="Category"
             value={skill.name}
             onChangeText={text => updateSkill(skill.id, {...skill, name: text})}
           />
@@ -70,7 +70,7 @@ export function SkillsCard({
             ))}
           </View>
           <View style={styles.keywordsSection}>
-            <Text style={styles.keywordsTitle}>Keywords:</Text>
+            <Text style={styles.keywordsTitle}>Skills:</Text>
             <View style={styles.keywordsList}>
               {skill.keywords.map((keyword, index) => (
                 <View key={index} style={styles.keywordItem}>
@@ -90,7 +90,7 @@ export function SkillsCard({
           </View>
           <View style={styles.keywordsContainer}>
             <TextInput
-              label="Add Keyword"
+              label="Add Skill"
               helperText="Press enter to add"
               value={newKeyword}
               onChangeText={setNewKeyword}

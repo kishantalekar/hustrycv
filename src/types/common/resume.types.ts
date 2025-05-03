@@ -1,4 +1,5 @@
 import {v4 as uuidv4} from 'uuid';
+import {SocialLink} from './social.types';
 
 export interface Metadata {
   id: string;
@@ -13,10 +14,8 @@ export interface Basics {
   email: string;
   phone: string;
   location: string;
-  linkedin: string;
-  github: string;
-  website: string;
   summary: string;
+  socials: SocialLink[];
 }
 
 export interface WorkItem {
@@ -105,9 +104,8 @@ export const createInitialResume = () => ({
     email: '',
     phone: '',
     location: '',
-    linkedin: '',
-    github: '',
-    website: '',
+
+    socials: [],
     summary: '',
   },
   sections: {

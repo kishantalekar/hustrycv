@@ -7,7 +7,6 @@ import {
   Platform,
   TouchableOpacity,
   View,
-  useWindowDimensions,
 } from 'react-native';
 import {Card, Text, Divider} from 'react-native-paper';
 import {HTMLPreview} from '@/components/HTMLPreview/HTMLPreview';
@@ -20,7 +19,6 @@ import {globalStyles} from '@/styles/globalStyles';
 export const PersonalInfoEditor = () => {
   const {getActiveResume, updateBasics} = useResumeStore();
   const navigation = useNavigation<AppNavigationProp>();
-  const {width} = useWindowDimensions();
   const basics = getActiveResume().basics;
   return (
     <KeyboardAvoidingView
@@ -68,25 +66,18 @@ export const PersonalInfoEditor = () => {
             />
 
             <Divider style={styles.divider} />
+            {/* show the social profiles here  */}
             <Text style={styles.subsectionTitle}>Professional Profiles</Text>
-
-            <TextInput
-              label="LinkedIn"
-              placeholder="LinkedIn profile URL"
-              value={basics.linkedin}
-              onChangeText={text => updateBasics({linkedin: text})}
-              style={styles.input}
-              leftIcon="link"
-            />
-
-            <TextInput
-              label="GitHub"
-              placeholder="GitHub profile URL"
-              value={basics.github}
-              onChangeText={text => updateBasics({github: text})}
-              style={styles.input}
-              leftIcon="code"
-            />
+            <TouchableOpacity
+              onPress={() => navigation.navigate('SocialProfiles')}>
+              <Text style={styles.summaryPreview}>
+                {basics?.socials?.length
+                  ? `${basics?.socials?.length} profile${
+                      basics?.socials?.length !== 1 ? 's' : ''
+                    } added`
+                  : 'Tap to add profile'}
+              </Text>
+            </TouchableOpacity>
 
             <Divider style={styles.divider} />
             <Text style={styles.subsectionTitle}>Professional Summary</Text>

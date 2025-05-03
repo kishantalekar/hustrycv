@@ -1,5 +1,8 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Header} from '@/components/Header';
+import {globalStyles} from '@/styles/globalStyles';
 import {styles} from './FormScreen.styles';
 import {navigate} from '../../../utils/navigation';
 
@@ -44,20 +47,22 @@ const sections: SectionsInterface[] = [
 
 const FormScreen = () => {
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.header}>Resume Sections</Text>
-      <View style={styles.sectionsContainer}>
-        {sections.map(section => (
-          <TouchableOpacity
-            key={section.id}
-            style={styles.sectionButton}
-            onPress={() => navigate(section.screenName)}>
-            <Text style={styles.sectionTitle}>{section.title}</Text>
-            <Text style={styles.arrow}>→</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-    </ScrollView>
+    <SafeAreaView style={globalStyles.container}>
+      <ScrollView style={styles.container}>
+        <Header title="My Resume" leftIcon="home" iconVariant="octicon" />
+        <View style={styles.sectionsContainer}>
+          {sections.map(section => (
+            <TouchableOpacity
+              key={section.id}
+              style={styles.sectionButton}
+              onPress={() => navigate(section.screenName)}>
+              <Text style={styles.sectionTitle}>{section.title}</Text>
+              <Text style={styles.arrow}>→</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
