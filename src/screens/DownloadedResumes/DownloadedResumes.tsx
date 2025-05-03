@@ -12,7 +12,7 @@ interface DownloadedResume {
   createdDate: Date;
 }
 
-const DownloadedResumes = () => {
+export const DownloadedResumes = () => {
   const [resumes, setResumes] = useState<DownloadedResume[]>([]);
 
   useEffect(() => {
@@ -81,5 +81,3 @@ const DownloadedResumes = () => {
     </View>
   );
 };
-
-export default DownloadedResumes;

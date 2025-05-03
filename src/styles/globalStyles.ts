@@ -72,7 +72,7 @@ export const globalStyles = StyleSheet.create({
 
   // Divider
   divider: {
-    marginVertical: 24,
+    marginVertical: SPACING.sectionGap,
     height: 1,
     backgroundColor: COLORS.border,
   },

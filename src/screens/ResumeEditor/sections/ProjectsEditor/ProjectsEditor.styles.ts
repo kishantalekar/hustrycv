@@ -21,6 +21,12 @@ export const styles = StyleSheet.create({
     marginBottom: 12,
     backgroundColor: '#F9F9F9',
   },
+  placeholder: {
+    fontSize: 14,
+    fontFamily: FONTS.FIRA_SANS.REGULAR,
+    color: '#666',
+    lineHeight: 20,
+  },
   container: {
     flex: 1,
     backgroundColor: '#F5F5F5',

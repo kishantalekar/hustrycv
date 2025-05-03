@@ -1,7 +1,10 @@
 import {View, TouchableOpacity, Text} from 'react-native';
+import {Divider} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {DateInputRow} from '@/components';
+import {Checkbox, DateInputRow} from '@/components';
 import {TextInput} from '@/components/TextInput';
+import {globalStyles} from '@/styles/globalStyles';
+import {COLORS} from '@/theme';
 import {EducationItem} from '@/types';
 import {styles} from './EducationEditor.styles';
 
@@ -55,7 +58,19 @@ export function EducationCard({
               updateEducation(edu.id, {...edu, degree: text})
             }
           />
-
+          <TextInput
+            label="Location"
+            value={edu.location}
+            onChangeText={text =>
+              updateEducation(edu.id, {
+                ...edu,
+                location: text,
+              })
+            }
+            leftIcon="location-on"
+            helperText="Optional"
+          />
+          <Divider style={globalStyles.divider} />
           <DateInputRow
             startDate={edu.startDate}
             endDate={edu.endDate}
@@ -71,10 +86,24 @@ export function EducationCard({
                 endDate: text,
               })
             }
+            current={edu.current}
           />
+          <Checkbox
+            checked={edu.current}
+            onValueChange={isCurrentlyStudying => {
+              updateEducation(edu.id, {
+                ...edu,
+                current: isCurrentlyStudying,
+                endDate: isCurrentlyStudying ? 'Present' : edu.endDate,
+              });
+            }}
+            label="I am currently studying here"
+            color={COLORS.primary}
+          />
+          <Divider style={globalStyles.divider} />
           <TextInput
             label="GPA"
-            helperText="Optional"
+            helperText="Enter your GPA or %"
             value={edu.gpa}
             onChangeText={text => updateEducation(edu.id, {...edu, gpa: text})}
             keyboardType="decimal-pad"

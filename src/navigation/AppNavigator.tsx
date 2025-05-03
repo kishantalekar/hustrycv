@@ -4,7 +4,7 @@ import {
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
 import React from 'react';
-import {Dashboard} from '@/screens';
+import {Dashboard, KeywordsEditor, SocialProfilesScreen} from '@/screens';
 import {PreviewScreen} from '@/screens/Preview/PreviewScreen';
 import {ResumeEditor} from '@/screens/ResumeEditor/ResumeEditor';
 import {ProjectConfigScreen} from '@/screens/ResumeEditor/screens/ProjectConfigScreen';
@@ -12,9 +12,8 @@ import {
   ContentType,
   RichTextEditorScreen,
 } from '@/screens/ResumeEditor/screens/RichTextEditorScreen';
-import {SocialProfilesScreen} from '@/screens/ResumeEditor/screens/SocialProfilesScreen';
 import {navigationRef} from '@/utils/navigation';
-import DownloadedResumes from '../screens/DownloadedResumes/DownloadedResumes';
+// import {DownloadedResumes} from '@/screens/DownloadedResumes/DownloadedResumes';
 
 export type RootStackParamList = {
   Dashboard: undefined;
@@ -28,8 +27,11 @@ export type RootStackParamList = {
   };
   SocialProfiles: undefined;
   ProjectConfig: {
-    project: any;
-    updateProject: (id: string, project: any) => void;
+    id: string;
+  };
+  KeywordsEditor: {
+    id: string;
+    type: 'project' | 'work';
   };
 };
 
@@ -45,14 +47,14 @@ export const AppNavigator = () => {
         <Stack.Screen name="Dashboard" component={Dashboard} />
         <Stack.Screen name="ResumeEditor" component={ResumeEditor} />
         <Stack.Screen name="Preview" component={PreviewScreen} />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="DownloadedResumes"
           component={DownloadedResumes}
           options={{
             title: 'Downloaded Resumes',
             headerShown: true,
           }}
-        />
+        /> */}
         <Stack.Screen
           name="RichTextEditor"
           component={RichTextEditorScreen}
@@ -66,6 +68,11 @@ export const AppNavigator = () => {
         <Stack.Screen
           name="ProjectConfig"
           component={ProjectConfigScreen}
+          options={{title: 'Project Configuration'}}
+        />
+        <Stack.Screen
+          name="KeywordsEditor"
+          component={KeywordsEditor}
           options={{title: 'Project Configuration'}}
         />
       </Stack.Navigator>

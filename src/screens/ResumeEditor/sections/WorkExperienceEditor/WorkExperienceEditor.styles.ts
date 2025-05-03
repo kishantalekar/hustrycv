@@ -165,6 +165,12 @@ export const styles = StyleSheet.create({
     marginBottom: 16,
     minHeight: 40,
   },
+  placeholder: {
+    fontSize: 14,
+    fontFamily: FONTS.FIRA_SANS.REGULAR,
+    color: '#666',
+    lineHeight: 20,
+  },
   checkboxContainer: {
     flexDirection: 'row',
     alignItems: 'center',

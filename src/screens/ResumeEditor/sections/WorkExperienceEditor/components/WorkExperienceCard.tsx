@@ -1,9 +1,15 @@
 import React from 'react';
 import {View, TouchableOpacity, Text} from 'react-native';
+import {Divider} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {Button, DateInputRow, Checkbox} from '@/components';
-import {HTMLPreview} from '@/components/HTMLPreview/HTMLPreview';
-import {TextInput} from '@/components/TextInput';
+import {
+  Button,
+  DateInputRow,
+  Checkbox,
+  HTMLPreview,
+  TextInput,
+} from '@/components';
+import {globalStyles} from '@/styles';
 import {COLORS} from '@/theme';
 import {WorkItem} from '@/types';
 import {styles} from '../WorkExperienceEditor.styles';
@@ -86,6 +92,7 @@ export function WorkExperienceCard({
             leftIcon="location-on"
             helperText="Optional"
           />
+          <Divider style={globalStyles.divider} />
           <DateInputRow
             startDate={experience.startDate}
             endDate={experience.endDate}
@@ -115,6 +122,21 @@ export function WorkExperienceCard({
             label="I currently work here"
             color={COLORS.primary}
           />
+          <Divider style={globalStyles.divider} />
+          <Text style={styles.label}>Technical skills</Text>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('KeywordsEditor', {
+                id: experience.id,
+                type: 'work',
+              })
+            }>
+            <Text style={[styles.descriptionPreview, styles.placeholder]}>
+              {experience?.keywords?.length
+                ? `${experience?.keywords.length} skills added`
+                : 'tap to add technical skills'}
+            </Text>
+          </TouchableOpacity>
           <Text style={styles.label}>Description</Text>
           <TouchableOpacity
             onPress={() =>

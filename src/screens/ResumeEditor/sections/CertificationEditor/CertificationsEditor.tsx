@@ -3,21 +3,21 @@ import {View, ScrollView, KeyboardAvoidingView, Platform} from 'react-native';
 import {Button} from '@/components';
 import {useResumeStore} from '@/store/useResumeStore';
 import {globalStyles} from '@/styles/globalStyles';
-import {SkillsCard} from './SkillsCard';
-import {styles} from './SkillsEditor.styles';
+import {styles} from './CertificationEditor.styles';
+import {CertificationCard} from './components/CertificationCard';
 
-export const SkillsEditor = () => {
-  const {getActiveResume, addSkill, updateSkill, removeSkill} =
-    useResumeStore();
-  const skills = getActiveResume().sections.skills;
+export const CertificationsEditor = () => {
+  const {
+    getActiveResume,
+    addCertification,
+    removeCertification,
+    updateCertification,
+  } = useResumeStore();
+  const certifications = getActiveResume().sections.certifications;
   const [expandedItemId, setExpandedItemId] = useState<string>('');
 
-  const [newKeyword, setNewKeyword] = useState('');
-
   const toggleExpand = (id: string) => {
-    setExpandedItemId(
-      prev => (prev === id ? '' : id), // prev === id? '' : prev
-    );
+    setExpandedItemId(prev => (prev === id ? '' : id));
   };
 
   return (
@@ -26,28 +26,28 @@ export const SkillsEditor = () => {
       style={globalStyles.keyboardAvoidingView}>
       <ScrollView style={styles.container}>
         <View style={styles.section}>
-          {skills?.items.map(skill => (
-            <SkillsCard
-              key={skill.id}
-              skill={skill}
-              expandedItemId={expandedItemId}
+          {certifications?.items.map(cert => (
+            <CertificationCard
+              key={cert.id}
+              cert={cert}
               toggleExpand={toggleExpand}
-              updateSkill={updateSkill}
-              removeSkill={removeSkill}
-              newKeyword={newKeyword}
-              setNewKeyword={setNewKeyword}
+              expandedItemId={expandedItemId}
+              updateCertification={updateCertification}
+              removeCertification={removeCertification}
             />
           ))}
         </View>
 
         <View style={styles.section}>
           <Button
-            title="Add New Skill"
+            title="Add New Certification"
             onPress={() => {
-              const id = addSkill({
+              const id = addCertification({
                 name: '',
-                level: 'intermediate',
-                keywords: [],
+                authority: '',
+                certificationUrlOrCode: '',
+                description: '',
+                date: '',
               });
               setExpandedItemId(id);
             }}

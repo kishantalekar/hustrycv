@@ -1,6 +1,6 @@
 import {View, TouchableOpacity, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {Button} from '@/components';
+import {Button, KeywordItem} from '@/components';
 import {TextInput} from '@/components/TextInput';
 import {SkillItem} from '@/types';
 import {styles} from './SkillsEditor.styles';
@@ -72,20 +72,19 @@ export function SkillsCard({
           <View style={styles.keywordsSection}>
             <Text style={styles.keywordsTitle}>Skills:</Text>
             <View style={styles.keywordsList}>
-              {skill.keywords.map((keyword, index) => (
-                <View key={index} style={styles.keywordItem}>
-                  <Text style={styles.skillDetail}>• {keyword}</Text>
-                  <TouchableOpacity
-                    onPress={() =>
+              {skill?.keywords &&
+                skill?.keywords?.map((keyword, index) => (
+                  <KeywordItem
+                    key={index}
+                    keyword={keyword}
+                    onRemove={() =>
                       updateSkill(skill.id, {
                         ...skill,
-                        keywords: skill.keywords.filter((_, i) => i !== index),
+                        keywords: skill.keywords?.filter((_, i) => i !== index),
                       })
-                    }>
-                    <Icon name="close" size={20} color="#666" />
-                  </TouchableOpacity>
-                </View>
-              ))}
+                    }
+                  />
+                ))}
             </View>
           </View>
           <View style={styles.keywordsContainer}>
@@ -98,18 +97,14 @@ export function SkillsCard({
                 if (newKeyword.trim()) {
                   updateSkill(skill.id, {
                     ...skill,
-                    keywords: [...skill.keywords, newKeyword.trim()],
+                    keywords: [...(skill.keywords ?? []), newKeyword.trim()],
                   });
                   setNewKeyword('');
                 }
               }}
             />
           </View>
-          {/* <TouchableOpacity
-            style={styles.deleteButton}
-            onPress={() => removeSkill(skill.id)}>
-            <Text style={styles.deleteButtonText}>Delete</Text>
-                  </TouchableOpacity> */}
+
           <Button
             title="Delete"
             onPress={() => removeSkill(skill.id)}

@@ -6,3 +6,7 @@ export * from './TemplateSelector/TemplateSelector';
 export * from './ResumePreview';
 export * from './Checkbox';
 export * from './TextInput';
+export * from './KeywordItem';
+export * from './CustomIcon';
+export * from './DateInput';
+export * from './HTMLPreview/HTMLPreview';

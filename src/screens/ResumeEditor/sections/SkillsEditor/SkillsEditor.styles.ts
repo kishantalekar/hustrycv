@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {FONTS} from '@/constants';
+import {SPACING} from '@/theme';
 
 export const styles = StyleSheet.create({
   container: {
@@ -18,36 +19,41 @@ export const styles = StyleSheet.create({
   },
   skillCard: {
     backgroundColor: 'white',
-    borderRadius: 8,
-    marginBottom: 12,
+    borderRadius: 12,
+    marginBottom: 16,
     overflow: 'hidden',
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowOffset: {width: 0, height: 4},
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 5,
+    borderWidth: 1,
+    borderColor: '#F0F0F0',
   },
   cardHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    padding: 16,
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#FAFAFA',
   },
   skillName: {
-    fontSize: 16,
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
-    color: '#333',
-    marginBottom: 4,
+    fontSize: 18,
+    fontFamily: FONTS.FIRA_SANS.MEDIUM,
+    color: '#1A1A1A',
+    marginBottom: 6,
   },
   skillLevel: {
     fontSize: 14,
     fontFamily: FONTS.FIRA_SANS.REGULAR,
-    color: '#666',
+    color: '#FA6607',
+    opacity: 0.9,
   },
   cardContent: {
-    padding: 16,
+    padding: 20,
     borderTopWidth: 1,
-    borderTopColor: '#EEE',
+    borderTopColor: '#F0F0F0',
+    backgroundColor: '#FFFFFF',
   },
   skillDetail: {
     fontSize: 14,
@@ -56,18 +62,19 @@ export const styles = StyleSheet.create({
     marginBottom: 8,
   },
   keywordsSection: {
-    marginTop: 8,
+    marginTop: 16,
+    borderRadius: 8,
   },
   keywordsTitle: {
-    fontSize: 14,
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
-    color: '#666',
-    marginBottom: 8,
+    fontSize: 16,
+    fontFamily: FONTS.FIRA_SANS.MEDIUM,
+    color: '#1A1A1A',
+    marginBottom: 12,
   },
   keywordsList: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
+    gap: SPACING.sm,
   },
   keywordItem: {
     flexDirection: 'row',
@@ -146,23 +153,27 @@ export const styles = StyleSheet.create({
   levelSelector: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
-    marginBottom: 16,
+    gap: 12,
+    marginBottom: 24,
+    marginTop: 8,
   },
   levelChip: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 20,
-    backgroundColor: '#F0F0F0',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 25,
+    backgroundColor: '#F5F5F5',
     marginRight: 8,
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
   },
   selectedLevelChip: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#FA6607',
+    borderColor: '#FA6607',
   },
   levelChipText: {
     color: '#666',
-    fontSize: 14,
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
+    fontSize: 15,
+    fontFamily: FONTS.FIRA_SANS.MEDIUM,
   },
   selectedLevelChipText: {
     color: 'white',

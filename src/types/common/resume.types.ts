@@ -39,12 +39,14 @@ export interface EducationItem extends BaseItem {
   startDate: string;
   endDate: string;
   gpa?: string;
+  current: boolean;
+  status?: string;
+  location?: string;
 }
 
 export interface SkillItem extends BaseItem {
   name: string;
   level: string;
-  keywords: string[];
 }
 
 export interface LinkItem {
@@ -78,6 +80,7 @@ export interface CertificateItem extends BaseItem {
   authority: string;
   certificationUrlOrCode: string;
   description: string;
+  date: string;
 }
 export interface CustomSectionItem {
   id: string;

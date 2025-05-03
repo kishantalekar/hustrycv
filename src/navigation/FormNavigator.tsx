@@ -8,9 +8,9 @@ import {
   EducationEditor,
   ProjectsEditor,
   SkillsEditor,
+  CertificationsEditor,
+  PersonalInfoEditor,
 } from '@/screens/ResumeEditor/sections';
-import {CertificationsEditor} from '@/screens/ResumeEditor/sections/CertificationsEditor';
-import {PersonalInfoEditor} from '@/screens/ResumeEditor/sections/PersonalInfoEditor';
 import FormScreen from '../screens/ResumeEditor/screens/FormScreen';
 
 const Stack = createNativeStackNavigator();
