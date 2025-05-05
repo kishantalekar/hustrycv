@@ -4,7 +4,6 @@ export const getTechnicalStyles = () => {
       width: 210mm;
       min-height: 297mm;
       background: white;
-      box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
     }
     
     .content-grid {

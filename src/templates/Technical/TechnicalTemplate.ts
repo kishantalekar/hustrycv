@@ -8,6 +8,8 @@ import {getSummaryHTML} from './SummarySection';
 import {getTechnicalStyles} from './technicalStyles';
 import {getTechStackHTML} from './TechStackSection';
 import {getWorkExperienceHTML} from './WorkExperienceSection';
+import {certificationsSectionStyles} from './CertificationsSection.styles';
+import {educationSectionStyles} from './EducationSection.styles';
 
 export const getTechnicalResumeHTML = (resumeData: Resume): string => {
   if (!resumeData) {
@@ -144,6 +146,8 @@ export const getTechnicalResumeHTML = (resumeData: Resume): string => {
             font-weight: 500;
             border: 1px solid #E2E8F0;
           }
+            ${certificationsSectionStyles}
+            ${educationSectionStyles}
         </style>
       </head>
       <body>
@@ -181,48 +185,11 @@ export const getTechnicalResumeHTML = (resumeData: Resume): string => {
               <!-- Tech Stack Section -->
               ${skills?.items.length ? getTechStackHTML(skills) : ''}
               
-              <!-- Contact Information Section -->
-              <div class="section">
-                <h2 class="section-title">Contact</h2>
-                <div class="contact-list">
-                  ${
-                    contactData.email
-                      ? `<div class="contact-item"><span class="contact-label">Email:</span> ${contactData.email}</div>`
-                      : ''
-                  }
-                  ${
-                    contactData.phone
-                      ? `<div class="contact-item"><span class="contact-label">Phone:</span> ${contactData.phone}</div>`
-                      : ''
-                  }
-                
-                </div>
-              </div>
+            
               
-              <!-- Skills Section -->
-              ${
-                resumeData.sections?.skills?.items.length
-                  ? getSkillsHTML(resumeData.sections.skills)
-                  : ''
-              }
+            
               
-              <!-- Technical Achievements Section -->
-              <div class="section">
-                <h2 class="section-title">Achievements</h2>
-                <div class="achievements-list">
-                  ${achievementsData
-                    .map(
-                      achievement => `
-                    <div class="achievement-item">
-                      <div class="achievement-metric">${achievement.metric}</div>
-                      <div class="achievement-description">${achievement.description}</div>
-                    </div>
-                  `,
-                    )
-                    .join('')}
-                </div>
-              </div>
-              
+            
               <!-- Certifications Section -->
               ${
                 resumeData.sections?.certifications?.items.length

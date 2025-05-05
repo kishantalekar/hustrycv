@@ -29,27 +29,12 @@ export const getMinimalistResumeHTML = (resumeData: Resume): string => {
     ],
   };
 
-  const interestsData = {
-    items: [
-      {name: 'Open Source Development'},
-      {name: 'Machine Learning'},
-      {name: 'UI/UX Design'},
-      {name: 'Tech Blogging'},
-    ],
-  };
-
   const contactData = resumeData.basics
     ? {
         email: resumeData.basics.email,
         phone: resumeData.basics.phone,
       }
     : {};
-
-  const metricsData = [
-    {value: '5+', label: 'Years Experience'},
-    {value: '20+', label: 'Projects Completed'},
-    {value: '10+', label: 'Open Source Contributions'},
-  ];
 
   return `
     <html>
@@ -191,22 +176,7 @@ export const getMinimalistResumeHTML = (resumeData: Resume): string => {
                   : ''
               }
               
-              <!-- Languages Section -->
-              <div class="section">
-                <h2 class="section-title">Languages</h2>
-                <div class="languages-list">
-                  ${languagesData.items
-                    .map(
-                      item => `
-                    <div class="language-item">
-                      <span class="language-name">${item.name}</span>
-                      <span class="language-level">${item.level}</span>
-                    </div>
-                  `,
-                    )
-                    .join('')}
-                </div>
-              </div>
+            
               
               <!-- Certifications Section -->
               ${
@@ -215,42 +185,7 @@ export const getMinimalistResumeHTML = (resumeData: Resume): string => {
                   : ''
               }
               
-              <!-- Key Metrics Section -->
-              <div class="section">
-                <h2 class="section-title">Key Metrics</h2>
-                <div class="metrics-list">
-                  ${metricsData
-                    .map(
-                      metric => `
-                    <div class="metric-item">
-                      <span class="metric-value">${metric.value}</span>
-                      <span class="metric-label">${metric.label}</span>
-                    </div>
-                  `,
-                    )
-                    .join('')}
-                </div>
-              </div>
               
-              <!-- Interests Section -->
-              <div class="section">
-                <h2 class="section-title">Interests</h2>
-                <div class="interests-list">
-                  ${interestsData.items
-                    .map(
-                      item => `
-                    <div class="interest-item">${item.name}</div>
-                  `,
-                    )
-                    .join('')}
-                </div>
-              </div>
-              
-              <!-- References Section -->
-              <div class="section">
-                <h2 class="section-title">References</h2>
-                <p style="font-size: 0.85rem; font-style: italic; color: #666;">Available upon request</p>
-              </div>
             </div>
           </div>
         </div>

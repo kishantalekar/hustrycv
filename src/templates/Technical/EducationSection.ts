@@ -1,40 +1,39 @@
-import { Section } from '../../components/ResumePreview/ResumePreview.types';
+import {EducationItem, Section} from '@/types';
 
-export const getEducationHTML = (education: Section): string => {
-  if (!education.items.length) {return '';}
+export const getEducationHTML = (education: Section<EducationItem>): string => {
+  if (!education.items.length) {
+    return '';
+  }
 
   return `
     <div class="section">
-      <h2 class="section-title">${education.title || 'Education'}</h2>
+      <h2 class="section-title">Education</h2>
       ${education.items
         .map(
-          (item) => `
+          item => `
         <div class="education-item">
           <div class="education-header">
-            <div class="education-degree">${item.studyType || ''} ${
-            item.area ? `in ${item.area}` : ''
-          }</div>
+            <div class="education-title">${item.degree || ''}</div>
             <div class="education-date">${item.startDate || ''} - ${
-            item.endDate || 'Present'
+            item.current ? 'Present' : item.endDate || ''
           }</div>
           </div>
-          <div class="education-institution">${item.institution || ''} ${
-            item.location ? `• ${item.location}` : ''
-          }</div>
-          ${
-            item.score
-              ? `<div class="education-description">GPA: ${item.score}</div>`
-              : ''
-          }
-          ${
-            item.courses && item.courses.length
-              ? `
-            <div class="education-description">
-              <strong>Relevant Coursework:</strong> ${item.courses.join(', ')}
+          <div class="education-details">
+            <div class="education-institution">
+              <span class="institution-name">${item.institution || ''}</span>
+              ${
+                item.location
+                  ? `<span class="education-location">• ${item.location}</span>`
+                  : ''
+              }
             </div>
-          `
-              : ''
-          }
+            ${
+              item.gpa
+                ? `<div class="education-gpa">GPA: ${item.gpa}</div>`
+                : ''
+            }
+           
+          </div>
         </div>
       `,
         )
