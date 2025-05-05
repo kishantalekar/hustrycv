@@ -15,24 +15,60 @@ export type ContentType =
 type Props = NativeStackScreenProps<RootStackParamList, 'RichTextEditor'>;
 
 export const RichTextEditorScreen = ({route, navigation}: Props) => {
-  const {initialContent, contentType, itemId} = route.params;
-  const {updateBasics, updateWorkExperience} = useResumeStore();
+  const {contentType, itemId} = route.params;
+  const {updateBasics, updateWorkExperience, updateProject, getActiveResume} =
+    useResumeStore();
+  const activeResume = getActiveResume();
+  const getInitialContent = () => {
+    if (!activeResume) {
+      return '';
+    }
 
-  const handleContentChange = (text: string) => {
     switch (contentType) {
       case 'professional_summary':
-        updateBasics({summary: text});
-        break;
+        return activeResume.basics.summary ?? '';
       case 'project_description':
-        // Handle project description update
-        break;
+        return (
+          activeResume.sections.projects?.items.find(item => item.id === itemId)
+            ?.description ?? ''
+        );
       case 'work_description':
-        if (itemId) {
-          updateWorkExperience(itemId, {description: text});
-        }
-        break;
+        return (
+          activeResume.sections.work.items.find(item => item.id === itemId)
+            ?.description ?? ''
+        );
       default:
-        console.warn('Unknown content type:', contentType);
+        return '';
+    }
+  };
+
+  const initialContent = getInitialContent();
+
+  const handleContentChange = (text: string) => {
+    if (!activeResume || !text) {
+      return;
+    }
+
+    try {
+      switch (contentType) {
+        case 'professional_summary':
+          updateBasics({summary: text});
+          break;
+        case 'project_description':
+          if (itemId) {
+            updateProject(itemId, {description: text});
+          }
+          break;
+        case 'work_description':
+          if (itemId) {
+            updateWorkExperience(itemId, {description: text});
+          }
+          break;
+        default:
+          console.warn('Unhandled content type:', contentType);
+      }
+    } catch (error) {
+      console.error('Error updating content:', error);
     }
   };
 
@@ -48,7 +84,7 @@ export const RichTextEditorScreen = ({route, navigation}: Props) => {
         return 'Edit Content';
     }
   };
-
+  console.log('initialContent', initialContent);
   return (
     <SafeAreaView style={styles.container}>
       <Header

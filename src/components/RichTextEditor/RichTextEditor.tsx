@@ -26,14 +26,12 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
     onChange: () => {
       if (onChangeContent && editor) {
         editor.getHTML().then(html => {
-          console.log('html', html);
           return onChangeContent(html);
         });
       }
     },
     bridgeExtensions: TenTapStartKit,
   });
-
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

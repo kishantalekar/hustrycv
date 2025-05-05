@@ -1,21 +1,42 @@
-import { Basics } from '../../components/ResumePreview/ResumePreview.types';
-import { getResumeStyles, SPACING } from '../styles/resumeStyles';
+import { Basics } from "@/types";
+import { getResumeStyles, SPACING } from "../styles/resumeStyles";
+import { getSocialIcon, SocialIconType } from "../icons";
 
+// TODO: need to add icons here for each social
 export const getPersonalInfoHTML = (basics: Basics) => {
   const styles = getResumeStyles();
-  const links = [basics.email, basics.linkedin, basics.github]
-    .map((link) => `<a href="${link}" style="${styles.link}">${link}</a>`)
-    .join(' | ');
+  const links = basics.socials
+    .map(
+      (social) =>
+        `<span style="display: inline-flex; align-items: center; gap: 4px;">
+          <a href="${social.url}" style="${
+          styles.link
+        }; display: inline-flex; align-items: center; gap: 4px;">
+            ${getSocialIcon(social.icon)}
+            ${social.label}
+          </a>
+        </span>`
+    )
+    .join(" | ");
+
+  const phoneEmail = [basics.phone, basics.email]
+    .map(
+      (item) =>
+        `<span style="display: inline-flex; align-items: center; gap: 4px;">
+          <a href="${item}" style="${styles.link}; display: inline-flex; align-items: center; gap: 4px;">
+            ${item}
+          </a>
+        </span>`
+    )
+    .join(" | ");
   return `
   <div class="text-center mb-16">
     <h1 class="header">
       ${basics.name}
     </h1>
-    <div class="text-regular" style="${styles.small}; margin: ${SPACING.sm}px 0;">
-      ${basics.phone} |
-      ${links}
+    <div class="text-regular" style="${styles.small}; margin: ${SPACING.sm}px 0; display: flex; gap: 4pt; justify-content: center; align-items: center; flex-wrap: wrap;">
+      ${phoneEmail} | ${links}
     </div>
-
   </div>
 `;
 };

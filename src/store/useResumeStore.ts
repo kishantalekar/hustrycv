@@ -15,8 +15,8 @@ import {
   Basics,
 } from '@/types';
 import {
-  extendedMockResumeData,
-  mockResumeData,
+  // marketingResumeData,
+  updatedMockResumeData,
   // mockResumeData,
 } from '../assets/resume_mock_data';
 // https:chat.deepseek.com/a/chat/s/608ca039-1c33-4769-af31-fec567a8ef63 for section up and down schema
@@ -83,21 +83,19 @@ interface ResumeState {
   updateSettings: (settings: Partial<Settings>) => void;
 }
 
-const initialState: ResumeState = {
-  // @ts-ignore
-  resumes: [extendedMockResumeData, mockResumeData],
-  activeResumeId: uuidv4(),
+const initialState = [updatedMockResumeData];
+
+// Store Implementation ------------------------------------------------------
+export const useResumeStore = create<ResumeState>((set, get) => ({
+  resumes: [...initialState],
+  activeResumeId: '',
+
   settings: {
     atsOptimized: true,
     font: 'Arial',
     theme: 'light',
     language: 'en',
   },
-};
-
-// Store Implementation ------------------------------------------------------
-export const useResumeStore = create<ResumeState>((set, get) => ({
-  ...initialState,
   // Helper function to get active resume
   getActiveResume: () => {
     const state = get();

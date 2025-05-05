@@ -1,3 +1,4 @@
+import {Resume} from '@/types';
 import {getCertificationsHTML} from './CertificationsSection';
 import {getEducationHTML} from './EducationSection';
 import {getPersonalInfoHTML} from './PersonalInfoHeader';
@@ -5,10 +6,9 @@ import {getProjectsHTML} from './ProjectsSection';
 import {getSkillsHTML} from './SkillsSection';
 import {getSummaryHTML} from './SummarySection';
 import {getWorkExperienceHTML} from './WorkExperienceSection';
-import {ResumeData} from '../../components/ResumePreview/ResumePreview.types';
 import {getCommonStyles} from '../styles/resumeStyles';
 
-export const getProfessionalResumeHTML = (resumeData: ResumeData): string => {
+export const getProfessionalResumeHTML = (resumeData: Resume): string => {
   if (!resumeData) {
     // @ts-ignore
     return `
@@ -49,10 +49,14 @@ export const getProfessionalResumeHTML = (resumeData: ResumeData): string => {
             margin:0;
             padding:0;
             }
+            ol,ul{
+            margin-top:0;
+            margin-bottom:0;
+            }
         ${getCommonStyles()}
         </style>
       </head>
-      <body>
+      <body class="body">
        <div class="a4-page">
         ${resumeData.basics ? getPersonalInfoHTML(resumeData.basics) : ''}
         ${resumeData.basics?.summary ? getSummaryHTML(resumeData.basics) : ''}

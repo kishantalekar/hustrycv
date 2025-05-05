@@ -1,17 +1,33 @@
-import { Basics } from '../../components/ResumePreview/ResumePreview.types';
+import { Basics } from "@/types";
 
 export const getPersonalInfoHTML = (basics: Basics): string => {
-  const { name, label, email, phone, url, location } = basics;
+  const { name, email, phone, location, socials } = basics;
 
   return `
     <div class="personal-info">
-      <div class="name">${name || ''}</div>
-      ${label ? `<div class="title">${label}</div>` : ''}
+      <div class="name">${name || ""}</div>
       <div class="contact-info">
-        ${email ? `<div class="contact-item">${email}</div>` : ''}
-        ${phone ? `<div class="contact-item">${phone}</div>` : ''}
-        ${url ? `<div class="contact-item">${url}</div>` : ''}
-        ${location?.city ? `<div class="contact-item">${location.city}${location.region ? `, ${location.region}` : ''}</div>` : ''}
+        ${email ? `<div class="contact-item">${email}</div>` : ""}
+        ${phone ? `<div class="contact-item">${phone}</div>` : ""}
+        ${location ? `<div class="contact-item">${location}</div>` : ""}
+        ${
+          socials
+            ? `
+          <div class="social-links">
+            ${socials
+              .map(
+                (social) => `
+              <a href="${social.url}" class="social-link" target="_blank" rel="noopener noreferrer">
+                <i class="${social.icon}"></i>
+                ${social.label}
+              </a>
+            `
+              )
+              .join("")}
+          </div>
+        `
+            : ""
+        }
       </div>
     </div>
   `;

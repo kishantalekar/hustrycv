@@ -1,11 +1,9 @@
 export const getMinimalistStyles = (): string => {
   return `
     .a4-page {
-      width: 210mm;
-      min-height: 297mm;
       padding: 0;
-      margin: 0 auto;
-      background: white;
+      margin: 0;
+
     }
     
     .content-grid {
@@ -17,6 +15,7 @@ export const getMinimalistStyles = (): string => {
     
     .section {
       margin-bottom: 1.5rem;
+      page-break-inside: avoid;
     }
     
     .section-title {

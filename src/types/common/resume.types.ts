@@ -38,6 +38,7 @@ export interface EducationItem extends BaseItem {
   degree: string;
   startDate: string;
   endDate: string;
+  // TODO:need to add a toggle for percentage or gpa
   gpa?: string;
   current: boolean;
   status?: string;

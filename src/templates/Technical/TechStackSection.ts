@@ -1,39 +1,56 @@
-interface TechSkill {
-  name: string;
-  level: number;
-}
+import { Section, SkillItem } from "@/types";
 
-interface TechCategory {
-  name: string;
-  skills: TechSkill[];
-}
+export const getTechStackHTML = (skills: Section<SkillItem>) => {
+  if (!skills.items.length) {
+    return "";
+  }
 
-interface TechStackData {
-  categories: TechCategory[];
-}
+  // Group skills by level
+  const skillsByLevel: Record<string, SkillItem[]> = {};
 
-export const getTechStackHTML = (techStackData: TechStackData) => {
+  skills.items.forEach((skill) => {
+    if (!skillsByLevel[skill.level]) {
+      skillsByLevel[skill.level] = [];
+    }
+    skillsByLevel[skill.level].push(skill);
+  });
+
+  // Get level categories in order (expert, advanced, intermediate, beginner)
+  const levelOrder = ["expert", "advanced", "intermediate", "beginner"];
+  const orderedLevels = Object.keys(skillsByLevel).sort((a, b) => {
+    return levelOrder.indexOf(a) - levelOrder.indexOf(b);
+  });
+
   return `
     <div class="section">
-      <h2 class="section-title">Technical Stack</h2>
-      ${techStackData.categories
+      <h2 class="section-title">Technical Skills</h2>
+      ${orderedLevels
         .map(
-          (category) => `
+          (level) => `
         <div class="tech-category">
-          <h3 class="tech-category-title">${category.name}</h3>
+          <h3 class="tech-category-title">${
+            level.charAt(0).toUpperCase() + level.slice(1)
+          }</h3>
           <div class="tech-tag-container">
-            ${category.skills
+            ${skillsByLevel[level]
               .map(
                 (skill) => `
               <span class="tech-tag">${skill.name}</span>
-            `,
+              ${
+                skill.keywords && skill.keywords.length
+                  ? `<div class="skill-keywords">
+                  ${skill.keywords.join(", ")}
+                </div>`
+                  : ""
+              }
+            `
               )
-              .join('')}
+              .join("")}
           </div>
         </div>
-      `,
+      `
         )
-        .join('')}
+        .join("")}
     </div>
   `;
 };

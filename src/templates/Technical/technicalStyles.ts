@@ -3,8 +3,6 @@ export const getTechnicalStyles = () => {
     .a4-page {
       width: 210mm;
       min-height: 297mm;
-      padding: 15mm;
-      margin: 0 auto;
       background: white;
       box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
     }
@@ -26,6 +24,7 @@ export const getTechnicalStyles = () => {
     
     .section {
       margin-bottom: 1.5rem;
+      page-break-inside: avoid;
     }
     
     .section-title {

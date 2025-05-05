@@ -1,6 +1,7 @@
-import {getResumeStyles} from '../styles/resumeStyles';
+import { Section, SkillItem } from "@/types";
+import { getResumeStyles } from "../styles/resumeStyles";
 
-export const getSkillsHTML = (skills: any) => {
+export const getSkillsHTML = (skills: Section<SkillItem>) => {
   const styles = getResumeStyles();
   return `
   <div class="section">
@@ -14,11 +15,11 @@ export const getSkillsHTML = (skills: any) => {
           <div class="text-regular" >
           <span class="text-bold">${
             item.name
-          }</span>:&nbsp;&nbsp;${item.keywords.join(', ')}</div>
+          }</span>:&nbsp;&nbsp;${item.keywords.join(", ")}</div>
         </div>
-      `,
+      `
         )
-        .join('')}
+        .join("")}
     </div>
   </div>
 `;

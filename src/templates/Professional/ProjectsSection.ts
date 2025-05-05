@@ -1,66 +1,71 @@
-import {Project} from '@/components/ResumePreview/ResumePreview.types';
-import {githubIcon} from '../icons/icons';
-// TODO: add skills in project section and dates in project section
-export const getProjectsHTML = (projects: any) => {
-  const projectItem = (item: Project) => {
-    return `
-     <div style="margin-bottom: 8pt;">
-    <!--heading -->
-      <div class="flex align-center space-between">
-      <div class="flex space-between gap-4">
-           <span class="text-bold">${item.name}</span>
-            <a href="${
-              item.url
-            }" style="color: #000; text-decoration: none;" class="text-regular">
-              ${githubIcon}
-            </a>
-         <span class="text-muted">|</span>
-            <span class="text-italic text-muted">Flutter, Appwrite </span>
-          </div>
-          <span class="text-regular text-muted">June 2024 - Aug 2024</span>
-        </div>
-    <!-- heading end-->
-     <!--Description-->
-            ${
-              item.description &&
-              `  <div class="text-regular text-muted " style="margin: 2pt 0;">
-            ${item.description}
-          </div>`
-            }
-        
-    <!--Description end-->
-    <!--Highlights-->
-          <ul style="margin: 2pt 0; padding-left: 14pt;">
-            ${
-              item?.highlights
-                ? item.highlights
-                    .map(
-                      (highlight: string) => `
-              <li class="bulleted-point" style=";"><span class="text-regular">${highlight}</span></li>
-            `,
-                    )
-                    .join('')
-                : ''
-            }
-          </ul>
-      <!--Highlights end-->
-        </div>
-    `;
-  };
+import { LinkItem, ProjectItem, Section } from "@/types";
+import { getSocialIcon } from "../icons";
+import { renderJobDescription } from "./components/description";
+import { renderKeywords } from "./components/keywords";
+import { getResumeStyles } from "../styles/resumeStyles";
+import { formatDateRange } from "./utils/formatDate";
 
+const renderProjectHeader = (
+  name: string,
+  links: LinkItem[],
+  keywords: string[]
+) => {
+  const styles = getResumeStyles();
+  return `
+    <div class="flex space-between gap-4">
+      <span class="text-bold">${name}</span>
+      ${links.length > 0 ? " | " : ""}
+      ${links
+        .map(
+          (social) =>
+            `<span style="display: inline-flex; align-items: center; gap: 4px;">
+          <a href="${social.url}" style="${
+              styles.link
+            }; display: inline-flex; align-items: center; gap: 4px;">
+            ${getSocialIcon(social.icon)}
+            ${social.label}
+          </a>
+        </span>`
+        )
+        .join(" | ")}
+    
+    </div>
+  `;
+};
+
+// const renderProjectDate = (startDate: string, endDate: string) => {
+//   return `
+//     <span class="text-regular text-muted">${startDate} - ${endDate}</span>
+//   `;
+// };
+
+const renderProjectHeading = (item: ProjectItem) => {
+  return `
+    <div class="flex align-center space-between">
+      ${renderProjectHeader(item.name, item.links, item.keywords)}
+      ${formatDateRange("June 2024", "Aug 2024")}
+    </div>
+  `;
+};
+
+const renderProjectItem = (item: ProjectItem) => {
+  return `
+    <div style="margin-bottom: 8pt;">
+      ${renderProjectHeading(item)}
+      ${renderJobDescription(item.description)}
+      ${renderKeywords(item.keywords)}
+    </div>
+  `;
+};
+
+export const getProjectsHTML = (projects: Section<ProjectItem>) => {
   return `
     <div class="section">
       <h2 class="section-title">Projects</h2>
       <hr/>
-    <div >
-      ${projects.items
-        .map(
-          (item: any) => `
-        ${projectItem(item)}
-      `,
-        )
-        .join('')}
-    </div>
+      <div>
+        ${projects.items.map(renderProjectItem).join("")}
+      </div>
     </div>
   `;
 };

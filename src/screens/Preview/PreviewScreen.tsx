@@ -5,7 +5,12 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {ResumePreview, TemplateSelector} from '@/components';
 import {FONTS} from '@/constants';
 import {useResumeStore} from '@/store/useResumeStore';
-import {resumeTemplates} from '@/templates';
+import {
+  getMinimalistResumeHTML,
+  getModernResumeHTML,
+  getProfessionalResumeHTML,
+  getTechnicalResumeHTML,
+} from '@/templates';
 import {COLORS} from '@/theme';
 import {goBack} from '@/utils/navigation';
 
@@ -31,6 +36,32 @@ export const PreviewScreen = () => {
   const handleSheetChanges = useCallback((index: number) => {
     setIsBottomSheetOpen(index === 0);
   }, []);
+  const resumeTemplates = [
+    {
+      id: 'professional',
+      name: 'Professional',
+      image: require('../../assets/templates/professional.png'),
+      getHTML: getProfessionalResumeHTML,
+    },
+    {
+      id: 'technical',
+      name: 'Technical',
+      image: require('../../assets/templates/technical.png'),
+      getHTML: getTechnicalResumeHTML,
+    },
+    {
+      id: 'minimalist',
+      name: 'Minimalist',
+      image: require('../../assets/templates/minimalist.png'),
+      getHTML: getMinimalistResumeHTML,
+    },
+    {
+      id: 'modern',
+      name: 'Modern',
+      image: require('../../assets/templates/minimalist.png'),
+      getHTML: getModernResumeHTML,
+    },
+  ];
 
   return (
     <GestureHandlerRootView style={styles.container}>

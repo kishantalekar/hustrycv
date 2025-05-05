@@ -1,149 +1,67 @@
-import { Section } from '../../components/ResumePreview/ResumePreview.types';
+import { Section, ProjectItem } from "@/types";
 
-export const getProjectsHTML = (projects: Section): string => {
-  if (!projects.items.length) {return '';}
+export const getProjectsHTML = (projects: Section<ProjectItem>): string => {
+  if (!projects.items.length) {
+    return "";
+  }
 
   return `
     <div class="section">
-      <h2 class="section-title">${projects.title || 'Projects'}</h2>
+      <h2 class="section-title">Projects</h2>
       ${projects.items
         .map((item) => {
-          // Extract tech keywords from description and highlights
-          const techKeywords = extractTechKeywords(
-            item.description || '',
-            item.highlights || [],
-          );
+          // Create project links HTML
+          const projectLinks =
+            item.links && item.links.length > 0
+              ? `<div class="project-links">
+                ${item.links
+                  .map(
+                    (link) => `
+                  <a href="${link.url}" class="project-link" target="_blank" rel="noopener noreferrer">
+                    ${link.label}
+                  </a>
+                `
+                  )
+                  .join("")}
+              </div>`
+              : "";
+
+          // Create status badge if available
+          const statusBadge = item.status
+            ? `<span class="status-badge status-${item.status.toLowerCase()}">${
+                item.status
+              }</span>`
+            : "";
 
           return `
           <div class="project-item">
             <div class="project-header">
-              <div class="project-title">${item.name || ''}</div>
+              <div class="project-title">${item.name || ""} ${statusBadge}</div>
               ${
                 item.startDate
-                  ? `
-                <div class="project-date">${item.startDate || ''} - ${
-                      item.endDate || 'Present'
-                    }</div>
-              `
-                  : ''
+                  ? `<div class="project-date">${item.startDate || ""} - ${
+                      item.endDate || (item.current ? "Present" : "")
+                    }</div>`
+                  : ""
               }
             </div>
-            <div class="project-description">${item.description || ''}</div>
+            <div class="project-description">${item.description || ""}</div>
+            ${projectLinks}
             ${
-              item.highlights && item.highlights.length
-                ? `
-              <ul class="bullet-list">
-                ${item.highlights
-                  .map(
-                    (highlight) => `
-                  <li>${highlight}</li>
-                `,
-                  )
-                  .join('')}
-              </ul>
-            `
-                : ''
-            }
-            ${
-              techKeywords.length
-                ? `
-              <div class="tech-tag-container">
-                ${techKeywords
-                  .map(
-                    (tech) => `
-                  <span class="tech-tag">${tech}</span>
-                `,
-                  )
-                  .join('')}
-              </div>
-            `
-                : ''
+              item.keywords && item.keywords.length
+                ? `<div class="tech-tag-container">
+                  ${item.keywords
+                    .map(
+                      (keyword) => `<span class="tech-tag">${keyword}</span>`
+                    )
+                    .join("")}
+                </div>`
+                : ""
             }
           </div>
         `;
         })
-        .join('')}
+        .join("")}
     </div>
   `;
 };
-
-// Helper function to extract tech keywords from text
-function extractTechKeywords(
-  description: string,
-  highlights: string[],
-): string[] {
-  // Common tech keywords to look for
-  const commonTechKeywords = [
-    'JavaScript',
-    'TypeScript',
-    'React',
-    'Angular',
-    'Vue',
-    'Node.js',
-    'Express',
-    'Python',
-    'Django',
-    'Flask',
-    'Java',
-    'Spring',
-    'C#',
-    '.NET',
-    'PHP',
-    'Laravel',
-    'Ruby',
-    'Rails',
-    'Go',
-    'Rust',
-    'Swift',
-    'Kotlin',
-    'AWS',
-    'Azure',
-    'GCP',
-    'Docker',
-    'Kubernetes',
-    'CI/CD',
-    'Git',
-    'GitHub',
-    'GitLab',
-    'Bitbucket',
-    'REST',
-    'GraphQL',
-    'SQL',
-    'NoSQL',
-    'MongoDB',
-    'PostgreSQL',
-    'MySQL',
-    'Redis',
-    'HTML',
-    'CSS',
-    'SASS',
-    'LESS',
-    'Webpack',
-    'Babel',
-    'ESLint',
-    'Jest',
-    'Mocha',
-    'Chai',
-    'Cypress',
-    'Selenium',
-    'TDD',
-    'Agile',
-    'Scrum',
-    'Kanban',
-    'DevOps',
-  ];
-
-  // Combine description and highlights into one text
-  const fullText = `${description} ${highlights.join(' ')}`.toLowerCase();
-
-  // Find matches
-  const matches = new Set<string>();
-  commonTechKeywords.forEach((keyword) => {
-    if (fullText.includes(keyword.toLowerCase())) {
-      matches.add(keyword);
-    }
-  });
-
-  // Limit to 8 keywords to avoid cluttering
-  return Array.from(matches).slice(0, 8);
-}
