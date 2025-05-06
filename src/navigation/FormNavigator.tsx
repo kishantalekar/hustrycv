@@ -12,17 +12,18 @@ import {
   PersonalInfoEditor,
 } from '@/screens/ResumeEditor/sections';
 import FormScreen from '../screens/ResumeEditor/screens/FormScreen';
+import {FormScreens} from './constants';
 
 const Stack = createNativeStackNavigator();
 export type FormStackParamList = {
-  FormHome: undefined;
-  PersonalInfo: undefined;
-  Summary: undefined;
-  Experience: undefined;
-  Education: undefined;
-  Skills: undefined;
-  Projects: undefined;
-  Certifications: undefined;
+  [FormScreens.FORM_HOME]: undefined;
+  [FormScreens.PERSONAL_INFO]: undefined;
+  [FormScreens.SUMMARY]: undefined;
+  [FormScreens.EXPERIENCE]: undefined;
+  [FormScreens.EDUCATION]: undefined;
+  [FormScreens.SKILLS]: undefined;
+  [FormScreens.PROJECTS]: undefined;
+  [FormScreens.CERTIFICATIONS]: undefined;
 };
 
 export type NavigationProp = NativeStackNavigationProp<FormStackParamList>;
@@ -31,38 +32,38 @@ export const FormNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="FormHome"
+        name={FormScreens.FORM_HOME}
         component={FormScreen}
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="PersonalInfo"
+        name={FormScreens.PERSONAL_INFO}
         component={PersonalInfoEditor}
         options={{title: 'Personal Information'}}
       />
 
       <Stack.Screen
-        name="Experience"
+        name={FormScreens.EXPERIENCE}
         component={WorkExperienceEditor}
         options={{title: 'Work Experience'}}
       />
       <Stack.Screen
-        name="Education"
+        name={FormScreens.EDUCATION}
         component={EducationEditor}
         options={{title: 'Education'}}
       />
       <Stack.Screen
-        name="Skills"
+        name={FormScreens.SKILLS}
         component={SkillsEditor}
         options={{title: 'Skills'}}
       />
       <Stack.Screen
-        name="Projects"
+        name={FormScreens.PROJECTS}
         component={ProjectsEditor}
         options={{title: 'Projects'}}
       />
       <Stack.Screen
-        name="Certifications"
+        name={FormScreens.CERTIFICATIONS}
         component={CertificationsEditor}
         options={{title: 'Certifications'}}
       />

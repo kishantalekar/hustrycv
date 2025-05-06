@@ -1,24 +1,25 @@
-import {useNavigation} from '@react-navigation/native';
-import React from 'react';
-import {
-  StyleSheet,
-  ScrollView,
-  KeyboardAvoidingView,
-  Platform,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {Card, Text, Divider} from 'react-native-paper';
 import {HTMLPreview} from '@/components/HTMLPreview/HTMLPreview';
 import {TextInput} from '@/components/TextInput';
 import {FONTS} from '@/constants';
 import {AppNavigationProp} from '@/navigation/AppNavigator';
 import {useResumeStore} from '@/store/useResumeStore';
 import {globalStyles} from '@/styles/globalStyles';
+import {useNavigation} from '@react-navigation/native';
+import React from 'react';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {Card, Divider, Text} from 'react-native-paper';
 
 export const PersonalInfoEditor = () => {
   const {getActiveResume, updateBasics} = useResumeStore();
   const navigation = useNavigation<AppNavigationProp>();
+  console.log('basics', getActiveResume());
   const basics = getActiveResume().basics;
   return (
     <KeyboardAvoidingView

@@ -1,7 +1,7 @@
-import { Section, EducationItem } from "@/types";
+import { Section, EducationItem } from '@/types';
 
 export const getEducationHTML = (education: Section<EducationItem>): string => {
-  if (!education.items.length) return "";
+  if (!education.items.length) {return '';}
 
   return `
     <div class="section">
@@ -11,55 +11,55 @@ export const getEducationHTML = (education: Section<EducationItem>): string => {
           (item) => `
         <div class="education-item">
           <div class="item-header">
-            <div class="item-title">${item.degree || ""}</div>
-            <div class="item-subtitle">${item.institution || ""} ${
-            item.location ? `• ${item.location}` : ""
+            <div class="item-title">${item.degree || ''}</div>
+            <div class="item-subtitle">${item.institution || ''} ${
+            item.location ? `• ${item.location}` : ''
           }</div>
             <div class="item-date">${formatDate(item.startDate)} - ${
-            item.current ? "Present" : formatDate(item.endDate)
+            item.current ? 'Present' : formatDate(item.endDate)
           }</div>
           </div>
-          ${item.gpa ? `<div class="item-gpa">GPA: ${item.gpa}</div>` : ""}
+          ${item.gpa ? `<div class="item-gpa">GPA: ${item.gpa}</div>` : ''}
           ${
             item.keywords && item.keywords.length
               ? `
             <div class="skill-keywords">
               ${item.keywords
                 .map(
-                  (keyword) => `<span class="skill-keyword">${keyword}</span>`
+                  (keyword) => `<span class="skill-keyword">${keyword}</span>`,
                 )
-                .join("")}
+                .join('')}
             </div>
           `
-              : ""
+              : ''
           }
         </div>
-      `
+      `,
         )
-        .join("")}
+        .join('')}
     </div>
   `;
 };
 
 // Helper function to format dates
 function formatDate(dateString?: string): string {
-  if (!dateString) return "";
+  if (!dateString) {return '';}
 
   const date = new Date(dateString);
   if (isNaN(date.getTime())) {
     // If it's not a full date, it might be a year-month format
-    const parts = dateString.split("-");
+    const parts = dateString.split('-');
     if (parts.length === 2) {
       const year = parts[0];
       const month = new Date(
         parseInt(parts[0]),
         parseInt(parts[1]) - 1,
-        1
-      ).toLocaleString("default", { month: "short" });
+        1,
+      ).toLocaleString('default', { month: 'short' });
       return `${month} ${year}`;
     }
     return dateString; // Return as is if we can't parse it
   }
 
-  return date.toLocaleDateString("en-US", { year: "numeric", month: "short" });
+  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
 }

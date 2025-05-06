@@ -117,7 +117,7 @@ export interface Resume {
 export const createInitialResume = () => ({
   metadata: {
     id: uuidv4(),
-    templateId: 'classic_1',
+    templateId: 'professional',
     version: '1.0',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),

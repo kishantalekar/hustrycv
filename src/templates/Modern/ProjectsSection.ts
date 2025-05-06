@@ -1,7 +1,7 @@
-import { Section, ProjectItem } from "@/types";
+import { Section, ProjectItem } from '@/types';
 
 export const getProjectsHTML = (projects: Section<ProjectItem>): string => {
-  if (!projects.items.length) return "";
+  if (!projects.items.length) {return '';}
 
   return `
     <div class="section">
@@ -11,29 +11,29 @@ export const getProjectsHTML = (projects: Section<ProjectItem>): string => {
           (item) => `
         <div class="project-item">
           <div class="item-header">
-            <div class="item-title">${item.name || ""}</div>
+            <div class="item-title">${item.name || ''}</div>
             <div class="item-date">${
-              item.current ? "Current Project" : ""
+              item.current ? 'Current Project' : ''
             }</div>
           </div>
-          <div class="item-description">${item.description || ""}</div>
+          <div class="item-description">${item.description || ''}</div>
           ${
             item.keywords && item.keywords.length
               ? `
             <div class="skill-keywords">
               ${item.keywords
                 .map(
-                  (keyword) => `<span class="skill-keyword">${keyword}</span>`
+                  (keyword) => `<span class="skill-keyword">${keyword}</span>`,
                 )
-                .join("")}
+                .join('')}
             </div>
           `
-              : ""
+              : ''
           }
         </div>
-      `
+      `,
         )
-        .join("")}
+        .join('')}
     </div>
   `;
 };

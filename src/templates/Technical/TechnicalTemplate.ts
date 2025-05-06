@@ -1,6 +1,8 @@
 import {Resume} from '@/types';
 import {getCertificationsHTML} from './CertificationsSection';
+import {certificationsSectionStyles} from './CertificationsSection.styles';
 import {getEducationHTML} from './EducationSection';
+import {educationSectionStyles} from './EducationSection.styles';
 import {getPersonalInfoHTML} from './PersonalInfoHeader';
 import {getProjectsHTML} from './ProjectsSection';
 import {getSkillsHTML} from './SkillsSection';
@@ -8,8 +10,6 @@ import {getSummaryHTML} from './SummarySection';
 import {getTechnicalStyles} from './technicalStyles';
 import {getTechStackHTML} from './TechStackSection';
 import {getWorkExperienceHTML} from './WorkExperienceSection';
-import {certificationsSectionStyles} from './CertificationsSection.styles';
-import {educationSectionStyles} from './EducationSection.styles';
 
 export const getTechnicalResumeHTML = (resumeData: Resume): string => {
   if (!resumeData) {

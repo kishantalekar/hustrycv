@@ -1,4 +1,4 @@
-/* eslint-disable import/order */
+
 import React from 'react';
 import {KeyboardAvoidingView, Platform, StyleSheet, View} from 'react-native';
 import {COLORS} from '@/theme';

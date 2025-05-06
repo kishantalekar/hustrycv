@@ -1,15 +1,15 @@
 import {
-  linkedinIcon,
+  dribble,
+  facebookIcon,
+  getExternalLinkIcon,
   githubIcon,
   gitlabIcon,
-  dribble,
-  twitterIcon,
-  facebookIcon,
   instagramIcon,
-  youtubeIcon,
-  getExternalLinkIcon,
+  linkedinIcon,
   stackoverflowIcon,
-} from "./icons";
+  twitterIcon,
+  youtubeIcon,
+} from './icons';
 
 export const socialIcons: Record<string, (props: any) => string> = {
   linkedin: linkedinIcon,
@@ -23,9 +23,19 @@ export const socialIcons: Record<string, (props: any) => string> = {
   youtube: youtubeIcon,
   externalLink: getExternalLinkIcon,
 } as const;
+export const getAvailableIcons = (): string => {
+  return Object.keys(socialIcons)
+    .map(key => key)
+    .join(', ');
+};
 
 export type SocialIconType = keyof typeof socialIcons;
 
 export const getSocialIcon = (iconName: SocialIconType): string => {
-  return socialIcons["github"]({ size: 18 });
+  const iconFn = socialIcons[iconName];
+  if (!iconFn) {
+    console.warn(`Icon not found for: ${iconName}`);
+    return getExternalLinkIcon({});
+  }
+  return iconFn({});
 };

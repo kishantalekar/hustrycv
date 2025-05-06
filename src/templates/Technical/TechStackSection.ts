@@ -1,8 +1,8 @@
-import { Section, SkillItem } from "@/types";
+import { Section, SkillItem } from '@/types';
 
 export const getTechStackHTML = (skills: Section<SkillItem>) => {
   if (!skills.items.length) {
-    return "";
+    return '';
   }
 
   // Group skills by level
@@ -16,7 +16,7 @@ export const getTechStackHTML = (skills: Section<SkillItem>) => {
   });
 
   // Get level categories in order (expert, advanced, intermediate, beginner)
-  const levelOrder = ["expert", "advanced", "intermediate", "beginner"];
+  const levelOrder = ['expert', 'advanced', 'intermediate', 'beginner'];
   const orderedLevels = Object.keys(skillsByLevel).sort((a, b) => {
     return levelOrder.indexOf(a) - levelOrder.indexOf(b);
   });
@@ -39,18 +39,18 @@ export const getTechStackHTML = (skills: Section<SkillItem>) => {
               ${
                 skill.keywords && skill.keywords.length
                   ? `<div class="skill-keywords">
-                  ${skill.keywords.join(", ")}
+                  ${skill.keywords.join(', ')}
                 </div>`
-                  : ""
+                  : ''
               }
-            `
+            `,
               )
-              .join("")}
+              .join('')}
           </div>
         </div>
-      `
+      `,
         )
-        .join("")}
+        .join('')}
     </div>
   `;
 };

@@ -10,18 +10,44 @@ import {
   getModernResumeHTML,
   getProfessionalResumeHTML,
   getTechnicalResumeHTML,
-} from '@/templates';
+getTemplateById} from '@/templates';
 import {COLORS} from '@/theme';
 import {goBack} from '@/utils/navigation';
 
+const resumeTemplates = [
+  {
+    id: 'professional',
+    name: 'Professional',
+    image: require('../../assets/templates/professional.png'),
+    getHTML: getProfessionalResumeHTML,
+  },
+  {
+    id: 'technical',
+    name: 'Technical',
+    image: require('../../assets/templates/technical.png'),
+    getHTML: getTechnicalResumeHTML,
+  },
+  {
+    id: 'minimalist',
+    name: 'Minimalist',
+    image: require('../../assets/templates/minimalist.png'),
+    getHTML: getMinimalistResumeHTML,
+  },
+  {
+    id: 'modern',
+    name: 'Modern',
+    image: require('../../assets/templates/minimalist.png'),
+    getHTML: getModernResumeHTML,
+  },
+];
 export const PreviewScreen = () => {
   const {resumes, activeResumeId, updateResumeTemplateId} = useResumeStore();
   const activeResume = resumes.find(
     resume => resume.metadata.id === activeResumeId,
   );
-  const [selectedTemplate, setSelectedTemplate] = useState(
-    activeResume?.metadata.templateId ?? 'professional',
-  );
+  const templateId = activeResume?.metadata?.templateId;
+  const defaultTemplate = getTemplateById(templateId);
+  const [selectedTemplate, setSelectedTemplate] = useState(defaultTemplate.id);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
   const handleTemplateSelect = (templateId: string) => {
@@ -36,32 +62,6 @@ export const PreviewScreen = () => {
   const handleSheetChanges = useCallback((index: number) => {
     setIsBottomSheetOpen(index === 0);
   }, []);
-  const resumeTemplates = [
-    {
-      id: 'professional',
-      name: 'Professional',
-      image: require('../../assets/templates/professional.png'),
-      getHTML: getProfessionalResumeHTML,
-    },
-    {
-      id: 'technical',
-      name: 'Technical',
-      image: require('../../assets/templates/technical.png'),
-      getHTML: getTechnicalResumeHTML,
-    },
-    {
-      id: 'minimalist',
-      name: 'Minimalist',
-      image: require('../../assets/templates/minimalist.png'),
-      getHTML: getMinimalistResumeHTML,
-    },
-    {
-      id: 'modern',
-      name: 'Modern',
-      image: require('../../assets/templates/minimalist.png'),
-      getHTML: getModernResumeHTML,
-    },
-  ];
 
   return (
     <GestureHandlerRootView style={styles.container}>

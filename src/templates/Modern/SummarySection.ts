@@ -1,9 +1,9 @@
-import { Basics } from "@/types";
+import { Basics } from '@/types';
 
 export const getSummaryHTML = (basics: Basics): string => {
   const { summary } = basics;
 
-  if (!summary) return "";
+  if (!summary) {return '';}
 
   return `
     <div class="section">

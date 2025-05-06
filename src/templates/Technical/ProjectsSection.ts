@@ -1,8 +1,8 @@
-import { Section, ProjectItem } from "@/types";
+import { Section, ProjectItem } from '@/types';
 
 export const getProjectsHTML = (projects: Section<ProjectItem>): string => {
   if (!projects.items.length) {
-    return "";
+    return '';
   }
 
   return `
@@ -20,48 +20,48 @@ export const getProjectsHTML = (projects: Section<ProjectItem>): string => {
                   <a href="${link.url}" class="project-link" target="_blank" rel="noopener noreferrer">
                     ${link.label}
                   </a>
-                `
+                `,
                   )
-                  .join("")}
+                  .join('')}
               </div>`
-              : "";
+              : '';
 
           // Create status badge if available
           const statusBadge = item.status
             ? `<span class="status-badge status-${item.status.toLowerCase()}">${
                 item.status
               }</span>`
-            : "";
+            : '';
 
           return `
           <div class="project-item">
             <div class="project-header">
-              <div class="project-title">${item.name || ""} ${statusBadge}</div>
+              <div class="project-title">${item.name || ''} ${statusBadge}</div>
               ${
                 item.startDate
-                  ? `<div class="project-date">${item.startDate || ""} - ${
-                      item.endDate || (item.current ? "Present" : "")
+                  ? `<div class="project-date">${item.startDate || ''} - ${
+                      item.endDate || (item.current ? 'Present' : '')
                     }</div>`
-                  : ""
+                  : ''
               }
             </div>
-            <div class="project-description">${item.description || ""}</div>
+            <div class="project-description">${item.description || ''}</div>
             ${projectLinks}
             ${
               item.keywords && item.keywords.length
                 ? `<div class="tech-tag-container">
                   ${item.keywords
                     .map(
-                      (keyword) => `<span class="tech-tag">${keyword}</span>`
+                      (keyword) => `<span class="tech-tag">${keyword}</span>`,
                     )
-                    .join("")}
+                    .join('')}
                 </div>`
-                : ""
+                : ''
             }
           </div>
         `;
         })
-        .join("")}
+        .join('')}
     </div>
   `;
 };

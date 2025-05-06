@@ -25,7 +25,7 @@ const renderCertificateHeader = (
 };
 
 const renderCertificateIssuer = (authority: string) => {
-  if (!authority) return '';
+  if (!authority) {return '';}
 
   return `
     <div class="cert-issuer">
@@ -36,7 +36,7 @@ const renderCertificateIssuer = (authority: string) => {
 };
 
 const renderCertificateDate = (date?: string) => {
-  if (!date) return '';
+  if (!date) {return '';}
 
   return `
     <div class="cert-date">

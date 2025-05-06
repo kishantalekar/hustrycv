@@ -1,23 +1,19 @@
-import { LinkItem, ProjectItem, Section } from "@/types";
-import { getSocialIcon } from "../icons";
-import { renderJobDescription } from "./components/description";
-import { renderKeywords } from "./components/keywords";
-import { getResumeStyles } from "../styles/resumeStyles";
-import { formatDateRange } from "./utils/formatDate";
+import {LinkItem, ProjectItem, Section} from '@/types';
+import {getSocialIcon} from '../icons';
+import {getResumeStyles} from '../styles/resumeStyles';
+import {renderJobDescription} from './components/description';
+import {renderKeywords} from './components/keywords';
+import {formatDateRange} from './utils/formatDate';
 
-const renderProjectHeader = (
-  name: string,
-  links: LinkItem[],
-  keywords: string[]
-) => {
+const renderProjectHeader = (name: string, links: LinkItem[]) => {
   const styles = getResumeStyles();
   return `
     <div class="flex space-between gap-4">
       <span class="text-bold">${name}</span>
-      ${links.length > 0 ? " | " : ""}
+      ${links.length > 0 ? ' | ' : ''}
       ${links
         .map(
-          (social) =>
+          social =>
             `<span style="display: inline-flex; align-items: center; gap: 4px;">
           <a href="${social.url}" style="${
               styles.link
@@ -25,9 +21,9 @@ const renderProjectHeader = (
             ${getSocialIcon(social.icon)}
             ${social.label}
           </a>
-        </span>`
+        </span>`,
         )
-        .join(" | ")}
+        .join(' | ')}
     
     </div>
   `;
@@ -42,29 +38,29 @@ const renderProjectHeader = (
 const renderProjectHeading = (item: ProjectItem) => {
   return `
     <div class="flex align-center space-between">
-      ${renderProjectHeader(item.name, item.links, item.keywords)}
-      ${formatDateRange("June 2024", "Aug 2024")}
+      ${renderProjectHeader(item.name, item.links)}
+      ${formatDateRange('June 2024', 'Aug 2024')}
     </div>
   `;
 };
 
-const renderProjectItem = (item: ProjectItem) => {
+const renderProjectItem = (item: ProjectItem, index: number) => {
   return `
-    <div style="margin-bottom: 8pt;">
+  <div style="margin-bottom: 8pt;page-break-inside:avoid;">
+  ${index === 0 && '<h2 class="section-title">Projects</h2>     <hr/>'} 
       ${renderProjectHeading(item)}
       ${renderJobDescription(item.description)}
-      ${renderKeywords(item.keywords)}
+      ${renderKeywords(item.keywords || [])}
     </div>
   `;
 };
 
 export const getProjectsHTML = (projects: Section<ProjectItem>) => {
   return `
-    <div class="section">
-      <h2 class="section-title">Projects</h2>
-      <hr/>
-      <div>
-        ${projects.items.map(renderProjectItem).join("")}
+    <div class="section" style="page-break-inside:auto;">
+ 
+      <div style="page-break-inside:auto;">
+        ${projects.items.map(renderProjectItem).join('')}
       </div>
     </div>
   `;

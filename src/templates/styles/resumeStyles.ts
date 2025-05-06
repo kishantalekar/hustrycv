@@ -19,12 +19,12 @@ export const SPACING = {
 
 // COLOR CONSTANTS
 export const COLORS = {
-  primary: "#2D3748", // Main text color
-  secondary: "#4A5568", // Secondary text color for less emphasis
-  accent: "#3182CE", // Accent color for highlights or important elements
-  link: "#2B6CB0", // Color for links or interactive elements
-  divider: "#CBD5E0", // Color for dividers or separators
-  background: "#FFFFFF", // Page background color
+  primary: '#2D3748', // Main text color
+  secondary: '#4A5568', // Secondary text color for less emphasis
+  accent: '#3182CE', // Accent color for highlights or important elements
+  link: '#2B6CB0', // Color for links or interactive elements
+  divider: '#CBD5E0', // Color for dividers or separators
+  background: '#FFFFFF', // Page background color
 } as const;
 
 // COMMON STYLES APPLIED ACROSS THE RESUME

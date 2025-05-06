@@ -1,8 +1,8 @@
-import { Section, ProjectItem } from "@/types";
+import { Section, ProjectItem } from '@/types';
 
 export const getProjectsHTML = (projects: Section<ProjectItem>): string => {
   if (!projects.items.length) {
-    return "";
+    return '';
   }
 
   return `
@@ -14,11 +14,11 @@ export const getProjectsHTML = (projects: Section<ProjectItem>): string => {
         <div class="item ${item.status}">
           <div class="item-header">
             <div class="item-title-row">
-              <div class="item-title">${item.name || ""}</div>
+              <div class="item-title">${item.name || ''}</div>
               ${
                 item.status
                   ? `<span class="status-badge">${item.status}</span>`
-                  : ""
+                  : ''
               }
             </div>
             ${
@@ -32,15 +32,15 @@ export const getProjectsHTML = (projects: Section<ProjectItem>): string => {
                     <i class="${link.icon}"></i>
                     ${link.label}
                   </a>
-                `
+                `,
                   )
-                  .join("")}
+                  .join('')}
               </div>
             `
-                : ""
+                : ''
             }
           </div>
-          <div class="item-description">${item.description || ""}</div>
+          <div class="item-description">${item.description || ''}</div>
           ${
             item.keywords?.length
               ? `
@@ -49,17 +49,17 @@ export const getProjectsHTML = (projects: Section<ProjectItem>): string => {
                 .map(
                   (keyword) => `
                 <span class="keyword">${keyword}</span>
-              `
+              `,
                 )
-                .join("")}
+                .join('')}
             </div>
           `
-              : ""
+              : ''
           }
         </div>
-      `
+      `,
         )
-        .join("")}
+        .join('')}
     </div>
   `;
 };

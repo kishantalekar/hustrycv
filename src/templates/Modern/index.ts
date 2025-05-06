@@ -1,1 +1,1 @@
-export * from "./ModernTemplate";
+export * from './ModernTemplate';

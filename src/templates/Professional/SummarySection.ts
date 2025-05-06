@@ -1,4 +1,4 @@
-import { Basics } from "@/types";
+import { Basics } from '@/types';
 
 export const getSummaryHTML = (basics: Basics) => `
   <div class="section">

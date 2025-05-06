@@ -1,7 +1,7 @@
 import {Section, WorkItem} from '@/types';
 
 export const getWorkExperienceHTML = (work: Section<WorkItem>): string => {
-  if (!work.items.length) return '';
+  if (!work.items.length) {return '';}
 
   return `
     <div class="section">
@@ -41,7 +41,7 @@ export const getWorkExperienceHTML = (work: Section<WorkItem>): string => {
 
 // Helper function to format dates
 function formatDate(dateString?: string): string {
-  if (!dateString) return '';
+  if (!dateString) {return '';}
 
   const date = new Date(dateString);
   if (isNaN(date.getTime())) {

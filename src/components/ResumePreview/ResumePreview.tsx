@@ -13,7 +13,7 @@ export function ResumePreview({
   templates,
 }: Readonly<ResumePreviewProps>) {
   const [pdfBase64, setPdfBase64] = useState<string | null>(null);
-
+  console.log(resumeData?.metadata);
   useEffect(() => {
     if (resumeData && templates) {
       const selectedTemplateData = templates.find(

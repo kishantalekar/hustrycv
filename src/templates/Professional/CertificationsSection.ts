@@ -1,7 +1,7 @@
-import { CertificateItem, Section } from "@/types";
-import { getResumeStyles } from "../styles/resumeStyles";
-import { getExternalLinkIcon } from "../icons/icons";
-import { formatDateRange } from "./utils/formatDate";
+import { CertificateItem, Section } from '@/types';
+import { getExternalLinkIcon } from '../icons/icons';
+import { getResumeStyles } from '../styles/resumeStyles';
+import { formatDateRange } from './utils/formatDate';
 
 const renderCertificateTitle = (name: string) => {
   return `
@@ -27,7 +27,7 @@ const renderCertificateAuthority = (authority: string) => {
 };
 
 const renderCertificateDescription = (description: string) => {
-  if (!description) return "";
+  if (!description) {return '';}
   return `
     <div class="text-regular text-muted" style="margin-top: 4px;">${description}</div>
   `;
@@ -53,7 +53,7 @@ const renderCertificateItem = (cert: CertificateItem) => {
 // const singleDate = formatDateRange("2023-01", undefined, false); // Jan 2023
 
 export const getCertificationsHTML = (
-  certifications: Section<CertificateItem>
+  certifications: Section<CertificateItem>,
 ) => {
   const styles = getResumeStyles();
   return `
@@ -61,7 +61,7 @@ export const getCertificationsHTML = (
       <h2 class="section-title">Certifications</h2>
       <hr/>
       <div style="${styles.certificationCard}">
-        ${certifications.items.map(renderCertificateItem).join("")}
+        ${certifications.items.map(renderCertificateItem).join('')}
       </div>
     </div>
   `;

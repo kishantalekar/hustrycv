@@ -6,6 +6,10 @@ import {COLORS} from '@/theme';
 import {styles} from './ResumeEditor.styles';
 import {DownloadScreen} from '../Download/DownloadScreen';
 import {PreviewScreen} from '../Preview/PreviewScreen';
+import {RouteProp} from '@react-navigation/native';
+import {RootStackParamList} from '@/navigation/AppNavigator';
+
+type ResumeEditorRouteProp = RouteProp<RootStackParamList, 'ResumeEditor'>;
 
 const Tab = createBottomTabNavigator();
 
@@ -15,9 +19,24 @@ const ImproveScreen = () => (
   </View>
 );
 
-export const ResumeEditor = () => {
+type Props = {
+  route: ResumeEditorRouteProp;
+};
+
+export const ResumeEditor = ({route}: Props) => {
+  const {name} = route.params || {};
+  let initialRoute = 'Form';
+  if (
+    name === 'Preview' ||
+    name === 'Form' ||
+    name === 'Improve' ||
+    name === 'Download'
+  ) {
+    initialRoute = name;
+  }
   return (
     <Tab.Navigator
+      initialRouteName={initialRoute}
       screenOptions={{
         tabBarStyle: styles.tabBar,
         tabBarLabelStyle: styles.tabBarLabel,

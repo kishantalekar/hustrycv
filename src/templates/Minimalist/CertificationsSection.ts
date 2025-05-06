@@ -1,10 +1,10 @@
-import { Section, CertificateItem } from "@/types";
+import { Section, CertificateItem } from '@/types';
 
 export const getCertificationsHTML = (
-  certifications: Section<CertificateItem>
+  certifications: Section<CertificateItem>,
 ): string => {
   if (!certifications.items.length) {
-    return "";
+    return '';
   }
 
   return `
@@ -16,13 +16,13 @@ export const getCertificationsHTML = (
             (item) => `
           <div class="certification-item">
             <div class="cert-header">
-              <div class="cert-title">${item.name || ""}</div>
-              ${item.date ? `<div class="cert-date">${item.date}</div>` : ""}
+              <div class="cert-title">${item.name || ''}</div>
+              ${item.date ? `<div class="cert-date">${item.date}</div>` : ''}
             </div>
             ${
               item.authority
                 ? `<div class="cert-issuer">${item.authority}</div>`
-                : ""
+                : ''
             }
             ${
               item.certificationUrlOrCode
@@ -31,12 +31,12 @@ export const getCertificationsHTML = (
                 View Certificate
               </a>
             `
-                : ""
+                : ''
             }
           </div>
-        `
+        `,
           )
-          .join("")}
+          .join('')}
       </div>
     </div>
   `;
