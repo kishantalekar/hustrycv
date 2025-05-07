@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
 import {COLORS, SPACING} from '@/theme';
+import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
   header: {

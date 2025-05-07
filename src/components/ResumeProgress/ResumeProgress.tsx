@@ -50,7 +50,7 @@ export const ResumeProgress = ({resume, status}: ResumeProgressProps) => {
                   cx={size / 2}
                   cy={size / 2}
                   r={radius}
-                  stroke={COLORS.border.light}
+                  stroke={COLORS.border}
                   strokeWidth={strokeWidth}
                   fill="transparent"
                 />

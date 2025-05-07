@@ -1,23 +1,22 @@
+import {
+  Basics,
+  CertificateItem,
+  CustomSectionItem,
+  EducationItem,
+  Metadata,
+  ProjectItem,
+  Resume,
+  Section,
+  Settings,
+  SkillItem,
+  WorkItem,
+} from '@/types';
+import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
 import {create} from 'zustand';
-import 'react-native-get-random-values';
-import {
-  Resume,
-  Metadata,
-  WorkItem,
-  EducationItem,
-  SkillItem,
-  ProjectItem,
-  Section,
-  CustomSectionItem,
-  Settings,
-  CertificateItem,
-  Basics,
-} from '@/types';
 import {
   // marketingResumeData,
   updatedMockResumeData,
-  // mockResumeData,
 } from '../assets/resume_mock_data';
 // https:chat.deepseek.com/a/chat/s/608ca039-1c33-4769-af31-fec567a8ef63 for section up and down schema
 // Type definitions -----------------------------------------------------------
@@ -30,6 +29,7 @@ interface ResumeState {
   getActiveResume: () => Resume;
   setActiveResume: (id: string) => void;
   addResume: (newResume: Resume) => string;
+  deleteResume: (id: string) => void;
   updateResumeTemplateId: (id: string) => void;
   // Actions ----------------------------------------------------------------
   updateMetadata: (metadata: Partial<Metadata>) => void;
@@ -112,6 +112,14 @@ export const useResumeStore = create<ResumeState>((set, get) => ({
     }));
     return id;
   },
+  deleteResume: id =>
+    set(state => ({
+      resumes: state.resumes.filter(resume => resume.metadata.id !== id),
+      activeResumeId:
+        state.activeResumeId === id
+          ? state.resumes[0]?.metadata.id
+          : state.activeResumeId,
+    })),
   updateResumeTemplateId: templateId =>
     set(state => ({
       resumes: state.resumes.map(resume =>

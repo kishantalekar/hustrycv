@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {View, ScrollView, Text, StyleSheet} from 'react-native';
-import Pdf from 'react-native-pdf';
+import {LottieAnimation} from '@/components';
 import {FONTS} from '@/constants';
-import {SPACING, COLORS, TYPOGRAPHY, BORDER_RADIUS, SHADOW} from '@/theme';
+import {BORDER_RADIUS, COLORS, SHADOW, SPACING, TYPOGRAPHY} from '@/theme';
 import {generatePDF} from '@/utils/pdfUtils';
+import React, {useEffect, useState} from 'react';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import Pdf from 'react-native-pdf';
 import {ResumePreviewProps} from './ResumePreview.types';
 
 export function ResumePreview({
@@ -13,18 +14,25 @@ export function ResumePreview({
   templates,
 }: Readonly<ResumePreviewProps>) {
   const [pdfBase64, setPdfBase64] = useState<string | null>(null);
-  console.log(resumeData?.metadata);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     if (resumeData && templates) {
+      setIsLoading(true);
+      setPdfBase64(null);
       const selectedTemplateData = templates.find(
         t => t.id === selectedTemplate,
       );
       if (selectedTemplateData) {
-        generatePDF(selectedTemplateData.getHTML(resumeData)).then(base64 => {
-          if (base64) {
-            return setPdfBase64(base64);
-          }
-        });
+        generatePDF(selectedTemplateData.getHTML(resumeData))
+          .then(base64 => {
+            if (base64) {
+              setPdfBase64(base64);
+            }
+            setIsLoading(false);
+          })
+          .catch(() => {
+            setIsLoading(false);
+          });
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -41,7 +49,17 @@ export function ResumePreview({
     <ScrollView
       style={styles.container}
       contentContainerStyle={styles.contentContainer}>
-      {pdfBase64 && (
+      {isLoading || !pdfBase64 ? (
+        <View style={styles.loadingContainer}>
+          <LottieAnimation
+            source={require('../../assets/animations/cv_loading.json')}
+            autoPlay
+            loop
+            style={styles.loadingAnimation}
+          />
+          <Text style={styles.loadingText}>{'Generating Preview...'}</Text>
+        </View>
+      ) : (
         <Pdf
           source={{uri: `data:application/pdf;base64,${pdfBase64}`}}
           style={styles.pdfView}
@@ -53,6 +71,23 @@ export function ResumePreview({
 }
 
 const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.background.primary,
+    minHeight: 400,
+  },
+  loadingAnimation: {
+    width: 150,
+    height: 150,
+  },
+  loadingText: {
+    marginTop: SPACING.md,
+    fontSize: TYPOGRAPHY.size.md,
+    color: COLORS.text.secondary,
+    fontFamily: FONTS.FIRA_SANS.REGULAR,
+  },
   container: {
     flex: 1,
     backgroundColor: COLORS.background.primary,

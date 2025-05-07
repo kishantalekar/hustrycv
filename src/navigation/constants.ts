@@ -8,6 +8,7 @@ export enum RootScreens {
   PROJECT_CONFIG = 'ProjectConfig',
   KEYWORDS_EDITOR = 'KeywordsEditor',
   UPLOAD_RESUME = 'UploadResume',
+  AI_CHAT = 'AIChat',
 }
 
 export enum FormScreens {

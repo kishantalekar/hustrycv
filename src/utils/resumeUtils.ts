@@ -24,7 +24,7 @@ export const calculateProgress = (resume: Resume): number => {
   // Check basics section
   requiredFields.basics.forEach(field => {
     totalFields++;
-    if (resume.basics[field as keyof typeof resume.basics]?.trim()) {
+    if (resume.basics[field as keyof typeof resume.basics]) {
       filledFields++;
     }
   });

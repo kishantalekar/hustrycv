@@ -12,15 +12,19 @@ export const styles = StyleSheet.create({
   createButtonContainer: {
     position: 'relative',
   },
-  dropdown: {
+  modalOverlay: {
+    flex: 1,
+  },
+  dropdownPosition: {
     position: 'absolute',
-    top: '100%',
-    right: 0,
+    top: 80,
+    right: SPACING.lg,
+  },
+  dropdown: {
     backgroundColor: COLORS.background.primary,
     borderRadius: BORDER_RADIUS.md,
     padding: SPACING.sm,
     ...SHADOW.light,
-    zIndex: 1,
     elevation: 5,
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 2},
@@ -51,7 +55,7 @@ export const styles = StyleSheet.create({
     marginBottom: SPACING.xl,
     paddingBottom: SPACING.md,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.border.light,
+    borderBottomColor: COLORS.border,
   },
   title: {
     ...typography.h1,
@@ -77,6 +81,12 @@ export const styles = StyleSheet.create({
     gap: SPACING.lg,
     paddingBottom: SPACING.xl,
   },
+  swipeableContainer: {
+    overflow: 'hidden',
+    borderRadius: BORDER_RADIUS.md,
+    marginHorizontal: SPACING.xs,
+    marginBottom: SPACING.lg,
+  },
   resumeCard: {
     backgroundColor: COLORS.white,
     borderRadius: BORDER_RADIUS.md,
@@ -86,13 +96,27 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     padding: SPACING.lg,
     marginHorizontal: SPACING.xs,
-    marginBottom: SPACING.md,
     borderLeftWidth: 3,
     borderLeftColor: COLORS.primary,
-    elevation: 2,
+    elevation: 3,
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,
+  },
+  deleteAction: {
+    backgroundColor: COLORS.danger,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 80,
+    height: '100%',
+    overflow: 'hidden',
+    borderTopRightRadius: BORDER_RADIUS.md,
+    borderBottomRightRadius: BORDER_RADIUS.md,
+  },
+  deleteActionText: {
+    color: COLORS.white,
+    fontSize: TYPOGRAPHY.size.sm,
+    marginTop: SPACING.xs,
     shadowRadius: 3,
   },
   resumePreview: {

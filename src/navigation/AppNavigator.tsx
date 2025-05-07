@@ -1,4 +1,5 @@
 import {Dashboard, KeywordsEditor, SocialProfilesScreen} from '@/screens';
+import {AIChatScreen} from '@/screens/AIChat/AIChatScreen';
 import {PreviewScreen} from '@/screens/Preview/PreviewScreen';
 import {ResumeEditor} from '@/screens/ResumeEditor/ResumeEditor';
 import {ProjectConfigScreen} from '@/screens/ResumeEditor/screens/ProjectConfigScreen';
@@ -35,6 +36,7 @@ export type RootStackParamList = {
     type: 'project' | 'work';
   };
   [RootScreens.UPLOAD_RESUME]: undefined;
+  [RootScreens.AI_CHAT]: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -76,6 +78,11 @@ export const AppNavigator = () => {
           name={RootScreens.UPLOAD_RESUME}
           component={UploadResumeScreen}
           options={{title: 'Upload Resume'}}
+        />
+        <Stack.Screen
+          name={RootScreens.AI_CHAT}
+          component={AIChatScreen}
+          options={{title: 'AI Chat'}}
         />
       </Stack.Navigator>
     </NavigationContainer>

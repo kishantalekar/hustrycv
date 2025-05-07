@@ -1,7 +1,3 @@
-import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
-import React, {useCallback, useMemo, useRef, useState} from 'react';
-import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {ResumePreview, TemplateSelector} from '@/components';
 import {FONTS} from '@/constants';
 import {useResumeStore} from '@/store/useResumeStore';
@@ -10,9 +6,14 @@ import {
   getModernResumeHTML,
   getProfessionalResumeHTML,
   getTechnicalResumeHTML,
-getTemplateById} from '@/templates';
+  getTemplateById,
+} from '@/templates';
 import {COLORS} from '@/theme';
 import {goBack} from '@/utils/navigation';
+import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
+import React, {useCallback, useMemo, useRef, useState} from 'react';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 const resumeTemplates = [
   {
@@ -50,12 +51,13 @@ export const PreviewScreen = () => {
   const [selectedTemplate, setSelectedTemplate] = useState(defaultTemplate.id);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
+  const bottomSheetRef = useRef<BottomSheet>(null);
   const handleTemplateSelect = (templateId: string) => {
     setSelectedTemplate(templateId);
     updateResumeTemplateId(templateId);
+    setIsBottomSheetOpen(false);
+    bottomSheetRef.current?.close();
   };
-
-  const bottomSheetRef = useRef<BottomSheet>(null);
 
   const snapPoints = useMemo(() => ['40%'], []);
 
