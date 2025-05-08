@@ -1,7 +1,7 @@
-import { CertificateItem, Section } from '@/types';
-import { getExternalLinkIcon } from '../icons/icons';
-import { getResumeStyles } from '../styles/resumeStyles';
-import { formatDateRange } from './utils/formatDate';
+import {CertificateItem, Section} from '@/types';
+import {getExternalLinkIcon} from '../icons/icons';
+import {getResumeStyles} from '../styles/resumeStyles';
+import {formatDateRange} from './utils/formatDate';
 
 const renderCertificateTitle = (name: string) => {
   return `
@@ -10,12 +10,11 @@ const renderCertificateTitle = (name: string) => {
 };
 
 const renderCertificateLink = (url: string) => {
-  console.log(url);
   return `
     <a href="${url}" 
       style="color: #000; text-decoration: none; display: inline-flex; align-items: center; margin-left: 4px;" 
       target="_blank">
-      ${getExternalLinkIcon({ size: 18 })}
+      ${getExternalLinkIcon({size: 18})}
     </a>
   `;
 };
@@ -26,12 +25,14 @@ const renderCertificateAuthority = (authority: string) => {
   `;
 };
 
-const renderCertificateDescription = (description: string) => {
-  if (!description) {return '';}
-  return `
-    <div class="text-regular text-muted" style="margin-top: 4px;">${description}</div>
-  `;
-};
+// const renderCertificateDescription = (description: string) => {
+//   if (!description) {
+//     return '';
+//   }
+//   return `
+//     <div class="text-regular text-muted" style="margin-top: 4px;">${description}</div>
+//   `;
+// };
 
 const renderCertificateItem = (cert: CertificateItem) => {
   const styles = getResumeStyles();

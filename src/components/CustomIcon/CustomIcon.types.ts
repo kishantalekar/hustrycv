@@ -6,9 +6,13 @@ export type IconVariant =
   | 'fontawesome'
   | 'ionicon'
   | 'antdesign'
-  | 'ionicons';
+  | 'ionicons'
+  | 'svg';
 
 export interface CustomIconProps extends Omit<IconProps, 'name'> {
   variant?: IconVariant;
   name: string;
+  size?: number;
+  color?: string;
+  SvgComponent?: React.ComponentType<any>;
 }

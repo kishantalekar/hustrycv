@@ -1,8 +1,7 @@
-import {View, TouchableOpacity, Text} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import {Button, KeywordItem} from '@/components';
+import {Button, CollapsibleCard, KeywordItem} from '@/components';
 import {TextInput} from '@/components/TextInput';
 import {SkillItem} from '@/types';
+import {Text, TouchableOpacity, View} from 'react-native';
 import {styles} from './SkillsEditor.styles';
 
 interface SkillCardProps {
@@ -23,95 +22,91 @@ export function SkillsCard({
   newKeyword,
   setNewKeyword,
 }: Readonly<SkillCardProps>) {
-  return (
-    <View key={skill.id} style={styles.skillCard}>
-      <TouchableOpacity
-        style={styles.cardHeader}
-        onPress={() => toggleExpand(skill.id)}>
-        <View>
-          <Text style={styles.skillName}>
-            {skill.name.length ? skill.name : 'Category'}
-          </Text>
-          <Text style={styles.skillLevel}>
-            {skill.level.charAt(0).toUpperCase() + skill.level.slice(1)}
-          </Text>
-        </View>
-        <Icon
-          name={expandedItemId === skill.id ? 'expand-less' : 'expand-more'}
-          size={24}
-          color="#666"
-        />
-      </TouchableOpacity>
-      {expandedItemId === skill.id && (
-        <View style={styles.cardContent}>
-          <TextInput
-            label="Category"
-            value={skill.name}
-            onChangeText={text => updateSkill(skill.id, {...skill, name: text})}
-          />
-          <Text style={styles.label}>Level:</Text>
-          <View style={styles.levelSelector}>
-            {['beginner', 'intermediate', 'advanced'].map(level => (
-              <TouchableOpacity
-                key={level}
-                style={[
-                  styles.levelChip,
-                  skill.level === level && styles.selectedLevelChip,
-                ]}
-                onPress={() => updateSkill(skill.id, {...skill, level})}>
-                <Text
-                  style={[
-                    styles.levelChipText,
-                    skill.level === level && styles.selectedLevelChipText,
-                  ]}>
-                  {level.charAt(0).toUpperCase() + level.slice(1)}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-          <View style={styles.keywordsSection}>
-            <Text style={styles.keywordsTitle}>Skills:</Text>
-            <View style={styles.keywordsList}>
-              {skill?.keywords &&
-                skill?.keywords?.map((keyword, index) => (
-                  <KeywordItem
-                    key={index}
-                    keyword={keyword}
-                    onRemove={() =>
-                      updateSkill(skill.id, {
-                        ...skill,
-                        keywords: skill.keywords?.filter((_, i) => i !== index),
-                      })
-                    }
-                  />
-                ))}
-            </View>
-          </View>
-          <View style={styles.keywordsContainer}>
-            <TextInput
-              label="Add Skill"
-              helperText="Press enter to add"
-              value={newKeyword}
-              onChangeText={setNewKeyword}
-              onSubmitEditing={() => {
-                if (newKeyword.trim()) {
-                  updateSkill(skill.id, {
-                    ...skill,
-                    keywords: [...(skill.keywords ?? []), newKeyword.trim()],
-                  });
-                  setNewKeyword('');
-                }
-              }}
-            />
-          </View>
-
-          <Button
-            title="Delete"
-            onPress={() => removeSkill(skill.id)}
-            variant="danger"
-          />
-        </View>
-      )}
+  const header = (
+    <View>
+      <Text style={styles.skillName}>
+        {skill.name.length ? skill.name : 'Category'}
+      </Text>
+      <Text style={styles.skillLevel}>
+        {skill.level.charAt(0).toUpperCase() + skill.level.slice(1)}
+      </Text>
     </View>
+  );
+  return (
+    <CollapsibleCard
+      onToggle={() => toggleExpand(skill.id)}
+      header={header}
+      expanded={expandedItemId === skill.id}
+      id={skill.id}
+      handleDelete={removeSkill}>
+      <View>
+        <TextInput
+          label="Category"
+          value={skill.name}
+          onChangeText={text => updateSkill(skill.id, {...skill, name: text})}
+        />
+        <Text style={styles.label}>Level:</Text>
+        <View style={styles.levelSelector}>
+          {['beginner', 'intermediate', 'advanced'].map(level => (
+            <TouchableOpacity
+              key={level}
+              style={[
+                styles.levelChip,
+                skill.level === level && styles.selectedLevelChip,
+              ]}
+              onPress={() => updateSkill(skill.id, {...skill, level})}>
+              <Text
+                style={[
+                  styles.levelChipText,
+                  skill.level === level && styles.selectedLevelChipText,
+                ]}>
+                {level.charAt(0).toUpperCase() + level.slice(1)}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+        <View style={styles.keywordsSection}>
+          <Text style={styles.keywordsTitle}>Skills:</Text>
+          <View style={styles.keywordsList}>
+            {skill?.keywords &&
+              skill?.keywords?.map((keyword, index) => (
+                <KeywordItem
+                  key={index}
+                  keyword={keyword}
+                  onRemove={() =>
+                    updateSkill(skill.id, {
+                      ...skill,
+                      keywords: skill.keywords?.filter((_, i) => i !== index),
+                    })
+                  }
+                />
+              ))}
+          </View>
+        </View>
+        <View style={styles.keywordsContainer}>
+          <TextInput
+            label="Add Skill"
+            helperText="Press enter to add"
+            value={newKeyword}
+            onChangeText={setNewKeyword}
+            onSubmitEditing={() => {
+              if (newKeyword.trim()) {
+                updateSkill(skill.id, {
+                  ...skill,
+                  keywords: [...(skill.keywords ?? []), newKeyword.trim()],
+                });
+                setNewKeyword('');
+              }
+            }}
+          />
+        </View>
+
+        <Button
+          title="Delete"
+          onPress={() => removeSkill(skill.id)}
+          variant="danger"
+        />
+      </View>
+    </CollapsibleCard>
   );
 }

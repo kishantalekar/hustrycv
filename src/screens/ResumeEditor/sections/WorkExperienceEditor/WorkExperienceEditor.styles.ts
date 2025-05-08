@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
 import {FONTS} from '@/constants';
+import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
   keyboardAvoidingView: {
@@ -13,6 +13,7 @@ export const styles = StyleSheet.create({
   },
   section: {
     marginBottom: 24,
+    gap: 16,
   },
   sectionTitle: {
     fontSize: 20,
@@ -20,17 +21,7 @@ export const styles = StyleSheet.create({
     marginBottom: 16,
     color: '#333',
   },
-  experienceCard: {
-    backgroundColor: 'white',
-    borderRadius: 8,
-    marginBottom: 12,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
+  experienceCard: {},
   cardHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -54,11 +45,7 @@ export const styles = StyleSheet.create({
     fontFamily: FONTS.FIRA_SANS.REGULAR,
     color: '#666',
   },
-  cardContent: {
-    padding: 16,
-    borderTopWidth: 1,
-    borderTopColor: '#EEE',
-  },
+  cardContent: {},
   input: {
     borderWidth: 1,
     borderColor: '#DDD',

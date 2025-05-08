@@ -1,9 +1,9 @@
-import {GoogleGenAI} from '@google/genai';
+import {createInitialResume, Resume} from '@/types/common/resume.types';
 import {GOOGLE_GEMINI_API_KEY} from '@/utils/apiKeys';
 import {extractJsonFromCodeBlock} from '@/utils/regex';
-import {RESUME_PARSE_PROMPT} from './prompts';
+import {GoogleGenAI} from '@google/genai';
 import {v4 as uuidv4} from 'uuid';
-import {createInitialResume} from '@/types/common/resume.types';
+import {RESUME_PARSE_PROMPT} from './prompts';
 
 // Initialize Google GenAI with API key
 const genAI = new GoogleGenAI({apiKey: GOOGLE_GEMINI_API_KEY});
@@ -42,7 +42,7 @@ export const parseResumeWithAI = async (resumeText: string) => {
 // Function to convert parsed AI data to our Resume structure
 export const convertToResumeFormat = (parsedData: any) => {
   try {
-    const resume = createInitialResume();
+    const resume: Resume = createInitialResume();
     const currentDate = new Date().toISOString();
 
     // Set metadata

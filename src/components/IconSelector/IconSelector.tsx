@@ -1,9 +1,28 @@
+import {CustomIcon, IconVariant, SvgIcon, TextInput} from '@/components';
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, FlatList, StyleSheet} from 'react-native';
-import {CustomIcon} from '@/components/CustomIcon/CustomIcon';
-import {TextInput} from '@/components/TextInput';
-import {iconSets} from './iconSets';
-import {IconVariant} from '../CustomIcon';
+import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+// Import SVG icons
+import DribbleIcon from '@/assets/icons/dribble.svg';
+import ExternalLinkIcon from '@/assets/icons/externalLink.svg';
+import FacebookIcon from '@/assets/icons/facebook.svg';
+import GithubIcon from '@/assets/icons/github.svg';
+import GitlabIcon from '@/assets/icons/gitlab.svg';
+import InstagramIcon from '@/assets/icons/instagram.svg';
+import StackoverflowIcon from '@/assets/icons/stackoverflow.svg';
+import TwitterIcon from '@/assets/icons/twitter.svg';
+import YoutubeIcon from '@/assets/icons/youtube.svg';
+
+const SVG_ICONS = {
+  dribble: DribbleIcon,
+  externalLink: ExternalLinkIcon,
+  facebook: FacebookIcon,
+  github: GithubIcon,
+  gitlab: GitlabIcon,
+  instagram: InstagramIcon,
+  stackoverflow: StackoverflowIcon,
+  twitter: TwitterIcon,
+  youtube: YoutubeIcon,
+};
 
 interface IconSelectorProps {
   onSelect: (icon: string, iconVariant: IconVariant) => void;
@@ -12,17 +31,11 @@ interface IconSelectorProps {
 
 interface IconItem {
   name: string;
-  variant: IconVariant;
 }
 
-const allIcons: IconItem[] = [
-  ...iconSets.flatMap(set =>
-    set.icons.map(icon => ({
-      name: icon,
-      variant: set.variant,
-    })),
-  ),
-];
+const allIcons: IconItem[] = Object.keys(SVG_ICONS).map(name => ({
+  name,
+}));
 
 export function IconSelector({onSelect, onClose}: Readonly<IconSelectorProps>) {
   const [searchQuery, setSearchQuery] = useState('');
@@ -30,6 +43,16 @@ export function IconSelector({onSelect, onClose}: Readonly<IconSelectorProps>) {
   const filteredIcons = allIcons.filter(icon => {
     return icon.name.toLowerCase().includes(searchQuery.toLowerCase());
   });
+
+  const renderIcon = (item: IconItem) => {
+    const IconComponent = SVG_ICONS[item.name as keyof typeof SVG_ICONS];
+    return IconComponent ? (
+      <SvgIcon size={24} color="#666">
+        <IconComponent />
+      </SvgIcon>
+    ) : null;
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -48,20 +71,19 @@ export function IconSelector({onSelect, onClose}: Readonly<IconSelectorProps>) {
       />
 
       <FlatList
+        // eslint-disable-next-line react-native/no-inline-styles
         contentContainerStyle={{flexGrow: 1}}
         data={filteredIcons}
         numColumns={5}
-        keyExtractor={item => `${item.variant}-${item.name}`}
+        keyExtractor={item => item.name}
         renderItem={({item}) => (
           <TouchableOpacity
             style={styles.iconButton}
-            onPress={() => onSelect(item.name, item.variant)}>
-            <CustomIcon
-              variant={item.variant || 'material'}
-              name={item.name}
-              size={24}
-              color="#666"
-            />
+            onPress={() => {
+              console.log('icon selected', item.name);
+              onSelect(item.name, 'svg');
+            }}>
+            {renderIcon(item)}
             {/* <Text style={styles.iconName}>{item.name}</Text> */}
           </TouchableOpacity>
         )}

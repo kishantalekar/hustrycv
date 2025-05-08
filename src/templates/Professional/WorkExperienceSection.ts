@@ -29,7 +29,7 @@ const renderCompanyInfo = (company: string, location: string) => {
 const renderWorkItem = (item: WorkItem, index: number) => {
   return `
     <div style="margin-bottom: 8pt;page-break-inside:avoid;">
-    ${index === 0 && '<h2 class="section-title">Experience</h2> <hr/>'}
+    ${index === 0 ? '<h2 class="section-title">Experience</h2> <hr/>' : ''}
       ${renderWorkHeader(
         item.position,
         item.startDate,

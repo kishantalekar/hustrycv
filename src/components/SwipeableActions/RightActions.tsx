@@ -9,7 +9,8 @@ import {styles} from './RightActions.styles';
 interface RightActionsProps {
   progress: SharedValue<number>;
   drag: SharedValue<number>;
-  item: Resume;
+  item?: Resume;
+  id?: string;
   handleDelete: (id: string) => void;
 }
 
@@ -18,6 +19,7 @@ export function RightActions({
   drag,
   item,
   handleDelete,
+  id,
 }: Readonly<RightActionsProps>) {
   const styleAnimation = useAnimatedStyle(() => {
     return {
@@ -26,7 +28,7 @@ export function RightActions({
   });
 
   return (
-    <TouchableOpacity onPress={() => handleDelete(item.metadata.id)}>
+    <TouchableOpacity onPress={() => handleDelete(id ?? item?.metadata?.id)}>
       <Animated.View style={[styles.deleteAction, styleAnimation]}>
         <Icon name="delete" size={24} color={COLORS.white} />
         <Text style={styles.deleteActionText}>Delete</Text>

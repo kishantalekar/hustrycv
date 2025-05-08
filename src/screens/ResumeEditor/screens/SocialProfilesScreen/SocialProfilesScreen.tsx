@@ -1,15 +1,15 @@
-import Clipboard from '@react-native-clipboard/clipboard';
-import React, {useState} from 'react';
-import {View, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
-import {Text, IconButton} from 'react-native-paper';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import {v4 as uuidv4} from 'uuid';
 import {Button} from '@/components';
 import {Header} from '@/components/Header';
 import {TextInput} from '@/components/TextInput';
 import {useResumeStore} from '@/store/useResumeStore';
 import {SocialLink} from '@/types/common/social.types';
+import Clipboard from '@react-native-clipboard/clipboard';
+import React, {useState} from 'react';
+import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {IconButton, Text} from 'react-native-paper';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import {v4 as uuidv4} from 'uuid';
 
 export const SocialProfilesScreen = () => {
   const {getActiveResume, updateBasics} = useResumeStore();
@@ -51,17 +51,6 @@ export const SocialProfilesScreen = () => {
       <Header title="Social Profiles" />
       <ScrollView style={styles.scrollView}>
         <View style={styles.content}>
-          {/* <View style={styles.header}>
-            <Text style={styles.subsectionTitle}>Professional Profiles</Text>
-            <Text style={styles.summary}>
-              {socials.length
-                ? `${socials.length} profile${
-                    socials.length !== 1 ? 's' : ''
-                  } added`
-                : 'No profiles added'}
-            </Text>
-          </View> */}
-
           {socials.map((social, index) => (
             <View key={social.id} style={styles.socialCard}>
               <TouchableOpacity

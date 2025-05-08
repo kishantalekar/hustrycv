@@ -85,7 +85,8 @@ export const styles = StyleSheet.create({
     overflow: 'hidden',
     borderRadius: BORDER_RADIUS.md,
     marginHorizontal: SPACING.xs,
-    marginBottom: SPACING.lg,
+    // paddingBottom: SPACING.sm,
+    paddingBottom: 2,
   },
   resumeCard: {
     backgroundColor: COLORS.white,
@@ -102,6 +103,7 @@ export const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,
+    paddingBottom: SPACING.sectionGap,
   },
   deleteAction: {
     backgroundColor: COLORS.danger,

@@ -1,3 +1,4 @@
+import {IconVariant} from '@/components';
 import {v4 as uuidv4} from 'uuid';
 import {SocialLink} from './social.types';
 
@@ -55,12 +56,7 @@ export interface LinkItem {
   label: string;
   url: string;
   icon: string;
-  iconVariant?:
-    | 'material'
-    | 'octicon'
-    | 'fontawesome'
-    | 'ionicon'
-    | 'antdesign';
+  iconVariant?: IconVariant;
 }
 
 export interface ProjectItem extends BaseItem {

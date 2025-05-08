@@ -2,7 +2,7 @@ import {Dashboard, KeywordsEditor, SocialProfilesScreen} from '@/screens';
 import {AIChatScreen} from '@/screens/AIChat/AIChatScreen';
 import {PreviewScreen} from '@/screens/Preview/PreviewScreen';
 import {ResumeEditor} from '@/screens/ResumeEditor/ResumeEditor';
-import {ProjectConfigScreen} from '@/screens/ResumeEditor/screens/ProjectConfigScreen';
+import {ProjectConfigScreen} from '@/screens/ResumeEditor/screens/LinksEditorScreen/ProjectConfigScreen';
 import {
   ContentType,
   RichTextEditorScreen,
@@ -30,6 +30,7 @@ export type RootStackParamList = {
   [RootScreens.SOCIAL_PROFILES]: undefined;
   [RootScreens.PROJECT_CONFIG]: {
     id: string;
+    type: 'project' | 'social';
   };
   [RootScreens.KEYWORDS_EDITOR]: {
     id: string;

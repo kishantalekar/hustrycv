@@ -4,6 +4,8 @@ const withStorybook = require('@storybook/react-native/metro/withStorybook');
 const {
   wrapWithReanimatedMetroConfig,
 } = require('react-native-reanimated/metro-config');
+const defaultConfig = getDefaultConfig(__dirname);
+const {assetExts, sourceExts} = defaultConfig.resolver;
 /**
  * Metro configuration
  * https://reactnative.dev/docs/metro
@@ -11,8 +13,14 @@ const {
  * @type {import('@react-native/metro-config').MetroConfig}
  */
 const config = {
+  transformer: {
+    babelTransformerPath: require.resolve(
+      'react-native-svg-transformer/react-native',
+    ),
+  },
   resolver: {
-    sourceExts: ['jsx', 'js', 'ts', 'tsx', 'cjs', 'json'], //add here
+    assetExts: assetExts.filter(ext => ext !== 'svg'),
+    sourceExts: ['jsx', 'js', 'ts', 'tsx', 'cjs', 'json', ...sourceExts, 'svg'], //add here
     resolverMainFields: ['react-native', 'browser', 'main', 'module'],
     extraNodeModules: {
       '@10play/tentap-editor/lib/module/index': path.resolve(

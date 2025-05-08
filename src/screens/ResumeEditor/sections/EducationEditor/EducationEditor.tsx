@@ -1,21 +1,8 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Text,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Button} from '@/components';
-import {TextInput} from '@/components/TextInput';
-import {FONTS} from '@/constants';
-import {AppNavigationProp} from '@/navigation/AppNavigator';
 import {useResumeStore} from '@/store/useResumeStore';
 import {globalStyles} from '@/styles/globalStyles';
+import React, {useState} from 'react';
+import {KeyboardAvoidingView, Platform, ScrollView, View} from 'react-native';
 import {EducationCard} from './EducationCard';
 import {styles} from './EducationEditor.styles';
 
@@ -62,6 +49,7 @@ export const EducationEditor = () => {
                 startDate: '',
                 endDate: '',
                 gpa: '',
+                current: false,
               });
               setExpandedItems(prev => ({
                 ...prev,

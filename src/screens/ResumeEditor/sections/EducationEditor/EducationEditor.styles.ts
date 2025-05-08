@@ -1,5 +1,6 @@
-import {StyleSheet} from 'react-native';
 import {FONTS} from '@/constants';
+import {SPACING} from '@/theme';
+import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
@@ -9,6 +10,7 @@ export const styles = StyleSheet.create({
   },
   section: {
     marginBottom: 24,
+    gap: SPACING.sectionGap,
   },
   sectionTitle: {
     fontSize: 20,
