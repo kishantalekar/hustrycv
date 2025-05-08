@@ -1,4 +1,4 @@
-import {Button, CollapsibleCard, KeywordItem} from '@/components';
+import {CollapsibleCard, KeywordItem} from '@/components';
 import {TextInput} from '@/components/TextInput';
 import {SkillItem} from '@/types';
 import {Text, TouchableOpacity, View} from 'react-native';
@@ -100,12 +100,6 @@ export function SkillsCard({
             }}
           />
         </View>
-
-        <Button
-          title="Delete"
-          onPress={() => removeSkill(skill.id)}
-          variant="danger"
-        />
       </View>
     </CollapsibleCard>
   );

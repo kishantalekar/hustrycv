@@ -1,5 +1,4 @@
 import {
-  Button,
   CardHeader,
   Checkbox,
   CollapsibleCard,
@@ -134,12 +133,6 @@ export function ProjectCard({
             />
           </View>
         </TouchableOpacity>
-
-        <Button
-          title="Delete"
-          variant="danger"
-          onPress={() => removeProject(project.id)}
-        />
       </View>
     </CollapsibleCard>
   );

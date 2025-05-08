@@ -8,9 +8,8 @@ import {TextInput} from '@/components/TextInput';
 import {globalStyles} from '@/styles/globalStyles';
 import {COLORS} from '@/theme';
 import {EducationItem} from '@/types';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {View} from 'react-native';
 import {Divider} from 'react-native-paper';
-import {styles} from './EducationEditor.styles';
 
 interface EducationCardProps {
   edu: EducationItem;
@@ -105,11 +104,6 @@ export function EducationCard({
           onChangeText={text => updateEducation(edu.id, {...edu, gpa: text})}
           keyboardType="decimal-pad"
         />
-        <TouchableOpacity
-          style={styles.deleteButton}
-          onPress={() => removeEducation(edu.id)}>
-          <Text style={styles.deleteButtonText}>Delete</Text>
-        </TouchableOpacity>
       </View>
     </CollapsibleCard>
   );

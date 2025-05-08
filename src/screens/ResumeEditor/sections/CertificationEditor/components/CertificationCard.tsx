@@ -1,6 +1,5 @@
-import {Button, CollapsibleCard, DateInput, TextInput} from '@/components';
-import {Text, View} from 'react-native';
-import {styles} from './CertificationCard.styles';
+import {CardHeader, CollapsibleCard, DateInput, TextInput} from '@/components';
+import {View} from 'react-native';
 
 interface CertificationCardProps {
   cert: {
@@ -23,11 +22,12 @@ export function CertificationCard({
   removeCertification,
 }: Readonly<CertificationCardProps>) {
   const header = (
-    <View>
-      <Text style={styles.certificationName}>
-        {cert.name || 'New Certification'}
-      </Text>
-    </View>
+    <CardHeader
+      title={cert.name}
+      subtitle={cert.authority}
+      titlePlaceholder="Certification name"
+      subtitlePlaceholder="Issuing authority"
+    />
   );
   return (
     <CollapsibleCard
@@ -73,11 +73,6 @@ export function CertificationCard({
               date,
             })
           }
-        />
-        <Button
-          title="Delete"
-          onPress={() => removeCertification(cert.id)}
-          variant="danger"
         />
       </View>
     </CollapsibleCard>

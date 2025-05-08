@@ -1,5 +1,4 @@
 import {
-  Button,
   CardHeader,
   Checkbox,
   CollapsibleCard,
@@ -147,11 +146,6 @@ export function WorkExperienceCard({
             />
           </View>
         </TouchableOpacity>
-        <Button
-          title="Delete"
-          onPress={() => removeWorkExperience(experience.id)}
-          variant="danger"
-        />
       </View>
     </CollapsibleCard>
   );
