@@ -1,6 +1,5 @@
 import {IconVariant} from '@/components';
 import {v4 as uuidv4} from 'uuid';
-import {SocialLink} from './social.types';
 
 interface BaseItem {
   id: string;
@@ -20,7 +19,7 @@ export interface Basics {
   phone: string;
   location: string;
   summary: string;
-  socials: SocialLink[];
+  socials: LinkItem[];
 }
 
 export interface WorkItem extends BaseItem {

@@ -2,11 +2,12 @@ import {Button} from '@/components';
 import {Header} from '@/components/Header';
 import {IconSelector} from '@/components/IconSelector/IconSelector';
 import {useResumeStore} from '@/store/useResumeStore';
+import {globalStyles} from '@/styles';
 import {COLORS} from '@/theme';
 import {LinkItem} from '@/types';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import React, {useCallback, useMemo, useRef, useState} from 'react';
-import {ScrollView, View} from 'react-native';
+import {KeyboardAvoidingView, Platform, ScrollView, View} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {v4 as uuidv4} from 'uuid';
@@ -22,7 +23,7 @@ interface ProjectConfigScreenProps {
   navigation: any;
 }
 
-export function ProjectConfigScreen({
+export function ProjectLinksScreen({
   route,
 }: Readonly<ProjectConfigScreenProps>) {
   const {id} = route.params;
@@ -93,7 +94,6 @@ export function ProjectConfigScreen({
       });
     }
     setIsIconSelectorOpen(false);
-    // setEditingLink(null);
   };
 
   const openIconSelector = (index: number, link: LinkItem) => {
@@ -102,51 +102,55 @@ export function ProjectConfigScreen({
   };
 
   return (
-    <GestureHandlerRootView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <Header title="Project Links" />
-        <ScrollView style={styles.scrollView}>
-          <View style={styles.content}>
-            {(project?.links || []).map((link, index) => (
-              <LinkEditorCard
-                key={link.id}
-                link={link}
-                index={index}
-                toggleExpand={toggleExpand}
-                expanded={expandedId === link.id}
-                handleUpdateLink={handleUpdateLink}
-                handleRemoveLink={handleRemoveLink}
-                openIconSelector={openIconSelector}
-              />
-            ))}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={globalStyles.keyboardAvoidingView}>
+      <GestureHandlerRootView style={styles.container}>
+        <SafeAreaView style={styles.safeArea}>
+          <Header title="Project Links" />
+          <ScrollView style={styles.scrollView}>
+            <View style={styles.content}>
+              {(project?.links || []).map((link, index) => (
+                <LinkEditorCard
+                  key={link.id}
+                  link={link}
+                  index={index}
+                  toggleExpand={toggleExpand}
+                  expanded={expandedId === link.id}
+                  handleUpdateLink={handleUpdateLink}
+                  handleRemoveLink={handleRemoveLink}
+                  openIconSelector={openIconSelector}
+                />
+              ))}
 
-            <Button
-              variant="outline"
-              title="Add Link"
-              onPress={handleAddLink}
-            />
-          </View>
-        </ScrollView>
-        <BottomSheet
-          ref={bottomSheetRef}
-          index={isIconSelectorOpen ? 0 : -1}
-          snapPoints={snapPoints}
-          onChange={handleSheetChanges}
-          enablePanDownToClose
-          backgroundStyle={{
-            backgroundColor: COLORS.background.primary,
-          }}
-          handleIndicatorStyle={styles.bottomSheetHandleIndicationStyles}
-          handleStyle={styles.bottomSheethandleStyle}
-          style={styles.bottomSheet}>
-          <BottomSheetView style={styles.bottomSheetContent}>
-            <IconSelector
-              onSelect={handleSelectIcon}
-              onClose={() => bottomSheetRef.current?.close()}
-            />
-          </BottomSheetView>
-        </BottomSheet>
-      </SafeAreaView>
-    </GestureHandlerRootView>
+              <Button
+                variant="outline"
+                title="Add Link"
+                onPress={handleAddLink}
+              />
+            </View>
+          </ScrollView>
+          <BottomSheet
+            ref={bottomSheetRef}
+            index={isIconSelectorOpen ? 0 : -1}
+            snapPoints={snapPoints}
+            onChange={handleSheetChanges}
+            enablePanDownToClose
+            backgroundStyle={{
+              backgroundColor: COLORS.background.primary,
+            }}
+            handleIndicatorStyle={styles.bottomSheetHandleIndicationStyles}
+            handleStyle={styles.bottomSheethandleStyle}
+            style={styles.bottomSheet}>
+            <BottomSheetView style={styles.bottomSheetContent}>
+              <IconSelector
+                onSelect={handleSelectIcon}
+                onClose={() => bottomSheetRef.current?.close()}
+              />
+            </BottomSheetView>
+          </BottomSheet>
+        </SafeAreaView>
+      </GestureHandlerRootView>
+    </KeyboardAvoidingView>
   );
 }

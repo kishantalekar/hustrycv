@@ -1,13 +1,16 @@
-import {Dashboard, KeywordsEditor, SocialProfilesScreen} from '@/screens';
-import {AIChatScreen} from '@/screens/AIChat/AIChatScreen';
-import {PreviewScreen} from '@/screens/Preview/PreviewScreen';
-import {ResumeEditor} from '@/screens/ResumeEditor/ResumeEditor';
-import {ProjectConfigScreen} from '@/screens/ResumeEditor/screens/LinksEditorScreen/ProjectConfigScreen';
+import {
+  Dashboard,
+  KeywordsEditor,
+  PreviewScreen,
+  ProjectLinksScreen,
+  ResumeEditor,
+  SocialProfilesScreen,
+  UploadResumeScreen,
+} from '@/screens';
 import {
   ContentType,
   RichTextEditorScreen,
 } from '@/screens/ResumeEditor/screens/RichTextEditorScreen';
-import {UploadResumeScreen} from '@/screens/UploadResume/UploadResumeScreen';
 import {navigationRef} from '@/utils/navigation';
 import {NavigationContainer} from '@react-navigation/native';
 import {
@@ -30,7 +33,6 @@ export type RootStackParamList = {
   [RootScreens.SOCIAL_PROFILES]: undefined;
   [RootScreens.PROJECT_CONFIG]: {
     id: string;
-    type: 'project' | 'social';
   };
   [RootScreens.KEYWORDS_EDITOR]: {
     id: string;
@@ -67,7 +69,7 @@ export const AppNavigator = () => {
         />
         <Stack.Screen
           name={RootScreens.PROJECT_CONFIG}
-          component={ProjectConfigScreen}
+          component={ProjectLinksScreen}
           options={{title: 'Project Configuration'}}
         />
         <Stack.Screen
@@ -79,11 +81,6 @@ export const AppNavigator = () => {
           name={RootScreens.UPLOAD_RESUME}
           component={UploadResumeScreen}
           options={{title: 'Upload Resume'}}
-        />
-        <Stack.Screen
-          name={RootScreens.AI_CHAT}
-          component={AIChatScreen}
-          options={{title: 'AI Chat'}}
         />
       </Stack.Navigator>
     </NavigationContainer>
