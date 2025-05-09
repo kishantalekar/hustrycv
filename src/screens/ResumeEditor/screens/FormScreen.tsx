@@ -1,10 +1,11 @@
-import React from 'react';
-import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {Header} from '@/components/Header';
+import {useResumeStore} from '@/store/useResumeStore';
 import {globalStyles} from '@/styles/globalStyles';
-import {styles} from './FormScreen.styles';
+import React from 'react';
+import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {navigate} from '../../../utils/navigation';
+import {styles} from './FormScreen.styles';
 
 interface SectionsInterface {
   id: string;
@@ -46,10 +47,19 @@ const sections: SectionsInterface[] = [
 ];
 
 const FormScreen = () => {
+  const {updateMetadata, getActiveResume} = useResumeStore();
+  const activeResume = getActiveResume();
+  const metadata = activeResume.metadata;
   return (
     <SafeAreaView style={globalStyles.container}>
       <ScrollView style={styles.container}>
-        <Header title="My Resume" leftIcon="home" iconVariant="octicon" />
+        <Header
+          title={metadata?.title?.length ? metadata.title : 'My Resume'}
+          leftIcon="home"
+          iconVariant="octicon"
+          editable
+          onTitleChange={newTitle => updateMetadata({title: newTitle})}
+        />
         <View style={styles.sectionsContainer}>
           {sections.map(section => (
             <TouchableOpacity

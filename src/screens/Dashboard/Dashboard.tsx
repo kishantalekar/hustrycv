@@ -1,5 +1,6 @@
 import {CreateResumeModal} from '@/components/CreateResumeModal/CreateResumeModal';
 import {useResumeStore} from '@/store/useResumeStore';
+import {globalStyles} from '@/styles';
 import {createInitialResume} from '@/types';
 import {navigate} from '@/utils/navigation';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
@@ -54,7 +55,7 @@ export const Dashboard = () => {
     setShowDropdown(false);
   };
   return (
-    <GestureHandlerRootView style={{flex: 1}}>
+    <GestureHandlerRootView style={globalStyles.keyboardAvoidingView}>
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.title}>My Resumes</Text>

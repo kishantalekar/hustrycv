@@ -3,7 +3,6 @@ import {RightActions} from '@/components/SwipeableActions/RightActions';
 import {Resume} from '@/types';
 import {calculateProgress, getCompletionStatus} from '@/utils/resumeUtils';
 import {Text, TouchableOpacity, View} from 'react-native';
-// import {Gesture, GestureDetector} from 'react-native-gesture-handler';
 import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import {styles} from './Dashboard.styles';
 
@@ -21,7 +20,7 @@ export const renderResumeItem = ({
   const lastModified = new Date(item.metadata.updatedAt).toLocaleDateString();
   const progress = calculateProgress(item);
   const status = getCompletionStatus(progress);
-
+  const title = item.metadata.title || item.basics.name || 'Untitled Resume';
   return (
     <ReanimatedSwipeable
       renderRightActions={(progress, translation) =>
@@ -43,9 +42,7 @@ export const renderResumeItem = ({
           <ResumeProgress resume={item} status={status} />
         </View>
         <View style={styles.resumeInfo}>
-          <Text style={styles.resumeName}>
-            {item.basics.name || 'Untitled Resume'}
-          </Text>
+          <Text style={styles.resumeName}>{title}</Text>
           <View style={styles.resumeMetaRow}>
             <Text style={styles.resumeDate}>Last modified: {lastModified}</Text>
             <Text style={styles.resumeTemplate}>

@@ -8,6 +8,7 @@ interface BaseItem {
 export interface Metadata {
   id: string;
   templateId: string;
+  title?: string;
   version: string;
   createdAt: string;
   updatedAt: string;

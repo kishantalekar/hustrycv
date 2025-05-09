@@ -1,16 +1,16 @@
+import {FONTS} from '@/constants';
+import {BORDER_RADIUS, COLORS, SPACING, TYPOGRAPHY} from '@/theme';
 import React from 'react';
 import {
-  View,
   TextInput as RNTextInput,
   StyleSheet,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {FONTS} from '@/constants';
-import {COLORS, SPACING, BORDER_RADIUS, TYPOGRAPHY} from '@/theme';
-import {TextInputProps, TextInputVariant} from './TextInput.types';
 import {CustomIcon} from '../CustomIcon';
 import {Typography, TypographyVariant} from '../Typography';
+import {TextInputProps, TextInputVariant} from './TextInput.types';
 
 export const TextInput: React.FC<TextInputProps> = ({
   variant = TextInputVariant.Outlined,

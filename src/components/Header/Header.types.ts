@@ -10,4 +10,7 @@ export interface HeaderProps {
   rightComponent?: ReactNode;
   onLeftPress?: () => void;
   iconVariant?: IconVariant;
+  onTitleChange?: (newTitle: string) => void;
+  editable?: boolean;
+  textInputLabel?: string;
 }

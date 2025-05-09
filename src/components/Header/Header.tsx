@@ -1,12 +1,13 @@
+import {COLORS} from '@/theme';
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
-import {View, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
+import {TouchableOpacity, View} from 'react-native';
 import {Text} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {COLORS} from '@/theme';
+import {CustomIcon} from '../CustomIcon';
+import {TextInput} from '../TextInput';
 import {styles} from './Header.styles';
 import {HeaderProps} from './Header.types';
-import {CustomIcon} from '../CustomIcon';
 
 export const Header: React.FC<HeaderProps> = ({
   title,
@@ -17,8 +18,18 @@ export const Header: React.FC<HeaderProps> = ({
   leftIcon = 'arrow-back',
   onLeftPress,
   iconVariant = 'material',
+  textInputLabel = '',
+  onTitleChange,
+  editable = false,
 }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [titleValue, setTitleValue] = useState(title);
   const navigation = useNavigation();
+
+  const handleTitleChange = (text: string) => {
+    setTitleValue(text);
+    onTitleChange?.(text);
+  };
 
   return (
     <View style={styles.container}>
@@ -41,11 +52,30 @@ export const Header: React.FC<HeaderProps> = ({
           />
         )}
       </TouchableOpacity>
-
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>{title}</Text>
+        {!isEditing ? (
+          <View style={styles.titleWrapper}>
+            <Text style={styles.title}>{titleValue}</Text>
+            {editable && (
+              <TouchableOpacity
+                style={styles.editButton}
+                onPress={() => setIsEditing(true)}>
+                <Icon name="edit" size={20} color={COLORS.text.secondary} />
+              </TouchableOpacity>
+            )}
+          </View>
+        ) : (
+          <TextInput
+            label={textInputLabel}
+            value={titleValue}
+            onChangeText={handleTitleChange}
+            onBlur={() => setIsEditing(false)}
+            autoFocus
+            containerStyle={styles.textInputContainer}
+            rightIcon="close"
+          />
+        )}
       </View>
-
       <TouchableOpacity
         style={styles.iconContainer}
         onPress={onRightPress}

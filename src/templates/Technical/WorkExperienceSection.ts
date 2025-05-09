@@ -1,18 +1,17 @@
-import { Section } from '../../components/ResumePreview/ResumePreview.types';
+import {Section, WorkItem} from '@/types';
 
-export const getWorkExperienceHTML = (work: Section): string => {
-  if (!work.items.length) {return '';}
+export const getWorkExperienceHTML = (work: Section<WorkItem>): string => {
+  if (!work.items.length) {
+    return '';
+  }
 
   return `
     <div class="section">
       <h2 class="section-title">${work.title || 'Work Experience'}</h2>
       ${work.items
-        .map((item) => {
+        .map(item => {
           // Extract tech keywords from description and highlights
-          const techKeywords = extractTechKeywords(
-            item.description || '',
-            item.highlights || [],
-          );
+          // const techKeywords = extractTechKeywords(item.description || '');
 
           return `
           <div class="work-item">
@@ -22,32 +21,18 @@ export const getWorkExperienceHTML = (work: Section): string => {
             item.endDate || 'Present'
           }</div>
             </div>
-            <div class="work-company">${item.name || ''} ${
+            <div class="work-company">${item.company || ''} ${
             item.location ? `• ${item.location}` : ''
           }</div>
             <div class="work-description">${item.description || ''}</div>
+           
             ${
-              item.highlights && item.highlights.length
-                ? `
-              <ul class="bullet-list">
-                ${item.highlights
-                  .map(
-                    (highlight) => `
-                  <li>${highlight}</li>
-                `,
-                  )
-                  .join('')}
-              </ul>
-            `
-                : ''
-            }
-            ${
-              techKeywords.length
+              item.keywords?.length
                 ? `
               <div class="tech-tag-container">
-                ${techKeywords
+                ${item.keywords
                   .map(
-                    (tech) => `
+                    tech => `
                   <span class="tech-tag">${tech}</span>
                 `,
                   )
@@ -135,7 +120,7 @@ function extractTechKeywords(
 
   // Find matches
   const matches = new Set<string>();
-  commonTechKeywords.forEach((keyword) => {
+  commonTechKeywords.forEach(keyword => {
     if (fullText.includes(keyword.toLowerCase())) {
       matches.add(keyword);
     }

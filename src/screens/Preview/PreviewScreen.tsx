@@ -2,7 +2,6 @@ import {ResumePreview, TemplateSelector} from '@/components';
 import {FONTS} from '@/constants';
 import {useResumeStore} from '@/store/useResumeStore';
 import {
-  getMinimalistResumeHTML,
   getModernResumeHTML,
   getProfessionalResumeHTML,
   getTechnicalResumeHTML,
@@ -28,12 +27,12 @@ const resumeTemplates = [
     image: require('../../assets/templates/technical.png'),
     getHTML: getTechnicalResumeHTML,
   },
-  {
-    id: 'minimalist',
-    name: 'Minimalist',
-    image: require('../../assets/templates/minimalist.png'),
-    getHTML: getMinimalistResumeHTML,
-  },
+  // {
+  //   id: 'minimalist',
+  //   name: 'Minimalist',
+  //   image: require('../../assets/templates/minimalist.png'),
+  //   getHTML: getMinimalistResumeHTML,
+  // },
   {
     id: 'modern',
     name: 'Modern',
