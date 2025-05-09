@@ -1,7 +1,7 @@
-import React from 'react';
-import {StyleSheet, View, Text, useWindowDimensions} from 'react-native';
-import RenderHTML from 'react-native-render-html';
 import {FONTS} from '@/constants';
+import React from 'react';
+import {StyleSheet, Text, useWindowDimensions, View} from 'react-native';
+import RenderHTML from 'react-native-render-html';
 
 interface HTMLPreviewProps {
   html: string;
@@ -52,6 +52,7 @@ export const HTMLPreview: React.FC<HTMLPreviewProps> = ({
 const styles = StyleSheet.create({
   container: {
     overflow: 'hidden',
+    maxHeight: 80,
   },
   htmlContainer: {
     overflow: 'hidden',

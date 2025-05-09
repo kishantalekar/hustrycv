@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {FONTS} from '../constants';
-import {COLORS, SPACING, BORDER_RADIUS, SHADOW} from '../theme';
+import {BORDER_RADIUS, COLORS, SHADOW, SPACING} from '../theme';
 
 // const {width, height} = Dimensions.get('window');
 
@@ -104,5 +104,12 @@ export const globalStyles = StyleSheet.create({
     fontSize: 16,
     color: COLORS.text.secondary,
     fontFamily: FONTS.FIRA_SANS.REGULAR,
+  },
+  htmlDescriptionPreview: {
+    backgroundColor: '#F8F8F8',
+    borderRadius: 8,
+    padding: 12,
+    marginTop: 4,
+    minHeight: 40,
   },
 });

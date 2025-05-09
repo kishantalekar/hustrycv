@@ -67,6 +67,7 @@ export function ProjectCard({
           onEndDateChange={text =>
             updateProject(project.id, {
               ...project,
+              current: false,
               endDate: text,
             })
           }
@@ -93,7 +94,8 @@ export function ProjectCard({
               id: project.id,
             })
           }>
-          <Text style={[styles.descriptionPreview, styles.placeholder]}>
+          <Text
+            style={[globalStyles.htmlDescriptionPreview, styles.placeholder]}>
             {project?.links?.length
               ? `${project?.links.length} project links added`
               : 'tap to add project links'}
@@ -109,7 +111,8 @@ export function ProjectCard({
               type: 'project',
             })
           }>
-          <Text style={[styles.descriptionPreview, styles.placeholder]}>
+          <Text
+            style={[globalStyles.htmlDescriptionPreview, styles.placeholder]}>
             {project?.keywords?.length
               ? `${project?.keywords.length} skills added`
               : 'tap to add project skills'}
@@ -125,7 +128,7 @@ export function ProjectCard({
               itemId: project.id,
             })
           }>
-          <View style={styles.descriptionPreview}>
+          <View style={globalStyles.htmlDescriptionPreview}>
             <HTMLPreview
               html={project.description || ''}
               placeholder="Tap to edit project description..."

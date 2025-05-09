@@ -10,6 +10,7 @@ const renderCertificateTitle = (name: string) => {
 };
 
 const renderCertificateLink = (url: string) => {
+  if (url.length === 0) return '';
   return `
     <a href="${url}" 
       style="color: #000; text-decoration: none; display: inline-flex; align-items: center; margin-left: 4px;" 
@@ -20,19 +21,13 @@ const renderCertificateLink = (url: string) => {
 };
 
 const renderCertificateAuthority = (authority: string) => {
+  if (!authority) {
+    return '';
+  }
   return `
     <div class="text-regular"> - ${authority}</div>
   `;
 };
-
-// const renderCertificateDescription = (description: string) => {
-//   if (!description) {
-//     return '';
-//   }
-//   return `
-//     <div class="text-regular text-muted" style="margin-top: 4px;">${description}</div>
-//   `;
-// };
 
 const renderCertificateItem = (cert: CertificateItem) => {
   const styles = getResumeStyles();
@@ -40,7 +35,7 @@ const renderCertificateItem = (cert: CertificateItem) => {
     <div style="${styles.certificationItem}" class="space-between">
     <div style="${styles.certificationItem}">
       ${renderCertificateTitle(cert.name)}
-      ${renderCertificateLink(cert.certificationUrlOrCode)}
+      ${renderCertificateLink(cert?.certificationUrlOrCode)}
       ${renderCertificateAuthority(cert.authority)}
 </div>
       ${formatDateRange(cert.date)}

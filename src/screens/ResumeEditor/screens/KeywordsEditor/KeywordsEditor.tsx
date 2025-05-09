@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
-import {View, Text, ScrollView, KeyboardAvoidingView} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {Button} from '@/components';
 import {Header} from '@/components/Header';
 import {KeywordItem} from '@/components/KeywordItem';
 import {TextInput} from '@/components/TextInput';
 import {useResumeStore} from '@/store/useResumeStore';
 import {globalStyles} from '@/styles/globalStyles';
+import React, {useState} from 'react';
+import {KeyboardAvoidingView, ScrollView, Text, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './KeywordsEditor.styles';
 
 interface KeywordsEditorProps {
@@ -65,7 +65,7 @@ export function KeywordsEditor({route}: Readonly<KeywordsEditorProps>) {
   };
 
   return (
-    <SafeAreaView style={globalStyles.container}>
+    <SafeAreaView style={globalStyles.keyboardAvoidingView}>
       <KeyboardAvoidingView style={globalStyles.keyboardAvoidingView}>
         <View style={styles.container}>
           <Header

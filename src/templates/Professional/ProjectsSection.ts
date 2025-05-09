@@ -36,10 +36,11 @@ const renderProjectHeader = (name: string, links: LinkItem[]) => {
 // };
 
 const renderProjectHeading = (item: ProjectItem) => {
+  console.log('current', item.current);
   return `
     <div class="flex align-center space-between">
       ${renderProjectHeader(item.name, item.links)}
-      ${formatDateRange('June 2024', 'Aug 2024')}
+      ${formatDateRange(item.startDate, item.endDate, item.current)}
     </div>
   `;
 };
@@ -47,7 +48,7 @@ const renderProjectHeading = (item: ProjectItem) => {
 const renderProjectItem = (item: ProjectItem, index: number) => {
   return `
   <div style="margin-bottom: 8pt;page-break-inside:avoid;">
-  ${index === 0 && '<h2 class="section-title">Projects</h2>     <hr/>'} 
+  ${index === 0 ? '<h2 class="section-title">Projects</h2>   <hr/>' : ''} 
       ${renderProjectHeading(item)}
       ${renderJobDescription(item.description)}
       ${renderKeywords(item.keywords || [])}

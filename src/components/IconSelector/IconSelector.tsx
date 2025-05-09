@@ -1,4 +1,4 @@
-import {CustomIcon, IconVariant, SvgIcon, TextInput} from '@/components';
+import {CustomIcon, IconVariant, SvgIcon} from '@/components';
 import React, {useState} from 'react';
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 // Import SVG icons
@@ -62,13 +62,13 @@ export function IconSelector({onSelect, onClose}: Readonly<IconSelectorProps>) {
         </TouchableOpacity>
       </View>
 
-      <TextInput
+      {/* <TextInput
         value={searchQuery}
         onChangeText={setSearchQuery}
         placeholder="Search icons..."
         leftIcon="search"
         style={styles.searchInput}
-      />
+      /> */}
 
       <FlatList
         // eslint-disable-next-line react-native/no-inline-styles

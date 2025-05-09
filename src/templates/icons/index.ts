@@ -37,5 +37,5 @@ export const getSocialIcon = (iconName: SocialIconType): string => {
     console.warn(`Icon not found for: ${iconName}`);
     return getExternalLinkIcon({});
   }
-  return iconFn({});
+  return iconFn({size: 18});
 };

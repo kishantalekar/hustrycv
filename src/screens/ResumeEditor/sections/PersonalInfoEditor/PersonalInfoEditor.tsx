@@ -90,7 +90,7 @@ export const PersonalInfoEditor = () => {
                 })
               }>
               <Text style={styles.label}>Summary</Text>
-              <View style={styles.summaryPreview}>
+              <View style={globalStyles.htmlDescriptionPreview}>
                 <HTMLPreview
                   html={basics.summary || ''}
                   placeholder="Tap to edit your professional summary..."

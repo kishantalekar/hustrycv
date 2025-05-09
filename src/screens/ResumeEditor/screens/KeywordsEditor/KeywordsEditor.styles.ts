@@ -1,11 +1,10 @@
-import {StyleSheet} from 'react-native';
 import {COLORS} from '@/theme';
+import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F9FAFB',
-    padding: 16,
     gap: 16,
   },
   shadow: {
@@ -30,6 +29,7 @@ export const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+    padding: 16,
   },
   keywordsContainer: {
     flexDirection: 'row',
