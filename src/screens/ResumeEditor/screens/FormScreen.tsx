@@ -50,6 +50,7 @@ const FormScreen = () => {
   const {updateMetadata, getActiveResume} = useResumeStore();
   const activeResume = getActiveResume();
   const metadata = activeResume.metadata;
+  console.log(metadata.title?.length ? metadata.title : 'My Resume');
   return (
     <SafeAreaView style={globalStyles.container}>
       <ScrollView style={styles.container}>

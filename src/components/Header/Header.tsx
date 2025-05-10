@@ -55,7 +55,9 @@ export const Header: React.FC<HeaderProps> = ({
       <View style={styles.titleContainer}>
         {!isEditing ? (
           <View style={styles.titleWrapper}>
-            <Text style={styles.title}>{titleValue}</Text>
+            <Text style={styles.title}>
+              {titleValue.length ? titleValue : title}
+            </Text>
             {editable && (
               <TouchableOpacity
                 style={styles.editButton}

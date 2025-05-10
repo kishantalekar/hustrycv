@@ -10,7 +10,7 @@ import {
 import {replace} from '@/utils/navigation';
 import {handleFilePick, handleUpload} from '@/utils/resumeUpload';
 import {DocumentPickerResponse} from '@react-native-documents/picker';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -42,6 +42,12 @@ export const UploadResumeScreen = () => {
   const [progressMessage, setProgressMessage] = useState('');
   const {addResume, setActiveResume} = useResumeStore();
 
+  useEffect(() => {
+    fetch('https://restyserver.onrender.com/ping')
+      .then(response => response.json())
+      .then(data => console.log('Server pinged successfully', data.message))
+      .catch(error => console.error('Error pinging server:', error));
+  }, []);
   const onFilePick = async () => {
     const result = await handleFilePick();
     if (result) {

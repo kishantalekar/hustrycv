@@ -173,4 +173,29 @@ export const styles = StyleSheet.create({
     color: COLORS.white,
     ...typography.button,
   },
+  emptyStateContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 24,
+    marginTop: SPACING.xxl,
+  },
+  emptyAnimation: {
+    width: 200,
+    height: 200,
+    marginBottom: 24,
+  },
+  emptyStateTitle: {
+    marginBottom: 8,
+    textAlign: 'center',
+    color: COLORS.text.primary,
+  },
+  emptyStateDescription: {
+    textAlign: 'center',
+    color: COLORS.text.secondary,
+    marginBottom: 24,
+  },
+  emptyStateButton: {
+    minWidth: 200,
+  },
 });

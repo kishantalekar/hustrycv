@@ -1,3 +1,4 @@
+import {LottieAnimation, Typography, TypographyVariant} from '@/components';
 import {CreateResumeModal} from '@/components/CreateResumeModal/CreateResumeModal';
 import {useResumeStore} from '@/store/useResumeStore';
 import {globalStyles} from '@/styles';
@@ -85,6 +86,27 @@ export const Dashboard = () => {
           }
           keyExtractor={item => item.metadata.id}
           contentContainerStyle={styles.resumeList}
+          ListEmptyComponent={
+            <View style={styles.emptyStateContainer}>
+              <LottieAnimation
+                source={require('@/assets/animations/fox_ meditating.json')}
+                style={styles.emptyAnimation}
+                autoPlay
+                loop
+              />
+              <Typography
+                variant={TypographyVariant.H2}
+                style={styles.emptyStateTitle}>
+                No Resumes Yet
+              </Typography>
+              <Typography
+                variant={TypographyVariant.BodyMedium}
+                style={styles.emptyStateDescription}>
+                Create your first resume or upload an existing one to get
+                started
+              </Typography>
+            </View>
+          }
         />
       </View>
     </GestureHandlerRootView>
