@@ -47,7 +47,7 @@ export const createResumeSlice = (set: any, get: () => State): Actions => ({
           : state.activeResumeId,
     })),
 
-  updateResumeTemplateId: templateId =>
+  updateResumeTemplateId: templateId => {
     set((state: State) => ({
       resumes: state.resumes.map(resume =>
         resume.metadata.id === state.activeResumeId
@@ -61,7 +61,8 @@ export const createResumeSlice = (set: any, get: () => State): Actions => ({
             }
           : resume,
       ),
-    })),
+    }));
+  },
 
   updateMetadata: metadata =>
     set((state: State) => ({

@@ -1,8 +1,9 @@
+import {AppNavigator} from '@/navigation/AppNavigator';
 import * as Sentry from '@sentry/react-native';
 import React, {useEffect, useState} from 'react';
 import {DevSettings} from 'react-native';
 import StorybookUIRoot from './.storybook';
-import {AppNavigator} from './src/navigation/AppNavigator';
+import {posthog} from './src/analytics/posthog/PostHog';
 
 Sentry.init({
   dsn: 'https://4e53c676d66d1e4b3fe19315c0ba28a0@o4509298628100096.ingest.de.sentry.io/4509298629738576',
@@ -20,25 +21,12 @@ Sentry.init({
   // spotlight: __DEV__,
 });
 
-// setJSExceptionHandler((error, _) => {
-//   Sentry.captureException(error);
-// }, true);
-
-// // Handle native exceptions
-// setNativeExceptionHandler(
-//   exceptionString => {
-//     // This is a native-only handler and cannot display UI
-//     // But we can still log to Sentry
-//     Sentry.captureMessage(`Native Exception: ${exceptionString}`);
-//   },
-//   false,
-//   true,
-// );
 const App = () => {
   const [storybookEnabled, setStorybookEnabled] = useState(false);
 
   // Make toggle function available globally in dev mode
   useEffect(() => {
+    posthog.capture('App started');
     if (__DEV__) {
       // Add a "Toggle Storybook" item to the Dev Menu
       DevSettings.addMenuItem('Toggle Storybook', () => {
@@ -47,7 +35,18 @@ const App = () => {
     }
   }, []);
 
-  return storybookEnabled ? <StorybookUIRoot /> : <AppNavigator />;
+  return storybookEnabled ? (
+    <StorybookUIRoot />
+  ) : (
+    // <PostHogProvider
+    //   client={posthog}
+    //   apiKey="phc_Kdp1tWMDGoBrXxA1FHo0NXoxrNy18O9SE35cm8YN5vn"
+    //   options={{
+    //     host: 'https://us.i.posthog.com',
+    //   }}>
+    <AppNavigator />
+    // </PostHogProvider>
+  );
 };
 
 export default Sentry.wrap(App);

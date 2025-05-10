@@ -1,3 +1,4 @@
+import {posthog} from '@/analytics/posthog/PostHog';
 import {LottieAnimation, Typography, TypographyVariant} from '@/components';
 import {CreateResumeModal} from '@/components/CreateResumeModal/CreateResumeModal';
 import {useResumeStore} from '@/store/useResumeStore';
@@ -45,6 +46,9 @@ export const Dashboard = () => {
     const newResume = createInitialResume();
     addResume(newResume);
     const id = newResume.metadata.id;
+    posthog.capture('create_resume', {
+      type: 'manual',
+    });
     setActiveResume(id);
     navigate('ResumeEditor');
     setShowDropdown(false);

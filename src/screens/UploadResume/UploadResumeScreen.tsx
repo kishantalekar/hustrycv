@@ -1,3 +1,4 @@
+import {posthog} from '@/analytics/posthog/PostHog';
 import {LottieAnimation} from '@/components';
 import {RootScreens} from '@/navigation/constants';
 import {useResumeStore} from '@/store/useResumeStore';
@@ -117,6 +118,9 @@ export const UploadResumeScreen = () => {
         });
         const id = addResume(formattedResume);
         setActiveResume(id);
+        posthog.capture('resume_created', {
+          type: 'upload',
+        });
         replace(RootScreens.RESUME_EDITOR, {name: 'Preview'});
 
         setProgressMessage('Finalizing your resume...');

@@ -1,3 +1,4 @@
+import {posthog} from '@/analytics/posthog/PostHog';
 import {useResumeStore} from '@/store/useResumeStore';
 import {globalStyles} from '@/styles/globalStyles';
 import {getTemplateById} from '@/templates';
@@ -37,6 +38,9 @@ export const DownloadScreen = () => {
       const template = getTemplateById(activeResume?.metadata?.templateId);
 
       await createAndSavePDF(template.getHTML(activeResume), fileName);
+      posthog.capture('pdf downloaded', {
+        template: template.name,
+      });
       Alert.alert('Success', 'Resume saved successfully!');
     } catch (error) {
       Alert.alert('Error', 'Failed to save resume. Please try again.');
