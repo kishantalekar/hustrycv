@@ -4,6 +4,9 @@ const withStorybook = require('@storybook/react-native/metro/withStorybook');
 const {
   wrapWithReanimatedMetroConfig,
 } = require('react-native-reanimated/metro-config');
+
+const {withSentryConfig} = require('@sentry/react-native/metro');
+
 const defaultConfig = getDefaultConfig(__dirname);
 const {assetExts, sourceExts} = defaultConfig.resolver;
 /**
@@ -30,23 +33,25 @@ const config = {
     },
   },
 };
-module.exports = withStorybook(
-  mergeConfig(
-    getDefaultConfig(__dirname),
-    wrapWithReanimatedMetroConfig(config),
-  ),
-  {
-    // Set to false to remove storybook specific options
-    // you can also use a env variable to set this
-    enabled: true,
-    // Path to your storybook config
-    configPath: path.resolve(__dirname, './.storybook'),
+module.exports = withSentryConfig(
+  withStorybook(
+    mergeConfig(
+      getDefaultConfig(__dirname),
+      wrapWithReanimatedMetroConfig(config),
+    ),
+    {
+      // Set to false to remove storybook specific options
+      // you can also use a env variable to set this
+      enabled: true,
+      // Path to your storybook config
+      configPath: path.resolve(__dirname, './.storybook'),
 
-    // Optional websockets configuration
-    // Starts a websocket server on the specified port and host on metro start
-    // websockets: {
-    //   port: 7007,
-    //   host: 'localhost',
-    // },
-  },
+      // Optional websockets configuration
+      // Starts a websocket server on the specified port and host on metro start
+      // websockets: {
+      //   port: 7007,
+      //   host: 'localhost',
+      // },
+    },
+  ),
 );

@@ -1,22 +1,22 @@
-import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Alert,
-  StatusBar,
-} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useResumeStore} from '@/store/useResumeStore';
 import {globalStyles} from '@/styles/globalStyles';
 import {getTemplateById} from '@/templates';
 import {COLORS, SPACING} from '@/theme';
 import {getResumeFileName} from '@/utils/fileUtils';
 import {createAndSavePDF} from '@/utils/pdfUtils';
+import * as Sentry from '@sentry/react-native';
+import React, {useState} from 'react';
+import {
+  Alert,
+  ScrollView,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {styles} from './DownloadScreen.styles';
-
 export const DownloadScreen = () => {
   const {resumes, activeResumeId} = useResumeStore();
   const activeResume = resumes.find(
@@ -41,6 +41,15 @@ export const DownloadScreen = () => {
     } catch (error) {
       Alert.alert('Error', 'Failed to save resume. Please try again.');
       console.log('Error saving resume:', error);
+      Sentry.captureException(error, {
+        tags: {
+          component: 'DownloadScreen',
+        },
+        extra: {
+          hasResumeData: Boolean(activeResume),
+          templateId: activeResume?.metadata?.templateId,
+        },
+      });
     } finally {
       setDownloadStarted(false);
     }

@@ -2,6 +2,7 @@ import {createInitialResume, Resume} from '@/types/common/resume.types';
 import {GOOGLE_GEMINI_API_KEY} from '@/utils/apiKeys';
 import {extractJsonFromCodeBlock} from '@/utils/regex';
 import {GoogleGenAI} from '@google/genai';
+import * as Sentry from '@sentry/react-native';
 import {v4 as uuidv4} from 'uuid';
 import {RESUME_PARSE_PROMPT} from './prompts';
 
@@ -28,11 +29,27 @@ export const parseResumeWithAI = async (resumeText: string) => {
       console.log('[AI] Parsed AI response:', parsedData);
       return parsedData;
     } catch (parseError) {
-      console.error('Error parsing AI response:', parseError);
+      Sentry.captureException(parseError, {
+        tags: {
+          component: 'resumeParser',
+          action: 'parse_json',
+        },
+        extra: {
+          aiResponse: result.text,
+        },
+      });
       throw new Error('Failed to parse AI response as JSON');
     }
   } catch (error) {
-    console.error('Error parsing resume with AI:', error);
+    Sentry.captureException(error, {
+      tags: {
+        component: 'resumeParser',
+        action: 'ai_generation',
+      },
+      extra: {
+        resumeTextLength: resumeText.length,
+      },
+    });
     throw error instanceof Error
       ? error
       : new Error('Failed to parse resume with AI');
@@ -61,6 +78,7 @@ export const convertToResumeFormat = (parsedData: any) => {
       url: social.url?.trim() || '',
       icon: social.icon?.trim() || '',
     }));
+
     // Add work experience with validation
     if (Array.isArray(parsedData.work)) {
       resume.sections.work.items = parsedData.work.map(work => ({
@@ -143,7 +161,15 @@ export const convertToResumeFormat = (parsedData: any) => {
 
     return resume;
   } catch (error) {
-    console.error('Error converting resume format:', error);
+    Sentry.captureException(error, {
+      tags: {
+        component: 'resumeParser',
+        action: 'format_conversion',
+      },
+      extra: {
+        parsedDataKeys: Object.keys(parsedData || {}),
+      },
+    });
     throw new Error('Failed to convert resume data to the required format');
   }
 };

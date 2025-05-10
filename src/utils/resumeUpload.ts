@@ -4,6 +4,7 @@ import {
   pick,
   types,
 } from '@react-native-documents/picker';
+import * as Sentry from '@sentry/react-native';
 import {Alert} from 'react-native';
 
 export const handleFilePick = async () => {
@@ -24,7 +25,9 @@ export const handleFilePick = async () => {
       // User cancelled the picker
       return null;
     }
+
     Alert.alert('Error', 'Failed to select file');
+    Sentry.captureException(err);
     return null;
   }
 };

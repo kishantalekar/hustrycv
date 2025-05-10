@@ -10,6 +10,7 @@ import {
 import {replace} from '@/utils/navigation';
 import {handleFilePick, handleUpload} from '@/utils/resumeUpload';
 import {DocumentPickerResponse} from '@react-native-documents/picker';
+import * as Sentry from '@sentry/react-native';
 import React, {useEffect, useState} from 'react';
 import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -45,13 +46,23 @@ export const UploadResumeScreen = () => {
   useEffect(() => {
     fetch('https://restyserver.onrender.com/ping')
       .then(response => response.json())
-      .then(data => console.log('Server pinged successfully', data.message))
-      .catch(error => console.error('Error pinging server:', error));
+      .then(data => {
+        console.log('Server pinged successfully', data.message);
+      })
+      .catch(error => {
+        Sentry.captureException(error);
+        console.error('Error pinging server:', error);
+      });
   }, []);
   const onFilePick = async () => {
-    const result = await handleFilePick();
-    if (result) {
-      setSelectedFile(result);
+    try {
+      const file = await handleFilePick();
+      if (file) {
+        setSelectedFile(file);
+      }
+    } catch (error) {
+      console.error('Error picking file:', error);
+      Sentry.captureException(error);
     }
   };
 
@@ -109,11 +120,6 @@ export const UploadResumeScreen = () => {
         replace(RootScreens.RESUME_EDITOR, {name: 'Preview'});
 
         setProgressMessage('Finalizing your resume...');
-
-        // Alert.alert(
-        //   'Success',
-        //   'Resume uploaded, parsed, and created successfully!',
-        // );
       } else {
         throw new Error('No text content extracted from PDF');
       }
@@ -125,6 +131,14 @@ export const UploadResumeScreen = () => {
           ? error.message
           : 'Failed to process PDF file. Please try again.',
       );
+      Sentry.captureException(error, {
+        extra: {
+          file: selectedFile?.name,
+          fileSize: selectedFile?.size,
+          fileType: selectedFile?.type,
+        },
+        tags: {},
+      });
     } finally {
       setIsUploading(false);
     }

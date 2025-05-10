@@ -1,7 +1,8 @@
 import {LottieAnimation} from '@/components';
 import {FONTS} from '@/constants';
-import {BORDER_RADIUS, COLORS, SHADOW, SPACING, TYPOGRAPHY} from '@/theme';
+import {COLORS, SPACING, TYPOGRAPHY} from '@/theme';
 import {generatePDF} from '@/utils/pdfUtils';
+import * as Sentry from '@sentry/react-native';
 import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import Pdf from 'react-native-pdf';
@@ -9,34 +10,61 @@ import {ResumePreviewProps} from './ResumePreview.types';
 
 export function ResumePreview({
   resumeData,
-  // style,
   selectedTemplate,
   templates,
 }: Readonly<ResumePreviewProps>) {
   const [pdfBase64, setPdfBase64] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     if (resumeData && templates) {
       setIsLoading(true);
       setPdfBase64(null);
+
+      // Start a transaction for PDF generation
+
       const selectedTemplateData = templates.find(
         t => t.id === selectedTemplate,
       );
+
       if (selectedTemplateData) {
         generatePDF(selectedTemplateData.getHTML(resumeData))
           .then(base64 => {
             if (base64) {
               setPdfBase64(base64);
+            } else {
+              throw new Error('PDF generation returned null');
             }
-            setIsLoading(false);
           })
-          .catch(() => {
+          .catch(error => {
+            // Capture the error with Sentry
+            Sentry.captureException(error, {
+              tags: {
+                template: selectedTemplate,
+                component: 'ResumePreview',
+              },
+              extra: {
+                hasResumeData: Boolean(resumeData),
+                templateId: selectedTemplate,
+              },
+            });
+          })
+          .finally(() => {
             setIsLoading(false);
           });
+      } else {
+        // Log template not found error
+        Sentry.captureMessage('Selected template not found', {
+          level: 'error',
+          tags: {
+            templateId: selectedTemplate,
+            component: 'ResumePreview',
+          },
+        });
+        setIsLoading(false);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedTemplate, resumeData]);
+  }, [selectedTemplate, resumeData, templates]);
 
   if (!resumeData) {
     return (
@@ -109,19 +137,19 @@ const styles = StyleSheet.create({
     color: COLORS.text.secondary,
     fontFamily: FONTS.FIRA_SANS.REGULAR,
   },
-  exportButton: {
-    paddingHorizontal: SPACING.lg,
-    paddingVertical: SPACING.sm,
-    backgroundColor: COLORS.primary,
-    borderRadius: BORDER_RADIUS.md,
-    marginTop: SPACING.lg,
-    ...SHADOW.light,
-  },
-  exportButtonText: {
-    color: COLORS.text.light,
-    fontSize: TYPOGRAPHY.size.md,
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
-  },
+  // exportButton: {
+  //   paddingHorizontal: SPACING.lg,
+  //   paddingVertical: SPACING.sm,
+  //   backgroundColor: COLORS.primary,
+  //   borderRadius: BORDER_RADIUS.md,
+  //   marginTop: SPACING.lg,
+  //   ...SHADOW.light,
+  // },
+  // exportButtonText: {
+  //   color: COLORS.text.light,
+  //   fontSize: TYPOGRAPHY.size.md,
+  //   fontFamily: FONTS.FIRA_SANS.REGULAR,
+  // },
 
   pdfView: {
     flex: 1,
