@@ -1,5 +1,5 @@
 {
-  "name": "restyresumebuilder",
+  "name": "airesumebuilder-husty",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -9,7 +9,8 @@
     "start": "react-native start",
     "test": "jest",
     "storybook-generate": "sb-rn-get-stories",
-    "eslint-fix": "npx eslint --fix 'src/**/*.{ts,tsx}'"
+    "eslint-fix": "npx eslint --fix 'src/**/*.{ts,tsx}'",
+    "postinstall": "node scripts/patch-zustand.js"
   },
   "dependencies": {
     "@10play/tentap-editor": "^0.7.0",

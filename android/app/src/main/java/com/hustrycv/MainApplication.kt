@@ -1,4 +1,4 @@
-package com.resty
+package com.hustrycv
 
 import android.app.Application
 import com.facebook.react.PackageList
