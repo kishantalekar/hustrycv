@@ -27,3 +27,20 @@ export function extractJsonFromCodeBlock(text: string) {
     return null;
   }
 }
+export function extractHtmlFromCodeBlock(text: string) {
+  try {
+    // Regex to match content between ```html and ``` tags
+    const htmlRegex = /```html\s*([\s\S]*?)\s*```/;
+    const match = text.match(htmlRegex);
+    if (!match || !match[1]) {
+      console.warn('No HTML content found between code block markers');
+      return null;
+    }
+    // Extract the HTML content from the matched group
+    const htmlContent = match[1].trim();
+    return htmlContent;
+  } catch (error) {
+    console.error('Error extracting or parsing HTML:', error);
+    return null;
+  }
+}

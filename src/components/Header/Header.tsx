@@ -21,6 +21,7 @@ export const Header: React.FC<HeaderProps> = ({
   textInputLabel = '',
   onTitleChange,
   editable = false,
+  customLeftComponent,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [titleValue, setTitleValue] = useState(title);
@@ -78,16 +79,18 @@ export const Header: React.FC<HeaderProps> = ({
           />
         )}
       </View>
-      <TouchableOpacity
-        style={styles.iconContainer}
-        onPress={onRightPress}
-        disabled={!rightIcon && !rightComponent}>
-        {rightIcon ? (
-          <Icon name={rightIcon} size={24} color={COLORS.text.primary} />
-        ) : (
-          rightComponent
-        )}
-      </TouchableOpacity>
+      {customLeftComponent ?? (
+        <TouchableOpacity
+          style={styles.iconContainer}
+          onPress={onRightPress}
+          disabled={!rightIcon && !rightComponent}>
+          {rightIcon ? (
+            <Icon name={rightIcon} size={24} color={COLORS.text.primary} />
+          ) : (
+            rightComponent
+          )}
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

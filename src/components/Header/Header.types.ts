@@ -13,4 +13,5 @@ export interface HeaderProps {
   onTitleChange?: (newTitle: string) => void;
   editable?: boolean;
   textInputLabel?: string;
+  customLeftComponent?: ReactNode;
 }

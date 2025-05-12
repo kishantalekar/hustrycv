@@ -1,31 +1,31 @@
-import {Platform, ToastAndroid, PermissionsAndroid} from 'react-native';
+import {Platform, ToastAndroid} from 'react-native';
 import RNFetchBlob from 'react-native-blob-util';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 
-export const requestStoragePermission = async () => {
-  try {
-    if (Platform.OS === 'android') {
-      if (Platform.Version >= 33) {
-        const granted = await PermissionsAndroid.requestMultiple([
-          PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES,
-          PermissionsAndroid.PERMISSIONS.READ_MEDIA_VIDEO,
-        ]);
-        return Object.values(granted).every(
-          permission => permission === PermissionsAndroid.RESULTS.GRANTED,
-        );
-      } else if (Platform.Version >= 31) {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-        );
-        return granted === PermissionsAndroid.RESULTS.GRANTED;
-      }
-    }
-    return true;
-  } catch (err) {
-    console.warn(err);
-    return false;
-  }
-};
+// export const requestStoragePermission = async () => {
+//   try {
+//     if (Platform.OS === 'android') {
+//       if (Platform.Version >= 33) {
+//         const granted = await PermissionsAndroid.requestMultiple([
+//           PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES,
+//           PermissionsAndroid.PERMISSIONS.READ_MEDIA_VIDEO,
+//         ]);
+//         return Object.values(granted).every(
+//           permission => permission === PermissionsAndroid.RESULTS.GRANTED,
+//         );
+//       } else if (Platform.Version >= 31) {
+//         const granted = await PermissionsAndroid.request(
+//           PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+//         );
+//         return granted === PermissionsAndroid.RESULTS.GRANTED;
+//       }
+//     }
+//     return true;
+//   } catch (err) {
+//     console.warn(err);
+//     return false;
+//   }
+// };
 
 export const generatePDF = async (html: string) => {
   try {

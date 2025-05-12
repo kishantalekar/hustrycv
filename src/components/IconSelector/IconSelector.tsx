@@ -80,7 +80,6 @@ export function IconSelector({onSelect, onClose}: Readonly<IconSelectorProps>) {
           <TouchableOpacity
             style={styles.iconButton}
             onPress={() => {
-              console.log('icon selected', item.name);
               onSelect(item.name, 'svg');
             }}>
             {renderIcon(item)}

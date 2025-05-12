@@ -37,7 +37,6 @@ export const ResumeProgress = ({resume, status}: ResumeProgressProps) => {
   };
 
   const progressColor = getProgressColor();
-  console.log(statusText);
   return (
     <View style={styles.container}>
       <View style={styles.progressContainer}>
