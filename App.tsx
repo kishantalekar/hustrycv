@@ -4,7 +4,6 @@ import React, {useEffect, useState} from 'react';
 import {DevSettings} from 'react-native';
 import StorybookUIRoot from './.storybook';
 import {posthog} from './src/analytics/posthog/PostHog';
-
 Sentry.init({
   dsn: 'https://4e53c676d66d1e4b3fe19315c0ba28a0@o4509298628100096.ingest.de.sentry.io/4509298629738576',
 

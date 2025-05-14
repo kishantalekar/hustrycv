@@ -21,7 +21,8 @@ import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
-import React from 'react';
+import React, {useEffect} from 'react'; // Added useEffect
+import BootSplash from 'react-native-bootsplash'; // Added BootSplash
 import {RootScreens} from './constants';
 
 export type RootStackParamList = {
@@ -54,6 +55,12 @@ export const AppNavigator = () => {
   const onboardingCompleted = useAppStore(state => state.onboardingCompleted);
   const nameInputCompleted = useAppStore(state => state.nameInputCompleted); // Get name input status
   const isHydrated = useAppStore(state => state.isHydrated); // Get hydration status
+
+  useEffect(() => {
+    if (isHydrated) {
+      BootSplash.hide({fade: true}); // Hide splash screen when hydrated
+    }
+  }, [isHydrated]);
 
   console.log('onboardingCompleted', onboardingCompleted);
   console.log('nameInputCompleted', nameInputCompleted);

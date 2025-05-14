@@ -30,6 +30,7 @@
     "react": "19.0.0",
     "react-native": "0.79.1",
     "react-native-blob-util": "^0.21.2",
+    "react-native-bootsplash": "^6.3.8",
     "react-native-config": "^1.5.5",
     "react-native-device-info": "^14.0.4",
     "react-native-dotenv": "^3.4.11",

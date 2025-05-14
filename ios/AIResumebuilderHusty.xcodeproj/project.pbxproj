@@ -14,6 +14,8 @@
 		82B3401A9B9F49E7AF15123B /* FiraSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E61680828D1844C89A60F31D /* FiraSans-Bold.ttf */; };
 		84A23F57419D499193C7D72D /* FiraSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7BE668AD154446B39F21406E /* FiraSans-Regular.ttf */; };
 		BAB543E2DD7878828489C1C0 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
+		D8A72C8D1B9C4E5A8D07A6A5 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 261B7C1AB5114BD387366C9D /* BootSplash.storyboard */; };
+		D436A34E0C294BD485F75EE5 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8697479DF0374556AD4B691F /* Colors.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +31,8 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "AIResumebuilderHusty/LaunchScreen.storyboard"; sourceTree = "<group>"; };
 		E61680828D1844C89A60F31D /* FiraSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "FiraSans-Bold.ttf"; path = "../src/assets/fonts/FiraSans-Bold.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		261B7C1AB5114BD387366C9D /* BootSplash.storyboard */ = {isa = PBXFileReference; name = "BootSplash.storyboard"; path = "AIResumebuilderHusty/BootSplash.storyboard"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		8697479DF0374556AD4B691F /* Colors.xcassets */ = {isa = PBXFileReference; name = "Colors.xcassets"; path = "AIResumebuilderHusty/Colors.xcassets"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = folder.assetcatalog; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +55,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
+				261B7C1AB5114BD387366C9D /* BootSplash.storyboard */,
+				8697479DF0374556AD4B691F /* Colors.xcassets */,
 			);
 			name = "AIResumebuilderHusty";
 			sourceTree = "<group>";
@@ -179,6 +185,8 @@
 				BAB543E2DD7878828489C1C0 /* PrivacyInfo.xcprivacy in Resources */,
 				82B3401A9B9F49E7AF15123B /* FiraSans-Bold.ttf in Resources */,
 				84A23F57419D499193C7D72D /* FiraSans-Regular.ttf in Resources */,
+				D8A72C8D1B9C4E5A8D07A6A5 /* BootSplash.storyboard in Resources */,
+				D436A34E0C294BD485F75EE5 /* Colors.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
