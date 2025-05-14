@@ -14,10 +14,12 @@ import {DocumentPickerResponse} from '@react-native-documents/picker';
 import * as Sentry from '@sentry/react-native';
 import React, {useEffect, useState} from 'react';
 import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import Config from 'react-native-config';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {styles} from './UploadResumeScreen.styles';
 
+console.log('GOOGLE_GEMINI_API_KEY', Config.GOOGLE_GEMINI_API_KEY);
 const loadingStyles = StyleSheet.create({
   container: {
     flex: 1,

@@ -1,6 +1,9 @@
+import {LoadingIndicator} from '@/components/LoadingIndicator';
 import {
   Dashboard,
   KeywordsEditor,
+  NameInputScreen,
+  OnboardingScreen,
   PreviewScreen,
   ProjectLinksScreen,
   ResumeEditor,
@@ -11,6 +14,7 @@ import {
   ContentType,
   RichTextEditorScreen,
 } from '@/screens/ResumeEditor/screens/RichTextEditorScreen';
+import {useAppStore} from '@/store/useAppStore';
 import {navigationRef} from '@/utils/navigation';
 import {NavigationContainer} from '@react-navigation/native';
 import {
@@ -21,6 +25,8 @@ import React from 'react';
 import {RootScreens} from './constants';
 
 export type RootStackParamList = {
+  [RootScreens.ONBOARDING]: undefined;
+  [RootScreens.NAME_INPUT]: undefined; // Add NameInputScreen to param list
   [RootScreens.DASHBOARD]: undefined;
   [RootScreens.RESUME_EDITOR]: {resumeId?: string; name?: string};
   [RootScreens.PREVIEW]: {resumeData: any};
@@ -45,12 +51,32 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 export type AppNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 export const AppNavigator = () => {
+  const onboardingCompleted = useAppStore(state => state.onboardingCompleted);
+  const nameInputCompleted = useAppStore(state => state.nameInputCompleted); // Get name input status
+  const isHydrated = useAppStore(state => state.isHydrated); // Get hydration status
+
+  console.log('onboardingCompleted', onboardingCompleted);
+  console.log('nameInputCompleted', nameInputCompleted);
+  console.log('isHydrated', isHydrated); // Log hydration status
+  const initialRouteName = onboardingCompleted
+    ? nameInputCompleted
+      ? RootScreens.DASHBOARD
+      : RootScreens.NAME_INPUT // Navigate to NameInput if onboarding is done but name is not
+    : RootScreens.ONBOARDING;
+  console.log('initialRouteName', initialRouteName);
+
+  if (!isHydrated) {
+    // Show a loading indicator or a splash screen while the store is rehydrating
+    return <LoadingIndicator />;
+  }
+
   return (
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
-        }}>
+        }}
+        initialRouteName={initialRouteName}>
         <Stack.Screen name={RootScreens.DASHBOARD} component={Dashboard} />
         <Stack.Screen
           name={RootScreens.RESUME_EDITOR}
@@ -81,6 +107,15 @@ export const AppNavigator = () => {
           name={RootScreens.UPLOAD_RESUME}
           component={UploadResumeScreen}
           options={{title: 'Upload Resume'}}
+        />
+
+        <Stack.Screen
+          name={RootScreens.ONBOARDING}
+          component={OnboardingScreen}
+        />
+        <Stack.Screen
+          name={RootScreens.NAME_INPUT} // Add NameInputScreen to stack
+          component={NameInputScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

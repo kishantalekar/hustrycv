@@ -1,4 +1,5 @@
 export enum RootScreens {
+  ONBOARDING = 'Onboarding',
   DASHBOARD = 'Dashboard',
   RESUME_EDITOR = 'ResumeEditor',
   PREVIEW = 'Preview',
@@ -9,6 +10,7 @@ export enum RootScreens {
   KEYWORDS_EDITOR = 'KeywordsEditor',
   UPLOAD_RESUME = 'UploadResume',
   AI_CHAT = 'AIChat',
+  NAME_INPUT = 'NameInputScreen',
 }
 
 export enum FormScreens {
