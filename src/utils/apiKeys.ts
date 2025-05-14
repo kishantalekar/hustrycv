@@ -1,3 +1,4 @@
+import Config from 'react-native-config';
 /**
  * API Keys utility
  *
@@ -7,9 +8,7 @@
 
 // For development, you can set your API key here, but make sure not to commit it
 // For production, use environment variables
-export const GOOGLE_GEMINI_API_KEY =
-  process.env.GOOGLE_GEMINI_API_KEY ??
-  'AIzaSyDZQYtQ4cUfUgf0nRFkH8FHnJcnGbh2VcY';
+export const GOOGLE_GEMINI_API_KEY = Config.GOOGLE_GEMINI_API_KEY;
 
 // Function to check if API keys are properly configured
 export const validateApiKeys = (): boolean => {

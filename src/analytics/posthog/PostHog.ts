@@ -1,9 +1,7 @@
 import PostHog from 'posthog-react-native';
+import Config from 'react-native-config';
 
-export const posthog = new PostHog(
-  'phc_Kdp1tWMDGoBrXxA1FHo0NXoxrNy18O9SE35cm8YN5vn',
-  {
-    // usually 'https://us.i.posthog.com' or 'https://eu.i.posthog.com'
-    host: 'https://us.i.posthog.com', // host is optional if you use https://us.i.posthog.com
-  },
-);
+export const posthog = new PostHog(Config.POSTHOG_API_KEY, {
+  // usually 'https://us.i.posthog.com' or 'https://eu.i.posthog.com'
+  host: Config.POSTHOG_HOST, // host is optional if you use https://us.i.posthog.com
+});
