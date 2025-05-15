@@ -1,6 +1,5 @@
 import {ResumeProgress} from '@/components/ResumeProgress/ResumeProgress';
 import {RightActions} from '@/components/SwipeableActions/RightActions';
-import {Resume} from '@/types';
 import {calculateProgress, getCompletionStatus} from '@/utils/resumeUtils';
 import {Text, TouchableOpacity, View} from 'react-native';
 import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';

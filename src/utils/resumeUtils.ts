@@ -1,6 +1,3 @@
-import {CustomSectionItem, Resume, Section} from '@/types';
-import {SocialLink} from '@/types/common/social.types';
-
 /**
  * Calculates the completion percentage of a resume
  * @param resume The resume object to calculate progress for
@@ -33,7 +30,7 @@ export const calculateProgress = (resume: Resume): number => {
   resume.basics.socials.forEach(social => {
     requiredFields.socials.forEach(field => {
       totalFields++;
-      if (social[field as keyof SocialLink]?.trim()) {
+      if (social[field as keyof LinkItem]?.trim()) {
         filledFields++;
       }
     });

@@ -1,4 +1,3 @@
-import {Section, WorkItem} from '@/types';
 import {renderJobDescription} from './components/description';
 import {renderKeywords} from './components/keywords';
 import {formatDateRange} from './utils/formatDate';

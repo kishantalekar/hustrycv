@@ -1,5 +1,4 @@
-import { Section, SkillItem } from '@/types';
-import { getResumeStyles } from '../styles/resumeStyles';
+import {getResumeStyles} from '../styles/resumeStyles';
 
 export const getSkillsHTML = (skills: Section<SkillItem>) => {
   const styles = getResumeStyles();

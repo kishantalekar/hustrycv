@@ -7,7 +7,6 @@ import {
 import {TextInput} from '@/components/TextInput';
 import {globalStyles} from '@/styles/globalStyles';
 import {COLORS} from '@/theme';
-import {EducationItem} from '@/types';
 import {View} from 'react-native';
 import {Divider} from 'react-native-paper';
 

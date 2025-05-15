@@ -1,5 +1,3 @@
-import { Section, CertificateItem } from '@/types';
-
 export const getCertificationsHTML = (
   certifications: Section<CertificateItem>,
 ): string => {
@@ -13,7 +11,7 @@ export const getCertificationsHTML = (
       <div class="certifications-grid">
         ${certifications.items
           .map(
-            (item) => `
+            item => `
           <div class="certification-item">
             <div class="cert-header">
               <div class="cert-title">${item.name || ''}</div>

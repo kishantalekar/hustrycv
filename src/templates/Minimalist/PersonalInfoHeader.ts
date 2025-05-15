@@ -1,7 +1,5 @@
-import { Basics } from '@/types';
-
 export const getPersonalInfoHTML = (basics: Basics): string => {
-  const { name, email, phone, location, socials } = basics;
+  const {name, email, phone, location, socials} = basics;
 
   return `
     <div class="personal-info">
@@ -16,7 +14,7 @@ export const getPersonalInfoHTML = (basics: Basics): string => {
           <div class="social-links">
             ${socials
               .map(
-                (social) => `
+                social => `
               <a href="${social.url}" class="social-link" target="_blank" rel="noopener noreferrer">
                 <i class="${social.icon}"></i>
                 ${social.label}

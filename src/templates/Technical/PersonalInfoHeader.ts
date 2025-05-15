@@ -1,14 +1,12 @@
-import { Basics, SocialLink } from '@/types';
-
 export const getPersonalInfoHTML = (basics: Basics): string => {
-  const { name, email, phone, location, socials } = basics;
+  const {name, email, phone, location, socials} = basics;
 
   // Create social media links
   const socialLinks =
     socials && socials.length > 0
       ? socials
           .map(
-            (social: SocialLink) => `
+            (social: LinkItem) => `
           <a href="${
             social.url || '#'
           }" class="social-link" target="_blank" rel="noopener noreferrer">

@@ -1,17 +1,5 @@
-import {
-  Basics,
-  CertificateItem,
-  CustomSectionItem,
-  EducationItem,
-  Metadata,
-  ProjectItem,
-  Resume,
-  Section,
-  Settings,
-  SkillItem,
-  WorkItem,
-} from '@/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Settings} from 'react-native';
 import 'react-native-get-random-values';
 import {create} from 'zustand';
 import {createJSONStorage, persist} from 'zustand/middleware';

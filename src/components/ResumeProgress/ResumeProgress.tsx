@@ -1,5 +1,4 @@
 import {COLORS, SPACING, typography} from '@/theme';
-import {Resume} from '@/types';
 import {calculateProgress} from '@/utils/resumeUtils';
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';

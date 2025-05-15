@@ -1,5 +1,4 @@
 import {COLORS} from '@/theme';
-import {Resume} from '@/types';
 import React from 'react';
 import {Text, TouchableOpacity} from 'react-native';
 import Animated, {SharedValue, useAnimatedStyle} from 'react-native-reanimated';

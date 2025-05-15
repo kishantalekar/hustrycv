@@ -1,4 +1,3 @@
-import {Basics} from '@/types';
 import {getSocialIcon} from '../icons';
 import {getResumeStyles, SPACING} from '../styles/resumeStyles';
 

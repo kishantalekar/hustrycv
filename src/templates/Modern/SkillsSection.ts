@@ -1,7 +1,7 @@
-import { Section, SkillItem } from '@/types';
-
 export const getSkillsHTML = (skills: Section<SkillItem>): string => {
-  if (!skills.items.length) {return '';}
+  if (!skills.items.length) {
+    return '';
+  }
 
   return `
     <div class="section">
@@ -9,7 +9,7 @@ export const getSkillsHTML = (skills: Section<SkillItem>): string => {
       <div class="skills-list">
         ${skills.items
           .map(
-            (item) => `
+            item => `
           <div class="skill-category">
             <div class="skill-category-name">${item.name || ''}</div>
             ${
@@ -18,7 +18,7 @@ export const getSkillsHTML = (skills: Section<SkillItem>): string => {
               <div class="skill-keywords">
                 ${item.keywords
                   .map(
-                    (keyword) => `<span class="skill-keyword">${keyword}</span>`,
+                    keyword => `<span class="skill-keyword">${keyword}</span>`,
                   )
                   .join('')}
               </div>

@@ -1,7 +1,5 @@
-import { Basics } from '@/types';
-
 export const getPersonalInfoHTML = (basics: Basics): string => {
-  const { name, location } = basics;
+  const {name, location} = basics;
 
   return `
     <div class="personal-info-header">

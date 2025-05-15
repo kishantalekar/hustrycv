@@ -1,5 +1,3 @@
-import {Section, SkillItem} from '@/types';
-
 export const getSkillsHTML = (skills: Section<SkillItem>): string => {
   if (!skills.items.length) {
     return '';

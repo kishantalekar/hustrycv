@@ -1,4 +1,3 @@
-import {EducationItem, Resume} from '@/types';
 import {v4 as uuidv4} from 'uuid';
 
 type State = {

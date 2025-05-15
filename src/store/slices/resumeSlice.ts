@@ -1,5 +1,3 @@
-import {Metadata, Resume} from '@/types';
-
 type State = {
   resumes: Resume[];
   activeResumeId: string;

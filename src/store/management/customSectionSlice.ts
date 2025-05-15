@@ -1,5 +1,3 @@
-import {CustomSectionItem, Resume, Section} from '@/types';
-
 type State = {
   resumes: Resume[];
   activeResumeId: string;

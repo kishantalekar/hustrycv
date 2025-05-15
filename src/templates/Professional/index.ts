@@ -1,4 +1,4 @@
-import {Resume} from '@/types';
+import {getCommonStyles} from '../styles/resumeStyles';
 import {getCertificationsHTML} from './CertificationsSection';
 import {getEducationHTML} from './EducationSection';
 import {getPersonalInfoHTML} from './PersonalInfoHeader';
@@ -6,7 +6,6 @@ import {getProjectsHTML} from './ProjectsSection';
 import {getSkillsHTML} from './SkillsSection';
 import {getSummaryHTML} from './SummarySection';
 import {getWorkExperienceHTML} from './WorkExperienceSection';
-import {getCommonStyles} from '../styles/resumeStyles';
 
 export const getProfessionalResumeHTML = (resumeData: Resume): string => {
   if (!resumeData) {

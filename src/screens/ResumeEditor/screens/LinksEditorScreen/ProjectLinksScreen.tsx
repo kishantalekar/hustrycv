@@ -4,7 +4,6 @@ import {IconSelector} from '@/components/IconSelector/IconSelector';
 import {useResumeStore} from '@/store/useResumeStore';
 import {globalStyles} from '@/styles';
 import {COLORS} from '@/theme';
-import {LinkItem} from '@/types';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {KeyboardAvoidingView, Platform, ScrollView, View} from 'react-native';

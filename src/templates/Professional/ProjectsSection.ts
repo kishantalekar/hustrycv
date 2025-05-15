@@ -1,4 +1,3 @@
-import {LinkItem, ProjectItem, Section} from '@/types';
 import {getSocialIcon} from '../icons';
 import {getResumeStyles} from '../styles/resumeStyles';
 import {renderJobDescription} from './components/description';

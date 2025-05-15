@@ -1,4 +1,3 @@
-import {Resume} from '@/types';
 import {getCertificationsHTML} from './CertificationsSection';
 import {getEducationHTML} from './EducationSection';
 import {getModernStyles} from './modernStyles';

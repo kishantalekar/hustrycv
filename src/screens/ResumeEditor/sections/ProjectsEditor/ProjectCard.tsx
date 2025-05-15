@@ -8,7 +8,6 @@ import {
 } from '@/components';
 import {globalStyles} from '@/styles';
 import {COLORS} from '@/theme';
-import {ProjectItem} from '@/types';
 import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {Divider} from 'react-native-paper';

@@ -1,5 +1,3 @@
-import { Section, SkillItem } from '@/types';
-
 export const getTechStackHTML = (skills: Section<SkillItem>) => {
   if (!skills.items.length) {
     return '';
@@ -8,7 +6,7 @@ export const getTechStackHTML = (skills: Section<SkillItem>) => {
   // Group skills by level
   const skillsByLevel: Record<string, SkillItem[]> = {};
 
-  skills.items.forEach((skill) => {
+  skills.items.forEach(skill => {
     if (!skillsByLevel[skill.level]) {
       skillsByLevel[skill.level] = [];
     }
@@ -26,7 +24,7 @@ export const getTechStackHTML = (skills: Section<SkillItem>) => {
       <h2 class="section-title">Technical Skills</h2>
       ${orderedLevels
         .map(
-          (level) => `
+          level => `
         <div class="tech-category">
           <h3 class="tech-category-title">${
             level.charAt(0).toUpperCase() + level.slice(1)
@@ -34,7 +32,7 @@ export const getTechStackHTML = (skills: Section<SkillItem>) => {
           <div class="tech-tag-container">
             ${skillsByLevel[level]
               .map(
-                (skill) => `
+                skill => `
               <span class="tech-tag">${skill.name}</span>
               ${
                 skill.keywords && skill.keywords.length

@@ -1,4 +1,4 @@
-import {createInitialResume, Resume} from '@/types/common/resume.types';
+import {createInitialResume} from '@/types/common/resume.types';
 import {GOOGLE_GEMINI_API_KEY} from '@/utils/apiKeys';
 import {extractJsonFromCodeBlock} from '@/utils/regex';
 import {GoogleGenAI} from '@google/genai';

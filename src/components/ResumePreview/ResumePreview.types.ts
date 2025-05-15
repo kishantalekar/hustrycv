@@ -1,12 +1,4 @@
 import {ViewStyle} from 'react-native';
-import {
-  Basics,
-  EducationItem,
-  ProjectItem,
-  Resume,
-  SkillItem,
-  WorkItem,
-} from '@/types';
 
 // export interface Basics {
 //   name?: string;
@@ -59,36 +51,36 @@ export interface Template {
   getHTML: (data: any) => string;
 }
 
-export interface ResumeData {
-  basics?: Basics;
-  sections?: {
-    work?: {
-      type: string;
-      visible: boolean;
-      items: Array<WorkItem>;
-    };
-    education?: {
-      type: string;
-      visible: boolean;
-      items: Array<EducationItem>;
-    };
-    skills?: {
-      type: string;
-      visible: boolean;
-      items: Array<SkillItem>;
-    };
-    projects?: {
-      type: string;
-      visible: boolean;
-      items: Array<ProjectItem>;
-    };
-    certifications?: {
-      type: string;
-      visible: boolean;
-      items: Array<ProjectItem>;
-    };
-  };
-}
+// export interface ResumeData {
+//   basics?: Basics;
+//   sections?: {
+//     work?: {
+//       type: string;
+//       visible: boolean;
+//       items: Array<WorkItem>;
+//     };
+//     education?: {
+//       type: string;
+//       visible: boolean;
+//       items: Array<EducationItem>;
+//     };
+//     skills?: {
+//       type: string;
+//       visible: boolean;
+//       items: Array<SkillItem>;
+//     };
+//     projects?: {
+//       type: string;
+//       visible: boolean;
+//       items: Array<ProjectItem>;
+//     };
+//     certifications?: {
+//       type: string;
+//       visible: boolean;
+//       items: Array<ProjectItem>;
+//     };
+//   };
+// }
 
 export interface ResumePreviewProps {
   resumeData?: Resume;

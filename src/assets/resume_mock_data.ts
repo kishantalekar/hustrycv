@@ -1,5 +1,3 @@
-import {Resume} from '@/types';
-
 export const updatedMockResumeData: Resume = {
   metadata: {
     id: 'uuid-extended',

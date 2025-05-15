@@ -1,6 +1,5 @@
 import {CollapsibleCard, KeywordItem} from '@/components';
 import {TextInput} from '@/components/TextInput';
-import {SkillItem} from '@/types';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {styles} from './SkillsEditor.styles';
 

@@ -1,5 +1,3 @@
-import {EducationItem, Section} from '@/types';
-
 export const getEducationHTML = (education: Section<EducationItem>): string => {
   if (!education.items.length) {
     return '';

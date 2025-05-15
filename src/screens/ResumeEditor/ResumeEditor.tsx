@@ -1,15 +1,19 @@
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {View, Text} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {RootStackParamList} from '@/navigation/AppNavigator';
+import {RootScreens} from '@/navigation/constants';
 import {FormNavigator} from '@/navigation/FormNavigator';
 import {COLORS} from '@/theme';
-import {styles} from './ResumeEditor.styles';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {RouteProp} from '@react-navigation/native';
+import {Text, View} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {DownloadScreen} from '../Download/DownloadScreen';
 import {PreviewScreen} from '../Preview/PreviewScreen';
-import {RouteProp} from '@react-navigation/native';
-import {RootStackParamList} from '@/navigation/AppNavigator';
+import {styles} from './ResumeEditor.styles';
 
-type ResumeEditorRouteProp = RouteProp<RootStackParamList, 'ResumeEditor'>;
+type ResumeEditorRouteProp = RouteProp<
+  RootStackParamList,
+  RootScreens.RESUME_EDITOR
+>;
 
 const Tab = createBottomTabNavigator();
 

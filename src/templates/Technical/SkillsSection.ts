@@ -1,12 +1,12 @@
-import { Section } from '../../components/ResumePreview/ResumePreview.types';
-
-export const getSkillsHTML = (skills: Section): string => {
-  if (!skills.items.length) {return '';}
+export const getSkillsHTML = (skills: Section<SkillItem>): string => {
+  if (!skills.items.length) {
+    return '';
+  }
 
   // Group skills by category if available
   const skillsByCategory: Record<string, string[]> = {};
 
-  skills.items.forEach((item) => {
+  skills.items.forEach(item => {
     const category = item.category || 'Other';
     if (!skillsByCategory[category]) {
       skillsByCategory[category] = [];
@@ -23,13 +23,13 @@ export const getSkillsHTML = (skills: Section): string => {
         <h2 class="section-title">${skills.title || 'Skills'}</h2>
         ${categories
           .map(
-            (category) => `
+            category => `
           <div class="skill-category">
             <div class="skill-category-name">${category}</div>
             <div class="skill-items">
               ${skillsByCategory[category]
                 .map(
-                  (skill) => `
+                  skill => `
                 <div class="skill-item">${skill}</div>
               `,
                 )
@@ -49,7 +49,7 @@ export const getSkillsHTML = (skills: Section): string => {
         <div class="skill-items">
           ${skills.items
             .map(
-              (item) => `
+              item => `
             <div class="skill-item">${item.name || ''}</div>
           `,
             )

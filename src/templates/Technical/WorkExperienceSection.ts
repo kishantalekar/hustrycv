@@ -1,5 +1,3 @@
-import {Section, WorkItem} from '@/types';
-
 export const getWorkExperienceHTML = (work: Section<WorkItem>): string => {
   if (!work.items.length) {
     return '';

@@ -1,12 +1,4 @@
 import * as PDFJS from 'pdfjs-dist';
-import {
-  Resume,
-  Basics,
-  Section,
-  WorkItem,
-  EducationItem,
-  SkillItem,
-} from '@/types';
 
 // Initialize PDF.js worker
 PDFJS.GlobalWorkerOptions.workerSrc = 'pdfjs-dist/build/pdf.worker.js';

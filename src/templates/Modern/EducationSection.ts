@@ -1,14 +1,14 @@
-import { Section, EducationItem } from '@/types';
-
 export const getEducationHTML = (education: Section<EducationItem>): string => {
-  if (!education.items.length) {return '';}
+  if (!education.items.length) {
+    return '';
+  }
 
   return `
     <div class="section">
       <h2 class="section-title">Education</h2>
       ${education.items
         .map(
-          (item) => `
+          item => `
         <div class="education-item">
           <div class="item-header">
             <div class="item-title">${item.degree || ''}</div>
@@ -25,9 +25,7 @@ export const getEducationHTML = (education: Section<EducationItem>): string => {
               ? `
             <div class="skill-keywords">
               ${item.keywords
-                .map(
-                  (keyword) => `<span class="skill-keyword">${keyword}</span>`,
-                )
+                .map(keyword => `<span class="skill-keyword">${keyword}</span>`)
                 .join('')}
             </div>
           `
@@ -43,7 +41,9 @@ export const getEducationHTML = (education: Section<EducationItem>): string => {
 
 // Helper function to format dates
 function formatDate(dateString?: string): string {
-  if (!dateString) {return '';}
+  if (!dateString) {
+    return '';
+  }
 
   const date = new Date(dateString);
   if (isNaN(date.getTime())) {
@@ -55,11 +55,11 @@ function formatDate(dateString?: string): string {
         parseInt(parts[0]),
         parseInt(parts[1]) - 1,
         1,
-      ).toLocaleString('default', { month: 'short' });
+      ).toLocaleString('default', {month: 'short'});
       return `${month} ${year}`;
     }
     return dateString; // Return as is if we can't parse it
   }
 
-  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+  return date.toLocaleDateString('en-US', {year: 'numeric', month: 'short'});
 }

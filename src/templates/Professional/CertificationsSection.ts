@@ -1,4 +1,3 @@
-import {CertificateItem, Section} from '@/types';
 import {getExternalLinkIcon} from '../icons/icons';
 import {getResumeStyles} from '../styles/resumeStyles';
 import {formatDateRange} from './utils/formatDate';

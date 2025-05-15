@@ -2,6 +2,7 @@
   "name": "airesumebuilder-husty",
   "version": "0.0.1",
   "private": true,
+  "types": "./src/types/index.d.ts",
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios --simulator \\\"iPhone 16 Pro\\\"",
@@ -10,7 +11,8 @@
     "test": "jest",
     "storybook-generate": "sb-rn-get-stories",
     "eslint-fix": "npx eslint --fix 'src/**/*.{ts,tsx}'",
-    "postinstall": "node scripts/patch-zustand.js"
+    "postinstall": "node scripts/patch-zustand.js",
+    "ts": "tsc --noEmit"
   },
   "dependencies": {
     "@10play/tentap-editor": "^0.7.0",

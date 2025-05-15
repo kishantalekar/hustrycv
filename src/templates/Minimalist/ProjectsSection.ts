@@ -1,5 +1,3 @@
-import { Section, ProjectItem } from '@/types';
-
 export const getProjectsHTML = (projects: Section<ProjectItem>): string => {
   if (!projects.items.length) {
     return '';
@@ -10,7 +8,7 @@ export const getProjectsHTML = (projects: Section<ProjectItem>): string => {
       <h2 class="section-title">Projects</h2>
       ${projects.items
         .map(
-          (item) => `
+          item => `
         <div class="item ${item.status}">
           <div class="item-header">
             <div class="item-title-row">
@@ -27,7 +25,7 @@ export const getProjectsHTML = (projects: Section<ProjectItem>): string => {
               <div class="project-links">
                 ${item.links
                   .map(
-                    (link) => `
+                    link => `
                   <a href="${link.url}" class="project-link" target="_blank" rel="noopener noreferrer">
                     <i class="${link.icon}"></i>
                     ${link.label}
@@ -47,7 +45,7 @@ export const getProjectsHTML = (projects: Section<ProjectItem>): string => {
             <div class="keywords">
               ${item.keywords
                 .map(
-                  (keyword) => `
+                  keyword => `
                 <span class="keyword">${keyword}</span>
               `,
                 )
