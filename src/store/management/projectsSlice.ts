@@ -8,6 +8,7 @@ type State = {
 type Actions = {
   addProject: (project: Omit<ProjectItem, 'id'>) => string;
   updateProject: (id: string, project: Partial<ProjectItem>) => void;
+  updateAllProjects: (projects: ProjectItem[]) => void;
   removeProject: (id: string) => void; // New function
   toggleProjectsVisibility: (visible: boolean) => void;
 };
@@ -64,7 +65,27 @@ export const createProjectsSlice = (set: any): Actions => ({
           : resume,
       ),
     })),
-
+  updateAllProjects: (projects: ProjectItem[]) =>
+    set((state: State) => ({
+      resumes: state.resumes.map(resume =>
+        resume.metadata.id === state.activeResumeId
+          ? {
+              ...resume,
+              sections: {
+                ...resume.sections,
+                projects: {
+                  ...resume.sections.projects,
+                  items: projects,
+                },
+              },
+              metadata: {
+                ...resume.metadata,
+                updatedAt: new Date().toISOString(),
+              },
+            }
+          : resume,
+      ),
+    })),
   removeProject: id =>
     set((state: State) => ({
       resumes: state.resumes.map(resume =>

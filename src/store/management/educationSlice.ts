@@ -9,6 +9,7 @@ type Actions = {
   // Education
   addEducation: (education: Omit<EducationItem, 'id'>) => string;
   updateEducation: (id: string, education: Partial<EducationItem>) => void;
+  updateAllEducation: (education: EducationItem[]) => void;
   removeEducation: (id: string) => void; // New function
   toggleEducationVisibility: (visible: boolean) => void;
 };
@@ -56,6 +57,27 @@ export const createEducationSlice = (set: any): Actions => ({
                   items: resume.sections.education.items.map(item =>
                     item.id === id ? {...item, ...education} : item,
                   ),
+                },
+              },
+              metadata: {
+                ...resume.metadata,
+                updatedAt: new Date().toISOString(),
+              },
+            }
+          : resume,
+      ),
+    })),
+  updateAllEducation: educations =>
+    set((state: State) => ({
+      resumes: state.resumes.map(resume =>
+        resume.metadata.id === state.activeResumeId
+          ? {
+              ...resume,
+              sections: {
+                ...resume.sections,
+                education: {
+                  ...resume.sections.education,
+                  items: educations,
                 },
               },
               metadata: {

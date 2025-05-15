@@ -1,5 +1,6 @@
 import {CardHeader, CollapsibleCard, DateInput, TextInput} from '@/components';
-import {View} from 'react-native';
+import {globalStyles} from '@/styles';
+import {TouchableOpacity, View} from 'react-native';
 
 interface CertificationCardProps {
   cert: {
@@ -13,6 +14,8 @@ interface CertificationCardProps {
   expandedItemId: string;
   updateCertification: (id: string, data: any) => void;
   removeCertification: (id: string) => void;
+  isDraggableListVisible: boolean;
+  drag?: () => void;
 }
 export function CertificationCard({
   cert,
@@ -20,15 +23,23 @@ export function CertificationCard({
   expandedItemId,
   updateCertification,
   removeCertification,
+  isDraggableListVisible,
+  drag,
 }: Readonly<CertificationCardProps>) {
+  console.log('CertificationCard', cert.name);
   const header = (
     <CardHeader
       title={cert.name}
       subtitle={cert.authority}
       titlePlaceholder="Certification name"
       subtitlePlaceholder="Issuing authority"
+      rightIcon={isDraggableListVisible ? 'drag-handle' : undefined}
+      containerStyle={isDraggableListVisible ? globalStyles.card : undefined}
     />
   );
+  if (isDraggableListVisible) {
+    return <TouchableOpacity onPressIn={drag}>{header}</TouchableOpacity>;
+  }
   return (
     <CollapsibleCard
       handleDelete={removeCertification}

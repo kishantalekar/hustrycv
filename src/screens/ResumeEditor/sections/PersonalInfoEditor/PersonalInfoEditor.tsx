@@ -1,3 +1,4 @@
+import {Header} from '@/components/Header';
 import {HTMLPreview} from '@/components/HTMLPreview/HTMLPreview';
 import {TextInput} from '@/components/TextInput';
 import {FONTS} from '@/constants';
@@ -15,6 +16,7 @@ import {
   View,
 } from 'react-native';
 import {Card, Divider, Text} from 'react-native-paper';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 export const PersonalInfoEditor = () => {
   const {getActiveResume, updateBasics} = useResumeStore();
@@ -22,86 +24,91 @@ export const PersonalInfoEditor = () => {
   console.log('basics', getActiveResume());
   const basics = getActiveResume().basics;
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={globalStyles.keyboardAvoidingView}>
-      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-        <Card style={styles.card}>
-          <Card.Content>
-            <TextInput
-              label="Full Name"
-              value={basics.name}
-              onChangeText={text => updateBasics({name: text})}
-              placeholder="Enter your full name"
-              style={styles.input}
-              leftIcon="person"
-            />
+    <SafeAreaView style={globalStyles.keyboardAvoidingView}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={globalStyles.keyboardAvoidingView}>
+        <Header title="Personal Details" />
+        <ScrollView
+          style={styles.container}
+          showsVerticalScrollIndicator={false}>
+          <Card style={styles.card}>
+            <Card.Content>
+              <TextInput
+                label="Full Name"
+                value={basics.name}
+                onChangeText={text => updateBasics({name: text})}
+                placeholder="Enter your full name"
+                style={styles.input}
+                leftIcon="person"
+              />
 
-            <TextInput
-              label="Email"
-              value={basics.email}
-              onChangeText={text => updateBasics({email: text})}
-              placeholder="Enter your email"
-              keyboardType="email-address"
-              style={styles.input}
-              leftIcon="email"
-            />
+              <TextInput
+                label="Email"
+                value={basics.email}
+                onChangeText={text => updateBasics({email: text})}
+                placeholder="Enter your email"
+                keyboardType="email-address"
+                style={styles.input}
+                leftIcon="email"
+              />
 
-            <TextInput
-              label="Phone"
-              placeholder="Enter your phone number"
-              keyboardType="phone-pad"
-              onChangeText={text => updateBasics({phone: text})}
-              value={basics.phone}
-              style={styles.input}
-              leftIcon="phone"
-            />
+              <TextInput
+                label="Phone"
+                placeholder="Enter your phone number"
+                keyboardType="phone-pad"
+                onChangeText={text => updateBasics({phone: text})}
+                value={basics.phone}
+                style={styles.input}
+                leftIcon="phone"
+              />
 
-            <TextInput
-              label="Location"
-              placeholder="City, Country"
-              value={basics.location}
-              onChangeText={text => updateBasics({location: text})}
-              style={styles.input}
-              leftIcon="location-on"
-            />
+              <TextInput
+                label="Location"
+                placeholder="City, Country"
+                value={basics.location}
+                onChangeText={text => updateBasics({location: text})}
+                style={styles.input}
+                leftIcon="location-on"
+              />
 
-            <Divider style={styles.divider} />
-            {/* show the social profiles here  */}
-            <Text style={styles.subsectionTitle}>Professional Profiles</Text>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('SocialProfiles')}>
-              <Text style={styles.summaryPreview}>
-                {basics?.socials?.length
-                  ? `${basics?.socials?.length} profile${
-                      basics?.socials?.length !== 1 ? 's' : ''
-                    } added`
-                  : 'Tap to add profile'}
-              </Text>
-            </TouchableOpacity>
+              <Divider style={styles.divider} />
+              {/* show the social profiles here  */}
+              <Text style={styles.subsectionTitle}>Professional Profiles</Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('SocialProfiles')}>
+                <Text style={styles.summaryPreview}>
+                  {basics?.socials?.length
+                    ? `${basics?.socials?.length} profile${
+                        basics?.socials?.length !== 1 ? 's' : ''
+                      } added`
+                    : 'Tap to add profile'}
+                </Text>
+              </TouchableOpacity>
 
-            <Divider style={styles.divider} />
-            <Text style={styles.subsectionTitle}>Professional Summary</Text>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('RichTextEditor', {
-                  initialContent: basics.summary || '',
-                  contentType: 'professional_summary',
-                })
-              }>
-              <Text style={styles.label}>Summary</Text>
-              <View style={globalStyles.htmlDescriptionPreview}>
-                <HTMLPreview
-                  html={basics.summary || ''}
-                  placeholder="Tap to edit your professional summary..."
-                  maxLines={3}
-                />
-              </View>
-            </TouchableOpacity>
-          </Card.Content>
-        </Card>
-      </ScrollView>
-    </KeyboardAvoidingView>
+              <Divider style={styles.divider} />
+              <Text style={styles.subsectionTitle}>Professional Summary</Text>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('RichTextEditor', {
+                    initialContent: basics.summary || '',
+                    contentType: 'professional_summary',
+                  })
+                }>
+                <Text style={styles.label}>Summary</Text>
+                <View style={globalStyles.htmlDescriptionPreview}>
+                  <HTMLPreview
+                    html={basics.summary || ''}
+                    placeholder="Tap to edit your professional summary..."
+                    maxLines={3}
+                  />
+                </View>
+              </TouchableOpacity>
+            </Card.Content>
+          </Card>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

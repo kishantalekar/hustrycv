@@ -1,4 +1,5 @@
 import {FONTS} from '@/constants';
+import {COLORS, SPACING} from '@/theme';
 import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -12,8 +13,18 @@ export const styles = StyleSheet.create({
     padding: 16,
   },
   section: {
-    marginBottom: 24,
-    gap: 16,
+    marginBottom: SPACING.sectionGap,
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  dragButton: {
+    padding: 8,
+    borderRadius: 20,
+    backgroundColor: COLORS.background,
   },
   sectionTitle: {
     fontSize: 20,

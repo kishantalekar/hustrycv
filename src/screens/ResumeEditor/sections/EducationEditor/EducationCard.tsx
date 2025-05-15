@@ -7,7 +7,7 @@ import {
 import {TextInput} from '@/components/TextInput';
 import {globalStyles} from '@/styles/globalStyles';
 import {COLORS} from '@/theme';
-import {View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import {Divider} from 'react-native-paper';
 
 interface EducationCardProps {
@@ -16,6 +16,9 @@ interface EducationCardProps {
   expandedItems: any;
   updateEducation: (id: string, data: any) => void;
   removeEducation: (id: string) => void;
+  drag?: () => void;
+  isDraggableListVisible?: boolean;
+  isActive?: boolean;
 }
 export function EducationCard({
   edu,
@@ -23,6 +26,8 @@ export function EducationCard({
   expandedItems,
   updateEducation,
   removeEducation,
+  drag,
+  isDraggableListVisible,
 }: Readonly<EducationCardProps>) {
   const header = (
     <CardHeader
@@ -31,8 +36,14 @@ export function EducationCard({
       location={edu.location}
       titlePlaceholder="Institution Name"
       subtitlePlaceholder="Degree"
+      rightIcon={isDraggableListVisible ? 'drag-handle' : undefined}
+      containerStyle={isDraggableListVisible ? globalStyles.card : undefined}
     />
   );
+
+  if (isDraggableListVisible) {
+    return <TouchableOpacity onPressIn={drag}>{header}</TouchableOpacity>;
+  }
   return (
     <CollapsibleCard
       expanded={expandedItems[edu.id]}

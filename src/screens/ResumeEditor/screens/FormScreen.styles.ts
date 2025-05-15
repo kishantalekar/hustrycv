@@ -1,17 +1,18 @@
 import {StyleSheet} from 'react-native';
 import {FONTS} from '../../../constants';
 import {
-  COLORS,
-  SPACING,
   BORDER_RADIUS,
-  TYPOGRAPHY,
+  COLORS,
   SHADOW,
+  SPACING,
+  TYPOGRAPHY,
 } from '../../../theme';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.background.primary,
+    padding: SPACING.md,
   },
   header: {
     fontSize: TYPOGRAPHY.size.xxl,
@@ -20,9 +21,7 @@ export const styles = StyleSheet.create({
     marginTop: SPACING.xxl + SPACING.lg,
     paddingHorizontal: SPACING.md,
   },
-  sectionsContainer: {
-    padding: SPACING.md,
-  },
+  sectionsContainer: {},
   sectionButton: {
     backgroundColor: COLORS.background.secondary,
     padding: SPACING.md,
@@ -32,6 +31,11 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     ...SHADOW.light,
+  },
+  sectionButtonActive: {
+    backgroundColor: COLORS.background.secondary,
+    transform: [{scale: 1.02}],
+    ...SHADOW.medium,
   },
   sectionTitle: {
     fontSize: TYPOGRAPHY.size.md,

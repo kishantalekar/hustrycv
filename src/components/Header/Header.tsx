@@ -63,7 +63,7 @@ export const Header: React.FC<HeaderProps> = ({
               <TouchableOpacity
                 style={styles.editButton}
                 onPress={() => setIsEditing(true)}>
-                <Icon name="edit" size={20} color={COLORS.text.secondary} />
+                <Icon name="edit" size={18} color={COLORS.text.secondary} />
               </TouchableOpacity>
             )}
           </View>

@@ -1,5 +1,6 @@
-import {CollapsibleCard, KeywordItem} from '@/components';
+import {CardHeader, CollapsibleCard, KeywordItem} from '@/components';
 import {TextInput} from '@/components/TextInput';
+import {globalStyles} from '@/styles';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {styles} from './SkillsEditor.styles';
 
@@ -11,6 +12,9 @@ interface SkillCardProps {
   removeSkill: (id: string) => void;
   newKeyword: string;
   setNewKeyword: (text: string) => void;
+  isDraggableListVisible: boolean;
+  drag?: () => void;
+  isActive?: boolean;
 }
 export function SkillsCard({
   skill,
@@ -20,17 +24,22 @@ export function SkillsCard({
   removeSkill,
   newKeyword,
   setNewKeyword,
+  isDraggableListVisible,
+  drag,
 }: Readonly<SkillCardProps>) {
   const header = (
-    <View>
-      <Text style={styles.skillName}>
-        {skill.name.length ? skill.name : 'Category'}
-      </Text>
-      <Text style={styles.skillLevel}>
-        {skill.level.charAt(0).toUpperCase() + skill.level.slice(1)}
-      </Text>
-    </View>
+    <CardHeader
+      title={skill.name}
+      titlePlaceholder="Category"
+      subtitle="skills"
+      rightIcon={isDraggableListVisible ? 'drag-handle' : undefined}
+      containerStyle={isDraggableListVisible ? globalStyles.card : undefined}
+    />
   );
+
+  if (isDraggableListVisible) {
+    return <TouchableOpacity onPressIn={drag}>{header}</TouchableOpacity>;
+  }
   return (
     <CollapsibleCard
       onToggle={() => toggleExpand(skill.id)}

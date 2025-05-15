@@ -8,6 +8,7 @@ type State = {
 type Actions = {
   addSkill: (skill: Omit<SkillItem, 'id'>) => string;
   updateSkill: (id: string, skill: Partial<SkillItem>) => void;
+  updateAllSkills: (skills: SkillItem[]) => void;
   removeSkill: (id: string) => void; // New function
   toggleSkillsVisibility: (visible: boolean) => void;
 };
@@ -54,6 +55,27 @@ export const createSkillsSlice = (set: any): Actions => ({
                   items: resume.sections.skills.items.map(item =>
                     item.id === id ? {...item, ...skill} : item,
                   ),
+                },
+              },
+              metadata: {
+                ...resume.metadata,
+                updatedAt: new Date().toISOString(),
+              },
+            }
+          : resume,
+      ),
+    })),
+  updateAllSkills: (skills: SkillItem[]) =>
+    set((state: State) => ({
+      resumes: state.resumes.map(resume =>
+        resume.metadata.id === state.activeResumeId
+          ? {
+              ...resume,
+              sections: {
+                ...resume.sections,
+                skills: {
+                  ...resume.sections.skills,
+                  items: skills,
                 },
               },
               metadata: {

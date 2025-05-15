@@ -12,6 +12,7 @@ type Actions = {
     id: string,
     certification: Partial<CertificateItem>,
   ) => void;
+  updateAllCertifications: (certifications: CertificateItem[]) => void; // New function to update all certifications at once
   removeCertification: (id: string) => void;
   toggleCertificationVisibility: (visible: boolean) => void;
 };
@@ -68,7 +69,27 @@ export const createCertificationsSlice = (set: any): Actions => ({
           : resume,
       ),
     })),
-
+  updateAllCertifications: certifications =>
+    set((state: State) => ({
+      resumes: state.resumes.map(resume =>
+        resume.metadata.id === state.activeResumeId
+          ? {
+              ...resume,
+              sections: {
+                ...resume.sections,
+                certifications: {
+                  ...resume.sections.certifications,
+                  items: certifications,
+                },
+              },
+              metadata: {
+                ...resume.metadata,
+                updatedAt: new Date().toISOString(),
+              },
+            }
+          : resume,
+      ),
+    })),
   removeCertification: id =>
     set((state: State) => ({
       resumes: state.resumes.map(resume =>

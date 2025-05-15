@@ -116,6 +116,14 @@ export const createInitialResume = () => ({
     version: '1.0',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
+    sectionOrder: [
+      'personal',
+      'experience',
+      'education',
+      'skills',
+      'projects',
+      'certifications',
+    ],
   },
   basics: {
     name: '',

@@ -1,10 +1,15 @@
 import {Header} from '@/components/Header';
 import {useResumeStore} from '@/store/useResumeStore';
 import {globalStyles} from '@/styles/globalStyles';
+import {navigate} from '@/utils/navigation';
 import React from 'react';
-import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {ScrollView, Text, TouchableOpacity} from 'react-native';
+import {
+  NestableDraggableFlatList,
+  NestableScrollContainer,
+} from 'react-native-draggable-flatlist';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {navigate} from '../../../utils/navigation';
 import {styles} from './FormScreen.styles';
 
 interface SectionsInterface {
@@ -50,9 +55,20 @@ const FormScreen = () => {
   const {updateMetadata, getActiveResume} = useResumeStore();
   const activeResume = getActiveResume();
   const metadata = activeResume.metadata;
+  const [sectionOrder, setSectionOrder] = React.useState(
+    metadata.sectionOrder
+      ? sections.sort((a, b) => {
+          const aIndex = metadata.sectionOrder!.indexOf(a.id);
+          const bIndex = metadata.sectionOrder!.indexOf(b.id);
+          return aIndex - bIndex;
+        })
+      : sections,
+  );
+  console.log(sectionOrder);
+  console.log(metadata.sectionOrder);
   return (
-    <SafeAreaView style={globalStyles.container}>
-      <ScrollView style={styles.container}>
+    <GestureHandlerRootView>
+      <SafeAreaView style={globalStyles.keyboardAvoidingView}>
         <Header
           title={metadata?.title?.length ? metadata.title : 'My Resume'}
           leftIcon="home"
@@ -60,19 +76,38 @@ const FormScreen = () => {
           editable
           onTitleChange={newTitle => updateMetadata({title: newTitle})}
         />
-        <View style={styles.sectionsContainer}>
-          {sections.map(section => (
-            <TouchableOpacity
-              key={section.id}
-              style={styles.sectionButton}
-              onPress={() => navigate(section.screenName)}>
-              <Text style={styles.sectionTitle}>{section.title}</Text>
-              <Text style={styles.arrow}>→</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+        <ScrollView style={styles.container}>
+          <NestableScrollContainer>
+            <NestableDraggableFlatList
+              data={sectionOrder}
+              keyExtractor={item => item.id}
+              onDragEnd={({data}) => {
+                setSectionOrder(data);
+                updateMetadata({
+                  sectionOrder: data.map(section => section.id),
+                });
+              }}
+              renderItem={({item, drag, isActive, getIndex}) => {
+                const isFirstItem = getIndex() === 0;
+                return (
+                  <TouchableOpacity
+                    key={item.id}
+                    style={[
+                      styles.sectionButton,
+                      isActive && styles.sectionButtonActive,
+                    ]}
+                    onPress={() => navigate(item.screenName)}
+                    onLongPress={!isFirstItem ? drag : undefined}>
+                    <Text style={styles.sectionTitle}>{item.title}</Text>
+                    <Text style={styles.arrow}>→</Text>
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          </NestableScrollContainer>
+        </ScrollView>
+      </SafeAreaView>
+    </GestureHandlerRootView>
   );
 };
 

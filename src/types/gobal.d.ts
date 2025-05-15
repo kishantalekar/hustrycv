@@ -12,6 +12,7 @@ declare global {
     version: string;
     createdAt: string;
     updatedAt: string;
+    sectionOrder?: string[];
   }
   interface Basics {
     name: string;

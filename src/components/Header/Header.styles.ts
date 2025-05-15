@@ -1,5 +1,5 @@
 import {FONTS} from '@/constants';
-import {COLORS} from '@/theme';
+import {COLORS, SPACING} from '@/theme';
 import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -10,6 +10,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.background.primary,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.border,
+    paddingHorizontal: SPACING.sm,
   },
   iconContainer: {
     width: 48,

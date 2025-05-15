@@ -1,5 +1,4 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Settings} from 'react-native';
 import 'react-native-get-random-values';
 import {create} from 'zustand';
 import {createJSONStorage, persist} from 'zustand/middleware';
@@ -32,22 +31,26 @@ export interface ResumeState {
   updateWorkExperience: (id: string, experience: Partial<WorkItem>) => void;
   removeWorkExperience: (id: string) => void; // New function
   toggleWorkVisibility: (visible: boolean) => void;
+  updateAllWorkExperiences: (experiences: WorkItem[]) => void; // New method
 
   // Education
   addEducation: (education: Omit<EducationItem, 'id'>) => string;
   updateEducation: (id: string, education: Partial<EducationItem>) => void;
+  updateAllEducation: (education: EducationItem[]) => void; // New method to update all education items in the resume ma
   removeEducation: (id: string) => void; // New function
   toggleEducationVisibility: (visible: boolean) => void;
 
   // Skills
   addSkill: (skill: Omit<SkillItem, 'id'>) => string;
   updateSkill: (id: string, skill: Partial<SkillItem>) => void;
+  updateAllSkills: (skills: SkillItem[]) => void; // New method
   removeSkill: (id: string) => void; // New function
   toggleSkillsVisibility: (visible: boolean) => void;
 
   // Projects
   addProject: (project: Omit<ProjectItem, 'id'>) => string;
   updateProject: (id: string, project: Partial<ProjectItem>) => void;
+  updateAllProjects: (projects: ProjectItem[]) => void; // New method
   removeProject: (id: string) => void; // New function
   toggleProjectsVisibility: (visible: boolean) => void;
 
@@ -68,6 +71,7 @@ export interface ResumeState {
     id: string,
     certification: Partial<CertificateItem>,
   ) => void;
+  updateAllCertifications: (certifications: CertificateItem[]) => void; // New method to update all certifications in the resume dat
   removeCertification: (id: string) => void;
   toggleCertificationVisibility: (visible: boolean) => void;
 

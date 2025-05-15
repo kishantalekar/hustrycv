@@ -20,6 +20,8 @@ interface ProjectCardProps {
   updateProject: (id: string, project: ProjectItem) => void;
   removeProject: (id: string) => void;
   navigation: any;
+  isDraggableListVisible: boolean;
+  drag?: () => void;
 }
 export function ProjectCard({
   project,
@@ -28,6 +30,8 @@ export function ProjectCard({
   updateProject,
   removeProject,
   navigation,
+  isDraggableListVisible,
+  drag,
 }: Readonly<ProjectCardProps>) {
   const header = (
     <CardHeader
@@ -35,9 +39,14 @@ export function ProjectCard({
       subtitle={project.url}
       titlePlaceholder="Project Name"
       subtitlePlaceholder="Project Url"
+      rightIcon={isDraggableListVisible ? 'drag-handle' : undefined}
+      containerStyle={isDraggableListVisible ? globalStyles.card : undefined}
     />
   );
 
+  if (isDraggableListVisible) {
+    return <TouchableOpacity onPressIn={drag}>{header}</TouchableOpacity>;
+  }
   return (
     <CollapsibleCard
       expanded={expandedItemId === project.id}

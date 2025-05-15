@@ -18,8 +18,10 @@ interface WorkExperienceCardProps {
   toggleExpand: (id: string) => void;
   expandedItems: {[key: string]: boolean};
   navigation: any;
+  isDraggableListVisible: boolean;
   updateWorkExperience: (id: string, experience: any) => void;
   removeWorkExperience: (id: string) => void;
+  drag?: () => void;
 }
 
 export function WorkExperienceCard({
@@ -27,19 +29,25 @@ export function WorkExperienceCard({
   toggleExpand,
   expandedItems,
   navigation,
+  isDraggableListVisible,
   updateWorkExperience,
   removeWorkExperience,
+  drag,
 }: Readonly<WorkExperienceCardProps>) {
   const header = (
     <CardHeader
+      containerStyle={isDraggableListVisible ? globalStyles.card : undefined}
       title={experience.company}
       subtitle={experience.position}
       location={experience.location}
       titlePlaceholder="Company name"
       subtitlePlaceholder="Position"
+      rightIcon={isDraggableListVisible ? 'drag-handle' : undefined}
     />
   );
-
+  if (isDraggableListVisible) {
+    return <TouchableOpacity onPressIn={drag}>{header}</TouchableOpacity>;
+  }
   return (
     <CollapsibleCard
       expanded={expandedItems[experience.id]}

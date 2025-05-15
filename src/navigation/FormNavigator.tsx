@@ -1,16 +1,16 @@
 import {
+  CertificationsEditor,
+  EducationEditor,
+  PersonalInfoEditor,
+  ProjectsEditor,
+  SkillsEditor,
+  WorkExperienceEditor,
+} from '@/screens/ResumeEditor/sections';
+import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
 import React from 'react';
-import {
-  WorkExperienceEditor,
-  EducationEditor,
-  ProjectsEditor,
-  SkillsEditor,
-  CertificationsEditor,
-  PersonalInfoEditor,
-} from '@/screens/ResumeEditor/sections';
 import FormScreen from '../screens/ResumeEditor/screens/FormScreen';
 import {FormScreens} from './constants';
 
@@ -39,33 +39,33 @@ export const FormNavigator = () => {
       <Stack.Screen
         name={FormScreens.PERSONAL_INFO}
         component={PersonalInfoEditor}
-        options={{title: 'Personal Information'}}
+        options={{headerShown: false}}
       />
 
       <Stack.Screen
         name={FormScreens.EXPERIENCE}
         component={WorkExperienceEditor}
-        options={{title: 'Work Experience'}}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name={FormScreens.EDUCATION}
         component={EducationEditor}
-        options={{title: 'Education'}}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name={FormScreens.SKILLS}
         component={SkillsEditor}
-        options={{title: 'Skills'}}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name={FormScreens.PROJECTS}
         component={ProjectsEditor}
-        options={{title: 'Projects'}}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name={FormScreens.CERTIFICATIONS}
         component={CertificationsEditor}
-        options={{title: 'Certifications'}}
+        options={{headerShown: false}}
       />
     </Stack.Navigator>
   );

@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {FONTS} from '../constants';
-import {BORDER_RADIUS, COLORS, SHADOW, SPACING} from '../theme';
+import {BORDER_RADIUS, COLORS, SPACING} from '../theme';
 
 // const {width, height} = Dimensions.get('window');
 
@@ -26,11 +26,19 @@ export const globalStyles = StyleSheet.create({
   },
 
   // Card styles
+  // card: {
+  //   marginBottom: 16,
+  //   borderRadius: BORDER_RADIUS.lg,
+  //   backgroundColor: COLORS.background.secondary,
+  //   ...SHADOW.medium,
+  // },
   card: {
-    marginBottom: 16,
-    borderRadius: BORDER_RADIUS.lg,
-    backgroundColor: COLORS.background.secondary,
-    ...SHADOW.medium,
+    borderColor: COLORS.border,
+    borderWidth: 1,
+    overflow: 'hidden',
+    borderRadius: 8,
+    backgroundColor: COLORS.white,
+    padding: 16,
   },
 
   // Input styles

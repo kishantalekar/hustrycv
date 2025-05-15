@@ -9,8 +9,7 @@ export const styles = StyleSheet.create({
     padding: 16,
   },
   section: {
-    marginBottom: 24,
-    gap: SPACING.sectionGap,
+    marginBottom: SPACING.sectionGap,
   },
   sectionTitle: {
     fontSize: 20,
