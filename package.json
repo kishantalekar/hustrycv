@@ -11,7 +11,7 @@
     "test": "jest",
     "storybook-generate": "sb-rn-get-stories",
     "eslint-fix": "npx eslint --fix 'src/**/*.{ts,tsx}'",
-    "postinstall": "node scripts/patch-zustand.js",
+    "postinstall": "node scripts/patch-zustand.js && node scripts/patch-draggable-flatlist.js",
     "ts": "tsc --noEmit"
   },
   "dependencies": {

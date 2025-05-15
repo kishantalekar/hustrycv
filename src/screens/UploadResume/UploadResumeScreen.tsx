@@ -18,6 +18,7 @@ import Config from 'react-native-config';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {styles} from './UploadResumeScreen.styles';
+import {useAppStore} from '@/store/useAppStore';
 
 console.log('GOOGLE_GEMINI_API_KEY', Config.GOOGLE_GEMINI_API_KEY);
 const loadingStyles = StyleSheet.create({
@@ -45,6 +46,7 @@ export const UploadResumeScreen = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [progressMessage, setProgressMessage] = useState('');
   const {addResume, setActiveResume} = useResumeStore();
+  const userName = useAppStore(state => state.userName);
 
   useEffect(() => {
     fetch('https://restyserver.onrender.com/ping')
@@ -122,6 +124,7 @@ export const UploadResumeScreen = () => {
         setActiveResume(id);
         posthog.capture('resume_created', {
           type: 'upload',
+          username: userName,
         });
         replace(RootScreens.RESUME_EDITOR, {name: 'Preview'});
 

@@ -1,4 +1,5 @@
-import {LottieAnimation} from '@/components'; // Assuming LottieAnimation component exists
+import {posthog} from '@/analytics/posthog/PostHog';
+import {LottieAnimation} from '@/components';
 import {Typography, TypographyVariant} from '@/components/Typography';
 import {RootScreens} from '@/navigation/constants';
 import {useAppStore} from '@/store/useAppStore';
@@ -49,6 +50,11 @@ export const OnboardingScreen: React.FC = () => {
 
   const handleNext = () => {
     if (currentIndex < onboardingSlides.length - 1) {
+      posthog.capture('onboarding_next_slide', {
+        current_slide: currentIndex + 1,
+        slide_title: onboardingSlides[currentIndex].title,
+        action: 'next',
+      });
       carouselRef.current?.next();
     } else {
       completeOnboarding();
@@ -56,10 +62,19 @@ export const OnboardingScreen: React.FC = () => {
   };
 
   const handleSkip = () => {
+    posthog.capture('onboarding_skipped', {
+      skipped_from_slide: currentIndex + 1,
+      remaining_slides: onboardingSlides.length - currentIndex - 1,
+    });
     completeOnboarding();
   };
 
   const completeOnboarding = () => {
+    posthog.capture('onboarding_completed', {
+      total_slides_viewed: currentIndex + 1,
+      completion_type:
+        currentIndex === onboardingSlides.length - 1 ? 'full' : 'skipped',
+    });
     setOnboardingCompleted(true);
     replace(RootScreens.NAME_INPUT); // Navigate to Name Input Screen
   };
@@ -101,6 +116,11 @@ export const OnboardingScreen: React.FC = () => {
             // This logic might need adjustment based on how progressValue behaves with snapping
             const newIndex = Math.round(absoluteProgress);
             if (newIndex !== currentIndex) {
+              posthog.capture('onboarding_slide_viewed', {
+                slide_number: newIndex + 1,
+                slide_title: onboardingSlides[newIndex].title,
+                navigation_type: 'carousel',
+              });
               setCurrentIndex(newIndex);
             }
           }}

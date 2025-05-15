@@ -2,6 +2,7 @@ import {posthog} from '@/analytics/posthog/PostHog';
 import {LottieAnimation, Typography, TypographyVariant} from '@/components';
 import {CreateResumeModal} from '@/components/CreateResumeModal/CreateResumeModal';
 import {useResumeStore} from '@/store/useResumeStore';
+import {useAppStore} from '@/store/useAppStore';
 import {globalStyles} from '@/styles';
 import {createInitialResume} from '@/types';
 import {navigate} from '@/utils/navigation';
@@ -15,9 +16,14 @@ import {renderResumeItem} from './ResumeItem';
 export const Dashboard = () => {
   const navigation = useNavigation<NavigationProp<any>>();
   const {setActiveResume, resumes, addResume, deleteResume} = useResumeStore();
+  const {userName} = useAppStore();
 
   const handleResumePress = (resumeId: string) => {
     setActiveResume(resumeId);
+    posthog.capture('resume_selected', {
+      resume_id: resumeId,
+      user_name: userName || 'Anonymous',
+    });
     navigation.navigate('ResumeEditor');
   };
 
@@ -30,7 +36,13 @@ export const Dashboard = () => {
         {
           text: 'Delete',
           style: 'destructive',
-          onPress: () => deleteResume(resumeId),
+          onPress: () => {
+            posthog.capture('resume_deleted', {
+              resume_id: resumeId,
+              user_name: userName || 'Anonymous',
+            });
+            deleteResume(resumeId);
+          },
         },
       ],
     );
@@ -48,6 +60,8 @@ export const Dashboard = () => {
     const id = newResume.metadata.id;
     posthog.capture('create_resume', {
       type: 'manual',
+      resume_id: id,
+      user_name: userName || 'Anonymous',
     });
     setActiveResume(id);
     navigate('ResumeEditor');
@@ -55,7 +69,9 @@ export const Dashboard = () => {
   };
 
   const handleUploadResume = () => {
-    console.log('Upload Resume');
+    posthog.capture('upload_resume_initiated', {
+      user_name: userName || 'Anonymous',
+    });
     navigate('UploadResume');
     setShowDropdown(false);
   };

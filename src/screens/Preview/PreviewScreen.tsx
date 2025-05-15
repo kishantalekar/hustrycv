@@ -1,6 +1,8 @@
 import {ResumePreview, TemplateSelector} from '@/components';
 import {FONTS} from '@/constants';
+import {posthog} from '@/analytics/posthog/PostHog';
 import {useResumeStore} from '@/store/useResumeStore';
+import {useAppStore} from '@/store/useAppStore';
 import {
   getModernResumeHTML,
   getProfessionalResumeHTML,
@@ -42,6 +44,7 @@ const resumeTemplates = [
 ];
 export const PreviewScreen = () => {
   const {resumes, activeResumeId, updateResumeTemplateId} = useResumeStore();
+  const {userName} = useAppStore();
   const activeResume = resumes.find(
     resume => resume.metadata.id === activeResumeId,
   );
@@ -56,12 +59,27 @@ export const PreviewScreen = () => {
     updateResumeTemplateId(templateId);
     setIsBottomSheetOpen(false);
     bottomSheetRef.current?.close();
+
+    // Track template selection
+    posthog.capture('template_selected', {
+      template_id: templateId,
+      resume_id: activeResumeId,
+      previous_template: defaultTemplate.id,
+      user_name: userName || 'Anonymous',
+    });
   };
 
   const snapPoints = useMemo(() => ['40%'], []);
 
   const handleSheetChanges = useCallback((index: number) => {
     setIsBottomSheetOpen(index === 0);
+
+    // Track bottom sheet interactions
+    posthog.capture('template_selector_interaction', {
+      action: index === 0 ? 'open' : 'close',
+      resume_id: activeResumeId,
+      user_name: userName || 'Anonymous',
+    });
   }, []);
 
   return (

@@ -33,8 +33,13 @@ export const NameInputScreen: React.FC = () => {
 
   const saveNameAndProceed = (callback: () => void) => {
     if (name.trim()) {
-      setUserName(name.trim());
+      const trimmedName = name.trim();
+      setUserName(trimmedName);
       setNameInputCompleted(true);
+      posthog.capture('name_input_completed', {
+        user_name: trimmedName,
+        has_spaces: trimmedName.includes(' '),
+      });
       callback();
     } else {
       Alert.alert('Please enter your name.');
@@ -43,6 +48,10 @@ export const NameInputScreen: React.FC = () => {
 
   const handleContinue = () => {
     setNameInputCompleted(true);
+    posthog.capture('name_input', {
+      user_name: name,
+      type: 'continue',
+    });
     replace(RootScreens.DASHBOARD); // Navigate to Dashboard
   };
 
@@ -53,15 +62,16 @@ export const NameInputScreen: React.FC = () => {
       const id = newResume.metadata.id;
       posthog.capture('create_resume', {
         type: 'manual_from_name_input',
+        user_name: name,
       });
       setActiveResume(id);
-      navigate(RootScreens.RESUME_EDITOR);
+      replace(RootScreens.RESUME_EDITOR);
     });
   };
 
   const handleUploadPdf = () => {
     saveNameAndProceed(() => {
-      navigate(RootScreens.UPLOAD_RESUME);
+      replace(RootScreens.UPLOAD_RESUME);
     });
   };
 
@@ -103,12 +113,6 @@ export const NameInputScreen: React.FC = () => {
             style={styles.button}
             variant="outline"
             disabled={!name.trim()}
-          />
-          <Button
-            title="Skip"
-            onPress={handleContinue}
-            style={styles.button}
-            variant="text"
           />
         </View>
       </SafeAreaView>

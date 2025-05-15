@@ -1,4 +1,5 @@
 import {posthog} from '@/analytics/posthog/PostHog';
+import {useAppStore} from '@/store/useAppStore';
 import {useResumeStore} from '@/store/useResumeStore';
 import {globalStyles} from '@/styles/globalStyles';
 import {getTemplateById} from '@/templates';
@@ -20,6 +21,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {styles} from './DownloadScreen.styles';
 export const DownloadScreen = () => {
   const {resumes, activeResumeId} = useResumeStore();
+  const {userName} = useAppStore();
   const activeResume = resumes.find(
     resume => resume.metadata.id === activeResumeId,
   );
@@ -40,6 +42,7 @@ export const DownloadScreen = () => {
       await createAndSavePDF(template.getHTML(activeResume), fileName);
       posthog.capture('pdf downloaded', {
         template: template.name,
+        user_name: userName || 'Anonymous',
       });
       Alert.alert('Success', 'Resume saved successfully!');
     } catch (error) {
@@ -60,10 +63,22 @@ export const DownloadScreen = () => {
   };
 
   const handleShare = () => {
+    posthog.capture('share_clicked', {
+      resume_name: activeResume?.basics?.name || 'My Resume',
+      template: getTemplateById(activeResume?.metadata?.templateId).name,
+      resume_id: activeResume?.metadata?.id,
+      user_name: userName || 'Anonymous',
+    });
     Alert.alert('Coming Soon', 'Share functionality will be available soon!');
   };
 
   const handleEmail = () => {
+    posthog.capture('email_clicked', {
+      resume_name: activeResume?.basics?.name || 'My Resume',
+      template: getTemplateById(activeResume?.metadata?.templateId).name,
+      resume_id: activeResume?.metadata?.id,
+      user_name: userName || 'Anonymous',
+    });
     Alert.alert('Coming Soon', 'Email functionality will be available soon!');
   };
 
@@ -187,28 +202,64 @@ export const DownloadScreen = () => {
           <View style={styles.socialButtonsContainer}>
             <TouchableOpacity
               style={[styles.socialButton, {backgroundColor: '#3b5998'}]}
-              onPress={handleShare}
+              onPress={() => {
+                posthog.capture('social_share_clicked', {
+                  platform: 'facebook',
+                  resume_name: activeResume?.basics?.name || 'My Resume',
+                  template: getTemplateById(activeResume?.metadata?.templateId)
+                    .name,
+                  user_name: userName || 'Anonymous',
+                });
+                handleShare();
+              }}
               activeOpacity={0.7}>
               <Icon name="facebook" size={20} color={COLORS.white} />
             </TouchableOpacity>
 
             <TouchableOpacity
               style={[styles.socialButton, {backgroundColor: '#1DA1F2'}]}
-              onPress={handleShare}
+              onPress={() => {
+                posthog.capture('social_share_clicked', {
+                  platform: 'twitter',
+                  resume_name: activeResume?.basics?.name || 'My Resume',
+                  template: getTemplateById(activeResume?.metadata?.templateId)
+                    .name,
+                  user_name: userName || 'Anonymous',
+                });
+                handleShare();
+              }}
               activeOpacity={0.7}>
               <Icon name="twitter" size={20} color={COLORS.white} />
             </TouchableOpacity>
 
             <TouchableOpacity
               style={[styles.socialButton, {backgroundColor: '#25D366'}]}
-              onPress={handleShare}
+              onPress={() => {
+                posthog.capture('social_share_clicked', {
+                  platform: 'whatsapp',
+                  resume_name: activeResume?.basics?.name || 'My Resume',
+                  template: getTemplateById(activeResume?.metadata?.templateId)
+                    .name,
+                  user_name: userName || 'Anonymous',
+                });
+                handleShare();
+              }}
               activeOpacity={0.7}>
               <Icon name="whatsapp" size={20} color={COLORS.white} />
             </TouchableOpacity>
 
             <TouchableOpacity
               style={[styles.socialButton, {backgroundColor: '#0e76a8'}]}
-              onPress={handleShare}
+              onPress={() => {
+                posthog.capture('social_share_clicked', {
+                  platform: 'linkedin',
+                  resume_name: activeResume?.basics?.name || 'My Resume',
+                  template: getTemplateById(activeResume?.metadata?.templateId)
+                    .name,
+                  user_name: userName || 'Anonymous',
+                });
+                handleShare();
+              }}
               activeOpacity={0.7}>
               <Icon name="linkedin" size={20} color={COLORS.white} />
             </TouchableOpacity>

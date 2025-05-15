@@ -11,6 +11,9 @@ import {
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './FormScreen.styles';
+import {posthog} from '@/analytics/posthog/PostHog';
+import {useAppStore} from '@/store/useAppStore';
+import {RootScreens} from '@/navigation/constants';
 
 interface SectionsInterface {
   id: string;
@@ -53,25 +56,26 @@ const sections: SectionsInterface[] = [
 
 const FormScreen = () => {
   const {updateMetadata, getActiveResume} = useResumeStore();
+  const {userName} = useAppStore();
   const activeResume = getActiveResume();
-  const metadata = activeResume.metadata;
+  const metadata = activeResume?.metadata;
   const [sectionOrder, setSectionOrder] = React.useState(
-    metadata.sectionOrder
-      ? sections.sort((a, b) => {
+    metadata?.sectionOrder
+      ? sections?.sort((a, b) => {
           const aIndex = metadata.sectionOrder!.indexOf(a.id);
           const bIndex = metadata.sectionOrder!.indexOf(b.id);
           return aIndex - bIndex;
         })
       : sections,
   );
-  console.log(sectionOrder);
-  console.log(metadata.sectionOrder);
+
   return (
     <GestureHandlerRootView>
       <SafeAreaView style={globalStyles.keyboardAvoidingView}>
         <Header
           title={metadata?.title?.length ? metadata.title : 'My Resume'}
           leftIcon="home"
+          onLeftPress={() => navigate(RootScreens.DASHBOARD)}
           iconVariant="octicon"
           editable
           onTitleChange={newTitle => updateMetadata({title: newTitle})}
@@ -96,7 +100,13 @@ const FormScreen = () => {
                       styles.sectionButton,
                       isActive && styles.sectionButtonActive,
                     ]}
-                    onPress={() => navigate(item.screenName)}
+                    onPress={() => {
+                      posthog.capture('screens', {
+                        user_name: userName || 'Anonymous',
+                        screen: item.screenName,
+                      });
+                      navigate(item.screenName);
+                    }}
                     onLongPress={!isFirstItem ? drag : undefined}>
                     <Text style={styles.sectionTitle}>{item.title}</Text>
                     <Text style={styles.arrow}>→</Text>
