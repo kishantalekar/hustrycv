@@ -1,7 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Sentry from '@sentry/react-native';
 import React, {useEffect, useState} from 'react';
-import {DevSettings, Platform} from 'react-native';
+import {Alert, DevSettings, Platform} from 'react-native';
+import {updateService} from './src/services/UpdateService';
 import StorybookUIRoot from './.storybook';
 import {posthog} from './src/analytics/posthog/PostHog';
 import {AppNavigator} from './src/navigation/AppNavigator';
@@ -26,7 +27,41 @@ const App = () => {
 
   // Make toggle function available globally in dev mode
   useEffect(() => {
-    const checkFirstLaunch = async () => {
+    const checkUpdatesAndFirstLaunch = async () => {
+      // Check for app updates
+      const updateInfo = await updateService.checkForUpdates();
+      if (updateInfo?.shouldUpdate) {
+        Alert.alert(
+          'Update Available',
+          'A new version is available. Would you like to update now?',
+          [
+            {
+              text: 'Update',
+              onPress: async () => {
+                const started = await updateService.startFlexibleUpdate();
+                if (started) {
+                  Alert.alert(
+                    'Update Downloaded',
+                    'The update has been downloaded. The app will update on next launch.',
+                    [
+                      {
+                        text: 'OK',
+                        onPress: () => updateService.completeFlexibleUpdate(),
+                      },
+                    ],
+                  );
+                }
+              },
+            },
+            {
+              text: 'Later',
+              style: 'cancel',
+            },
+          ],
+        );
+      }
+
+      // Check first launch
       try {
         const hasLaunched = await AsyncStorage.getItem('hasLaunched');
         if (!hasLaunched) {
@@ -49,7 +84,7 @@ const App = () => {
       }
     };
 
-    checkFirstLaunch();
+    checkUpdatesAndFirstLaunch();
 
     if (__DEV__) {
       // Add a "Toggle Storybook" item to the Dev Menu

@@ -66,20 +66,20 @@ export const calculateProgress = (resume: Resume): number => {
   countSection(resume.sections.certifications, requiredFields.certifications);
 
   // Custom sections
-  resume.sections.customSections.forEach(section => {
-    if (!section.visible) return;
+  // resume.sections.customSections.forEach(section => {
+  //   if (!section.visible) return;
 
-    const items =
-      section.items.length > 0 ? section.items : [{} as CustomSectionItem];
-    items.forEach(item => {
-      Object.entries(item).forEach(([key, value]) => {
-        if (key !== 'id') {
-          totalFields++;
-          if (value) filledFields++;
-        }
-      });
-    });
-  });
+  //   const items =
+  //     section.items.length > 0 ? section.items : [{} as CustomSectionItem];
+  //   items.forEach(item => {
+  //     Object.entries(item).forEach(([key, value]) => {
+  //       if (key !== 'id') {
+  //         totalFields++;
+  //         if (value) filledFields++;
+  //       }
+  //     });
+  //   });
+  // });
 
   return totalFields === 0 ? 0 : Math.round((filledFields / totalFields) * 100);
 };
