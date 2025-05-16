@@ -34,9 +34,8 @@ export const DownloadScreen = () => {
 
     setDownloadStarted(true);
     try {
-      const fileName = getResumeFileName(
-        activeResume?.basics?.name || 'My Resume',
-      );
+      const name = activeResume.metadata.title || userName;
+      const fileName = getResumeFileName(name);
       const template = getTemplateById(activeResume?.metadata?.templateId);
 
       await createAndSavePDF(template.getHTML(activeResume), fileName);

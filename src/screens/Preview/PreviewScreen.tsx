@@ -15,6 +15,8 @@ import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {globalStyles} from '@/styles';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const resumeTemplates = [
   {
@@ -83,52 +85,54 @@ export const PreviewScreen = () => {
   }, []);
 
   return (
-    <GestureHandlerRootView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => goBack()} style={styles.backButton}>
-          <Text style={styles.backButtonText}>← Back to Editor</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setIsBottomSheetOpen(true)}
-          style={styles.templateButton}>
-          <Text style={styles.templateButtonText}>Change Template</Text>
-        </TouchableOpacity>
-      </View>
-      <ResumePreview
-        resumeData={activeResume}
-        selectedTemplate={selectedTemplate}
-        templates={resumeTemplates}
-      />
-      <BottomSheet
-        ref={bottomSheetRef}
-        index={isBottomSheetOpen ? 0 : -1}
-        snapPoints={snapPoints}
-        onChange={handleSheetChanges}
-        enablePanDownToClose
-        backgroundStyle={{
-          backgroundColor: COLORS.background.primary,
-        }}
-        handleIndicatorStyle={{
-          backgroundColor: COLORS.border,
-          width: 40,
-          height: 4,
-        }}
-        handleStyle={{
-          backgroundColor: COLORS.background.primary,
-          borderTopLeftRadius: 8,
-          borderTopRightRadius: 8,
-          paddingVertical: 10,
-        }}
-        style={styles.bottomSheet}>
-        <BottomSheetView style={styles.bottomSheetContent}>
-          <TemplateSelector
-            selectedTemplate={selectedTemplate}
-            onSelectTemplate={handleTemplateSelect}
-            templates={resumeTemplates}
-          />
-        </BottomSheetView>
-      </BottomSheet>
-    </GestureHandlerRootView>
+    <SafeAreaView style={globalStyles.keyboardAvoidingView}>
+      <GestureHandlerRootView style={globalStyles.keyboardAvoidingView}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => goBack()} style={styles.backButton}>
+            <Text style={styles.backButtonText}>← Back to Editor</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setIsBottomSheetOpen(true)}
+            style={styles.templateButton}>
+            <Text style={styles.templateButtonText}>Change Template</Text>
+          </TouchableOpacity>
+        </View>
+        <ResumePreview
+          resumeData={activeResume}
+          selectedTemplate={selectedTemplate}
+          templates={resumeTemplates}
+        />
+        <BottomSheet
+          ref={bottomSheetRef}
+          index={isBottomSheetOpen ? 0 : -1}
+          snapPoints={snapPoints}
+          onChange={handleSheetChanges}
+          enablePanDownToClose
+          backgroundStyle={{
+            backgroundColor: COLORS.background.primary,
+          }}
+          handleIndicatorStyle={{
+            backgroundColor: COLORS.border,
+            width: 40,
+            height: 4,
+          }}
+          handleStyle={{
+            backgroundColor: COLORS.background.primary,
+            borderTopLeftRadius: 8,
+            borderTopRightRadius: 8,
+            paddingVertical: 10,
+          }}
+          style={styles.bottomSheet}>
+          <BottomSheetView style={styles.bottomSheetContent}>
+            <TemplateSelector
+              selectedTemplate={selectedTemplate}
+              onSelectTemplate={handleTemplateSelect}
+              templates={resumeTemplates}
+            />
+          </BottomSheetView>
+        </BottomSheet>
+      </GestureHandlerRootView>
+    </SafeAreaView>
   );
 };
 
