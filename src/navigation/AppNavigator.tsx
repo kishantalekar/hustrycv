@@ -24,6 +24,7 @@ import {
 import React, {useEffect} from 'react'; // Added useEffect
 import BootSplash from 'react-native-bootsplash'; // Added BootSplash
 import {RootScreens} from './constants';
+import {posthog} from '@/analytics/posthog/PostHog';
 
 export type RootStackParamList = {
   [RootScreens.ONBOARDING]: undefined;
@@ -53,14 +54,14 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 export type AppNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 export const AppNavigator = () => {
   const onboardingCompleted = useAppStore(state => state.onboardingCompleted);
-  const nameInputCompleted = useAppStore(state => state.nameInputCompleted); // Get name input status
-  const isHydrated = useAppStore(state => state.isHydrated); // Get hydration status
+  const {userName, nameInputCompleted, isHydrated} = useAppStore();
 
   useEffect(() => {
     if (isHydrated) {
       BootSplash.hide({fade: true}); // Hide splash screen when hydrated
+      posthog.identify(userName ?? 'Anonymous'); // Identify user in PostHog when app is hydrated
     }
-  }, [isHydrated]);
+  }, [isHydrated, userName]);
 
   console.log('onboardingCompleted', onboardingCompleted);
   console.log('nameInputCompleted', nameInputCompleted);
@@ -70,13 +71,11 @@ export const AppNavigator = () => {
       ? RootScreens.DASHBOARD
       : RootScreens.NAME_INPUT // Navigate to NameInput if onboarding is done but name is not
     : RootScreens.ONBOARDING;
-  console.log('initialRouteName', initialRouteName);
 
   if (!isHydrated) {
     // Show a loading indicator or a splash screen while the store is rehydrating
     return <LoadingIndicator />;
   }
-
   return (
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator

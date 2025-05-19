@@ -6,6 +6,15 @@ import {updateService} from './src/services/UpdateService';
 import StorybookUIRoot from './.storybook';
 import {posthog} from './src/analytics/posthog/PostHog';
 import {AppNavigator} from './src/navigation/AppNavigator';
+
+import {
+  setJSExceptionHandler,
+  setNativeExceptionHandler,
+} from 'react-native-exception-handler';
+import {
+  handleJsExceptionHandler,
+  handleNativeExceptionHandler,
+} from './errorHandlers';
 Sentry.init({
   dsn: 'https://4e53c676d66d1e4b3fe19315c0ba28a0@o4509298628100096.ingest.de.sentry.io/4509298629738576',
 
@@ -21,6 +30,11 @@ Sentry.init({
   // uncomment the line below to enable Spotlight (https://spotlightjs.com)
   // spotlight: __DEV__,
 });
+
+setJSExceptionHandler(handleJsExceptionHandler);
+
+setNativeExceptionHandler(handleNativeExceptionHandler);
+//===
 
 const App = () => {
   const [storybookEnabled, setStorybookEnabled] = useState(false);

@@ -1,3 +1,4 @@
+import {APP_STORAGE_KEY} from '@/constants/storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {create} from 'zustand';
 import {createJSONStorage, persist} from 'zustand/middleware';
@@ -27,11 +28,12 @@ export const useAppStore = create<AppState>()(
       _setHydrated: hydrated => set({isHydrated: hydrated}),
     }),
     {
-      name: 'app-storage',
+      name: APP_STORAGE_KEY,
       storage: createJSONStorage(() => AsyncStorage),
       partialize: state => ({
         onboardingCompleted: state.onboardingCompleted,
-        nameInputCompleted: state.nameInputCompleted, // Persist name input completion
+        nameInputCompleted: state.nameInputCompleted,
+        userName: state.userName, // Add userName to persisted state
         // Do not persist isHydrated, it's a runtime state
       }),
       onRehydrateStorage: () => state => {

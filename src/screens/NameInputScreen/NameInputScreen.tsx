@@ -12,7 +12,7 @@ import {useAppStore} from '@/store/useAppStore';
 import {useResumeStore} from '@/store/useResumeStore';
 import {globalStyles} from '@/styles';
 import {createInitialResume} from '@/types';
-import {navigate, replace} from '@/utils/navigation';
+import {replace} from '@/utils/navigation';
 import React, {useState} from 'react';
 import {
   Alert,
@@ -36,6 +36,7 @@ export const NameInputScreen: React.FC = () => {
       const trimmedName = name.trim();
       setUserName(trimmedName);
       setNameInputCompleted(true);
+      posthog.identify(name ?? 'Anonymous');
       posthog.capture('name_input_completed', {
         user_name: trimmedName,
         has_spaces: trimmedName.includes(' '),
@@ -71,6 +72,10 @@ export const NameInputScreen: React.FC = () => {
 
   const handleUploadPdf = () => {
     saveNameAndProceed(() => {
+      posthog.capture('create_resume', {
+        type: 'upload_from_name_input',
+        user_name: name,
+      });
       replace(RootScreens.UPLOAD_RESUME);
     });
   };
