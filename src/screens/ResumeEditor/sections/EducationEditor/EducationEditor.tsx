@@ -101,6 +101,7 @@ export const EducationEditor = () => {
                     endDate: '',
                     gpa: '',
                     current: false,
+                    isPercentage: false,
                   });
                   setExpandedItems(prev => ({
                     ...prev,

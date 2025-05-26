@@ -39,6 +39,7 @@ declare global {
     endDate: string;
     // TODO:need to add a toggle for percentage or gpa
     gpa?: string;
+    isPercentage: boolean;
     current: boolean;
     status?: string;
     location?: string;

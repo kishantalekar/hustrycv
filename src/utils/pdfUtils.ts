@@ -42,6 +42,7 @@ export const generatePDF = async (html: string) => {
     if (!file.base64) {
       throw new Error('Failed to generate PDF');
     }
+    console.log('[PDF] PDF generated successfully', !!file.base64);
     return file.base64;
   } catch (error) {
     console.error('Error in generatePDF:', error);

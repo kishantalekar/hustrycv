@@ -7,6 +7,7 @@ import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import Pdf from 'react-native-pdf';
 import {ResumePreviewProps} from './ResumePreview.types';
+import {getTemplateById} from '@/templates';
 
 export function ResumePreview({
   resumeData,
@@ -15,23 +16,22 @@ export function ResumePreview({
 }: Readonly<ResumePreviewProps>) {
   const [pdfBase64, setPdfBase64] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-
+  console.log(resumeData);
   useEffect(() => {
     if (resumeData && templates) {
       setIsLoading(true);
       setPdfBase64(null);
-
+      console.log('useeffect 1 ', isLoading);
       // Start a transaction for PDF generation
 
-      const selectedTemplateData = templates.find(
-        t => t.id === selectedTemplate,
-      );
-
+      const selectedTemplateData = getTemplateById(selectedTemplate);
+      console.log('selectedData ', !!selectedTemplateData);
       if (selectedTemplateData) {
         generatePDF(selectedTemplateData.getHTML(resumeData))
           .then(base64 => {
             if (base64) {
               setPdfBase64(base64);
+              console.log('base64', !!base64);
             } else {
               throw new Error('PDF generation returned null');
             }
@@ -64,6 +64,7 @@ export function ResumePreview({
         setIsLoading(false);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTemplate, resumeData, templates]);
 
   if (!resumeData) {
@@ -73,11 +74,14 @@ export function ResumePreview({
       </View>
     );
   }
+
+  const showLottieAnimation = !pdfBase64 && isLoading;
+  console.log('showLottieAnimation', showLottieAnimation);
   return (
     <ScrollView
       style={styles.container}
       contentContainerStyle={styles.contentContainer}>
-      {isLoading || !pdfBase64 ? (
+      {showLottieAnimation ? (
         <View style={styles.loadingContainer}>
           <LottieAnimation
             source={require('../../assets/animations/cv_loading.json')}

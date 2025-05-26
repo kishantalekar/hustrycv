@@ -19,6 +19,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {styles} from './UploadResumeScreen.styles';
 import {useAppStore} from '@/store/useAppStore';
+import {API_URL} from '@/constants';
 
 console.log('GOOGLE_GEMINI_API_KEY', Config.GOOGLE_GEMINI_API_KEY);
 const loadingStyles = StyleSheet.create({
@@ -49,7 +50,7 @@ export const UploadResumeScreen = () => {
   const userName = useAppStore(state => state.userName);
 
   useEffect(() => {
-    fetch('https://restyserver.onrender.com/ping')
+    fetch(`${API_URL}/ping`)
       .then(response => response.json())
       .then(data => {
         console.log('Server pinged successfully', data.message);

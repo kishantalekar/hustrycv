@@ -5,6 +5,7 @@ import {
   DateInputRow,
 } from '@/components';
 import {TextInput} from '@/components/TextInput';
+import {Toggle} from '@/components/Toggle/Toggle';
 import {globalStyles} from '@/styles/globalStyles';
 import {COLORS} from '@/theme';
 import {TouchableOpacity, View} from 'react-native';
@@ -14,7 +15,7 @@ interface EducationCardProps {
   edu: EducationItem;
   toggleExpand: (id: string) => void;
   expandedItems: any;
-  updateEducation: (id: string, data: any) => void;
+  updateEducation: (id: string, data: Partial<EducationItem>) => void;
   removeEducation: (id: string) => void;
   drag?: () => void;
   isDraggableListVisible?: boolean;
@@ -108,11 +109,23 @@ export function EducationCard({
         />
         <Divider style={globalStyles.divider} />
         <TextInput
-          label="GPA"
-          helperText="Enter your GPA or %"
+          label="Percentage/CGPA"
+          // helperText="Enter your GPA or %"
           value={edu.gpa}
           onChangeText={text => updateEducation(edu.id, {...edu, gpa: text})}
-          keyboardType="decimal-pad"
+          // keyboardType="number-pad"
+        />
+        <Toggle
+          value={edu.isPercentage || false}
+          onValueChange={value => {
+            console.log(value);
+            updateEducation(edu.id, {
+              ...edu,
+              isPercentage: value,
+            });
+          }}
+          leftLabel="CGPA"
+          rightLabel="Percentage"
         />
       </View>
     </CollapsibleCard>

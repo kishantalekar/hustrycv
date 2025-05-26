@@ -1,15 +1,9 @@
-import {
-  CollapsibleCard,
-  TextInput,
-  Typography,
-  TypographyVariant,
-} from '@/components';
+import {CollapsibleCard, TextInput} from '@/components';
 import {CustomIcon} from '@/components/CustomIcon';
 import {COLORS} from '@/theme';
 import Clipboard from '@react-native-clipboard/clipboard';
 import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
-import {IconButton} from 'react-native-paper';
 import {styles} from './LinksEditorScreen.styles';
 
 interface LinkEditorCardProps {
@@ -46,6 +40,7 @@ export function LinkEditorCard({
       </View>
     </View>
   );
+  console.log(link.url);
   return (
     <CollapsibleCard
       expanded={expanded}
@@ -62,28 +57,23 @@ export function LinkEditorCard({
           // leftIcon={'link'}
           // iconVariant={link.iconVariant}
         />
-        <TouchableOpacity
-          style={styles.iconSelectorButton}
-          onPress={() => openIconSelector(index, link)}>
-          <CustomIcon
-            variant={link.iconVariant}
-            name={link.icon}
-            size={20}
-            color={COLORS.text.secondary}
-          />
-          <Text style={styles.iconSelectorText}>Change Icon</Text>
-        </TouchableOpacity>
-        <View style={styles.urlInputContainer}>
-          <TextInput
-            label="URL"
-            placeholder="Link URL"
-            value={link.url}
-            onChangeText={text => handleUpdateLink(index, {...link, url: text})}
-            style={[styles.input, styles.linkUrlInput]}
-            leftIcon={link.icon || 'link'}
-            iconVariant={link.iconVariant}
-          />
 
+        <TextInput
+          label="URL"
+          placeholder="Link URL"
+          value={link.url}
+          onChangeText={text => handleUpdateLink(index, {...link, url: text})}
+          style={[styles.input, styles.linkUrlInput]}
+          // leftIcon={link.icon || 'link'}
+          iconVariant={link.iconVariant}
+          rightIcon="content-paste"
+          onRightIconPress={async () => {
+            const text = await Clipboard.getString();
+            handleUpdateLink(index, {...link, url: text});
+          }}
+        />
+
+        {/* <View style={styles.urlInputContainer}>
           <View style={styles.urlActions}>
             <View style={styles.urlActionButton}>
               <IconButton
@@ -113,7 +103,19 @@ export function LinkEditorCard({
               </Typography>
             </View>
           </View>
-        </View>
+        </View> */}
+
+        <TouchableOpacity
+          style={styles.iconSelectorButton}
+          onPress={() => openIconSelector(index, link)}>
+          <CustomIcon
+            variant={link.iconVariant}
+            name={link.icon}
+            size={20}
+            color={COLORS.text.secondary}
+          />
+          <Text style={styles.iconSelectorText}>Change Icon</Text>
+        </TouchableOpacity>
       </View>
     </CollapsibleCard>
   );

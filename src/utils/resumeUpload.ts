@@ -1,3 +1,4 @@
+import {API_URL} from '@/constants';
 import {
   DocumentPickerResponse,
   isErrorWithCode,
@@ -42,17 +43,14 @@ export const uploadWithRetry = async (
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), timeout);
 
-      const response = await fetch(
-        'https://restyserver.onrender.com/extract-pdf',
-        {
-          method: 'POST',
-          body: formData,
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-          signal: controller.signal,
+      const response = await fetch(`${API_URL}/extract-pdf`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
         },
-      );
+        signal: controller.signal,
+      });
 
       clearTimeout(timeoutId);
 
@@ -73,7 +71,7 @@ export const uploadWithRetry = async (
           throw error;
         }
         console.log(`Attempt ${attempt} failed, retrying...`);
-        await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+        // await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
       }
     }
   }
