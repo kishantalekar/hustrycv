@@ -4,6 +4,7 @@ export const FONT_SIZES = {
   h2: 20, // Used for main section headers like "Experience", "Education"
   h3: 16, // Used for subsection titles like company names or degree names
   h4: 14, // Used for even smaller titles or subtitles
+  h5: 12,
   body: 12, // Used for normal body text like job descriptions and bullet points
   small: 8, // Used for supporting information like dates or footnotes
 } as const;
@@ -19,12 +20,12 @@ export const SPACING = {
 
 // COLOR CONSTANTS
 export const COLORS = {
-  primary: '#2D3748', // Main text color
-  secondary: '#4A5568', // Secondary text color for less emphasis
-  accent: '#3182CE', // Accent color for highlights or important elements
-  link: '#2B6CB0', // Color for links or interactive elements
-  divider: '#CBD5E0', // Color for dividers or separators
-  background: '#FFFFFF', // Page background color
+  primary: "#2D3748", // Main text color
+  secondary: "#4A5568", // Secondary text color for less emphasis
+  accent: "#3182CE", // Accent color for highlights or important elements
+  link: "#2B6CB0", // Color for links or interactive elements
+  divider: "#CBD5E0", // Color for dividers or separators
+  background: "#FFFFFF", // Page background color
 } as const;
 
 // COMMON STYLES APPLIED ACROSS THE RESUME
@@ -34,13 +35,17 @@ export const getCommonStyles = () => `
   }
   .section {
     margin: 10pt 0;
-    break-inside: avoid;  // Prevents section from breaking across pages when printing
+    break-inside: avoid; 
+  }
+  .section-title {
+    font-size: ${FONT_SIZES.h3}pt;
+    font-weight: 300;
+    font-style: normal;
   }
 
-  
-  .section-title {
-    font-size: ${FONT_SIZES.h3}pt;  // Using h3 size (16pt) for section titles
-    font-weight: 400;
+  .card-title{
+      font-size: ${FONT_SIZES.h5}pt;
+      font-weight: 600;
   }
   
   .text-regular {
@@ -139,9 +144,7 @@ export const getResumeStyles = () => ({
 
   // Used for professional title or summary heading
   subheader: `
-    font-family: 'FiraSans-Medium';
     font-size: ${FONT_SIZES.h2}px;  // Second largest size (20px)
-    color: ${COLORS.secondary};
   `,
 
   // Main content text style

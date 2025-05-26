@@ -3,7 +3,6 @@ declare global {
   //Resume
   interface BaseItem {
     id: string;
-    keywords?: string[];
   }
   interface Metadata {
     id: string;
@@ -47,6 +46,7 @@ declare global {
   interface SkillItem extends BaseItem {
     name: string;
     level: string;
+    keywords: string[];
   }
   interface LinkItem {
     id: string;
@@ -83,9 +83,18 @@ declare global {
     visible: boolean;
     items: T[];
   }
+
+  type FontSize = {
+    [key in Settings['font']['size']]: number;
+  };
   interface Settings {
     atsOptimized: boolean;
-    font: string;
+    font: {
+      family: string; // Font family name (e.g., "Arial", "Helvetica")
+      size: FontSize; // Base font size in points (e.g., 11, 12)
+      lineSpacing: number; // Line height multiplier (e.g., 1.2 for 120%)
+    };
+    dateFormat: 'dd/mm/yyyy' | 'mm/dd/yyyy' | 'dd.mm.yyyy' | 'yyyy-mm-dd';
     theme: 'light' | 'dark';
     language: string;
   }
@@ -100,6 +109,7 @@ declare global {
       certifications: Section<CertificateItem>;
       customSections: Section<CustomSectionItem>[];
     };
+    settings: Settings;
   }
 
   //common

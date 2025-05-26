@@ -92,7 +92,6 @@ export const convertToResumeFormat = (parsedData: any) => {
           !work.endDate || work.endDate.toLowerCase().includes('present'),
         description: work.description?.trim() || '',
         status: 'visible',
-        keywords: work.keywords || [],
       }));
     }
 
@@ -108,7 +107,6 @@ export const convertToResumeFormat = (parsedData: any) => {
         current: !edu.endDate || edu.endDate.toLowerCase().includes('present'),
         status: 'visible',
         location: edu.location?.trim() || '',
-        keywords: [],
       }));
     }
 
@@ -139,7 +137,6 @@ export const convertToResumeFormat = (parsedData: any) => {
         status: 'visible',
         current:
           !project.endDate || project.endDate.toLowerCase().includes('present'),
-        keywords: project.keywords || [],
       }));
     }
 
@@ -150,10 +147,9 @@ export const convertToResumeFormat = (parsedData: any) => {
           id: uuidv4(),
           name: cert.name?.trim() || '',
           authority: cert.authority?.trim() || '',
-          certificationUrlOrCode: cert.certificationUrlOrCode?.trim() || '',
+          certificationUrlOrCode: cert.certificationUrl?.trim() || '',
           description: cert.description?.trim() || '',
           date: cert.date?.trim() || '',
-          keywords: [],
         }),
       );
     }

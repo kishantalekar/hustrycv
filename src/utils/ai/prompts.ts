@@ -21,8 +21,7 @@ export const RESUME_PARSE_PROMPT = `
       "startDate": "Start date in YYYY-MM format",
       "endDate": "End date in YYYY-MM format or 'Present'",
       "current": "boolean indicating if this is the current job",
-      "description": "Job description in HTML format using <ul>, <li>, <strong>, <em> tags for structured content"
-      "keywords": ["Related keywords or technologies"]
+      "description": "Job description in HTML format using <ul>, <li>, <strong>, <em> tags for structured content and if skills are there then list them like this <strong>Skills</strong> : skill1, skill2, skill3 with ",
     }],
     "education": [{
       "institution": "School/University name",
@@ -30,6 +29,7 @@ export const RESUME_PARSE_PROMPT = `
       "startDate": "Start date in YYYY-MM format",
       "endDate": "End date in YYYY-MM format or 'Present'",
       "gpa": "GPA if available",
+      "isPercentage": "boolean indicating if gpa is in percentage or no
       "current": "boolean indicating if currently studying",
       "location": "Institution location"
     }],
@@ -40,21 +40,21 @@ export const RESUME_PARSE_PROMPT = `
     }],
     "projects": [{
       "name": "Project name",
-      "description": "Project description in HTML format using <ul>, <li>, <strong>, <em> tags for structured content",
+      "description": "Project description in HTML format using <ul>, <li>, <strong>, <em> tags for structured content, if skills or technologies are there then list them like this <strong>Skills</strong> : skill1, skill2, skill3 with ",
       "startDate": "Start date in YYYY-MM format",
       "endDate": "End date in YYYY-MM format or 'Present'",
       "current": "boolean indicating if project is ongoing",
       "links": [{
+        "icon": One of: ${getAvailableIcons()},
         "label": "Link description (e.g., 'GitHub', 'Live Demo')",
         "url": "Full URL to the project resource"
       }]
-    "keywords": ["Related keywords or technologies"]
     }],
     "certifications": [{
       "name": "Certification name",
       "authority": "Issuing organization",
       "date": "Issue date in YYYY-MM format",
-      "certificationUrlOrCode": "Verification URL or certificate ID",
+      "certificationUrl": "certificationUrl",
     }]
   }
 

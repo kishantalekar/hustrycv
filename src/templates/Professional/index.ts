@@ -18,6 +18,15 @@ export const getProfessionalResumeHTML = (resumeData: Resume): string => {
       </html>
     `;
   }
+
+  let fontFamily = '';
+  try {
+    fontFamily = resumeData.settings?.font.family;
+  } catch (error) {}
+
+  if (!fontFamily) {
+    fontFamily = 'Fira Sans';
+  }
   // @ts-ignore
   return `
     <html>
@@ -35,7 +44,7 @@ export const getProfessionalResumeHTML = (resumeData: Resume): string => {
           }
           body {
             margin: 0;
-            font-family: 'Fira Sans', sans-serif;
+            font-family: "${fontFamily}, "sans-serif";
              background-color: #FFFFFF;
             text-color:#111111
           }
@@ -44,7 +53,7 @@ export const getProfessionalResumeHTML = (resumeData: Resume): string => {
               size: a4 portrait;
               margin: 10mm;
             }
-            h1,h2, p {
+            h1,h2,h3,h4,h5,h6, p {
             margin:0;
             padding:0;
             }
@@ -57,31 +66,51 @@ export const getProfessionalResumeHTML = (resumeData: Resume): string => {
       </head>
       <body class="body">
        <div class="a4-page">
-        ${resumeData.basics ? getPersonalInfoHTML(resumeData.basics) : ''}
-        ${resumeData.basics?.summary ? getSummaryHTML(resumeData.basics) : ''}
+        ${
+          resumeData.basics
+            ? getPersonalInfoHTML(resumeData.basics, resumeData?.settings)
+            : ''
+        }
+        ${
+          resumeData.basics?.summary
+            ? getSummaryHTML(resumeData.basics, resumeData?.settings)
+            : ''
+        }
          ${
            resumeData.sections?.education?.items.length
-             ? getEducationHTML(resumeData.sections.education)
+             ? getEducationHTML(
+                 resumeData.sections.education,
+                 resumeData?.settings,
+               )
              : ''
          }
         ${
           resumeData.sections?.work?.items.length
-            ? getWorkExperienceHTML(resumeData.sections.work)
+            ? getWorkExperienceHTML(
+                resumeData.sections.work,
+                resumeData?.settings,
+              )
             : ''
         }
         ${
           resumeData.sections?.projects?.items.length
-            ? getProjectsHTML(resumeData.sections.projects)
+            ? getProjectsHTML(
+                resumeData.sections.projects,
+                resumeData?.settings,
+              )
             : ''
         }
          ${
            resumeData.sections?.skills?.items.length
-             ? getSkillsHTML(resumeData.sections.skills)
+             ? getSkillsHTML(resumeData.sections.skills, resumeData?.settings)
              : ''
          }
         ${
           resumeData.sections?.certifications?.items.length
-            ? getCertificationsHTML(resumeData.sections.certifications)
+            ? getCertificationsHTML(
+                resumeData.sections.certifications,
+                resumeData?.settings,
+              )
             : ''
         }
        </div>

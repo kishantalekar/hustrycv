@@ -4,6 +4,7 @@ import {COLORS, SPACING, TYPOGRAPHY} from '@/theme';
 import {generatePDF} from '@/utils/pdfUtils';
 import * as Sentry from '@sentry/react-native';
 import React, {useEffect, useState} from 'react';
+
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import Pdf from 'react-native-pdf';
 import {ResumePreviewProps} from './ResumePreview.types';
@@ -16,22 +17,39 @@ export function ResumePreview({
 }: Readonly<ResumePreviewProps>) {
   const [pdfBase64, setPdfBase64] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  console.log(resumeData);
+
+  useEffect(() => {
+    console.log('[ResumePreview] Loading state changed:', isLoading);
+  }, [isLoading]);
+  console.log('[ResumePreview] Initial render - resumeData:', resumeData);
   useEffect(() => {
     if (resumeData && templates) {
       setIsLoading(true);
       setPdfBase64(null);
-      console.log('useeffect 1 ', isLoading);
+      console.log(
+        '[ResumePreview] useEffect triggered - isLoading:',
+        isLoading,
+        'selectedTemplate:',
+        selectedTemplate,
+      );
       // Start a transaction for PDF generation
 
       const selectedTemplateData = getTemplateById(selectedTemplate);
-      console.log('selectedData ', !!selectedTemplateData);
+      console.log(
+        '[ResumePreview] Template data found:',
+        !!selectedTemplateData,
+        'templateId:',
+        selectedTemplate,
+      );
       if (selectedTemplateData) {
         generatePDF(selectedTemplateData.getHTML(resumeData))
           .then(base64 => {
             if (base64) {
               setPdfBase64(base64);
-              console.log('base64', !!base64);
+              console.log(
+                '[ResumePreview] PDF generated successfully - base64 exists:',
+                !!base64,
+              );
             } else {
               throw new Error('PDF generation returned null');
             }
@@ -50,6 +68,9 @@ export function ResumePreview({
             });
           })
           .finally(() => {
+            console.log(
+              '[ResumePreview] Setting loading to false after PDF operation',
+            );
             setIsLoading(false);
           });
       } else {
@@ -75,13 +96,20 @@ export function ResumePreview({
     );
   }
 
-  const showLottieAnimation = !pdfBase64 && isLoading;
-  console.log('showLottieAnimation', showLottieAnimation);
+  const showLottieAnimation = isLoading;
+  console.log(
+    '[ResumePreview] Render state - isLoading:',
+    isLoading,
+    'showLottieAnimation:',
+    showLottieAnimation,
+    'hasPDF:',
+    !!pdfBase64,
+  );
   return (
     <ScrollView
       style={styles.container}
       contentContainerStyle={styles.contentContainer}>
-      {showLottieAnimation ? (
+      {isLoading ? (
         <View style={styles.loadingContainer}>
           <LottieAnimation
             source={require('../../assets/animations/cv_loading.json')}

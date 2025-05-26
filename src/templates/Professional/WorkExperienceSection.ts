@@ -1,16 +1,15 @@
-import {renderJobDescription} from './components/description';
-import {renderKeywords} from './components/keywords';
-import {formatDateRange} from './utils/formatDate';
+import { renderJobDescription } from "./components/description";
+import { formatDateRange } from "./utils/formatDate";
 
 const renderWorkHeader = (
   position: string,
   startDate: string,
   endDate: string,
-  current: boolean,
+  current: boolean
 ) => {
   return `
     <div style="display: flex; justify-content: space-between; align-items: center;">
-      <span class="text-bold">${position}</span>
+      <span class="card-title">${position}</span>
      ${formatDateRange(startDate, endDate, current)}
     </div>
   `;
@@ -28,25 +27,27 @@ const renderCompanyInfo = (company: string, location: string) => {
 const renderWorkItem = (item: WorkItem, index: number) => {
   return `
     <div style="margin-bottom: 8pt;page-break-inside:avoid;">
-    ${index === 0 ? '<h2 class="section-title">Experience</h2> <hr/>' : ''}
+    ${index === 0 ? '<h2 class="section-title">Experience</h2> <hr/>' : ""}
       ${renderWorkHeader(
         item.position,
         item.startDate,
         item.endDate,
-        item.current,
+        item.current
       )}
       ${renderCompanyInfo(item.company, item.location)}
       ${renderJobDescription(item.description)}
-      ${renderKeywords(item.keywords ?? [], 'Skills')}
     </div>
   `;
 };
 
-export const getWorkExperienceHTML = (work: Section<WorkItem>) => {
+export const getWorkExperienceHTML = (
+  work: Section<WorkItem>,
+  settings: Settings
+) => {
   return `
   <div class="section" style="break-inside:auto;">
    
-    ${work.items.map(renderWorkItem).join(' ')}
+    ${work.items.map(renderWorkItem).join(" ")}
   </div>
 `;
 };
