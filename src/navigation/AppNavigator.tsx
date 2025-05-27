@@ -9,6 +9,7 @@ import {
   ResumeEditor,
   SocialProfilesScreen,
   UploadResumeScreen,
+  LinkedInImportScreen,
 } from '@/screens';
 import {
   ContentType,
@@ -25,6 +26,7 @@ import React, {useEffect} from 'react'; // Added useEffect
 import BootSplash from 'react-native-bootsplash'; // Added BootSplash
 import {RootScreens} from './constants';
 import {posthog} from '@/analytics/posthog/PostHog';
+import {COLORS} from '@/theme';
 
 export type RootStackParamList = {
   [RootScreens.ONBOARDING]: undefined;
@@ -48,6 +50,7 @@ export type RootStackParamList = {
   };
   [RootScreens.UPLOAD_RESUME]: undefined;
   [RootScreens.AI_CHAT]: undefined;
+  [RootScreens.LINKEDIN_IMPORT]: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -112,7 +115,19 @@ export const AppNavigator = () => {
         <Stack.Screen
           name={RootScreens.UPLOAD_RESUME}
           component={UploadResumeScreen}
-          options={{title: 'Upload Resume'}}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name={RootScreens.LINKEDIN_IMPORT}
+          component={LinkedInImportScreen}
+          options={{
+            headerShown: false,
+            // title: 'Import from LinkedIn',
+
+            // headerTintColor: COLORS.text.primary,
+          }}
         />
 
         <Stack.Screen

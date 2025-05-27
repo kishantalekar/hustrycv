@@ -6,3 +6,4 @@ export * from './Preview/PreviewScreen';
 export * from './ResumeEditor';
 export * from './ResumeEditor/ResumeEditor';
 export * from './UploadResume/UploadResumeScreen';
+export * from './LinkedInImport/LinkedInImportScreen';

@@ -7,6 +7,7 @@ interface CreateResumeModalProps {
   onClose: () => void;
   onCreateManual: () => void;
   onUploadResume: () => void;
+  onImportResume: () => void;
 }
 
 export const CreateResumeModal: React.FC<CreateResumeModalProps> = ({
@@ -14,6 +15,7 @@ export const CreateResumeModal: React.FC<CreateResumeModalProps> = ({
   onClose,
   onCreateManual,
   onUploadResume,
+  onImportResume,
 }) => {
   const translateY = React.useRef(new Animated.Value(0)).current;
 
@@ -65,6 +67,14 @@ export const CreateResumeModal: React.FC<CreateResumeModalProps> = ({
             onUploadResume();
           }}>
           <Text style={styles.dropdownItemText}>Upload Resume</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.dropdownItem, {borderBottomWidth: 0}]}
+          onPress={e => {
+            e.stopPropagation();
+            onImportResume();
+          }}>
+          <Text style={styles.dropdownItemText}>Import From LinkedIn</Text>
         </TouchableOpacity>
       </Animated.View>
     </View>

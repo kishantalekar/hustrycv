@@ -11,6 +11,7 @@ export enum RootScreens {
   UPLOAD_RESUME = 'UploadResume',
   AI_CHAT = 'AIChat',
   NAME_INPUT = 'NameInputScreen',
+  LINKEDIN_IMPORT = 'LinkedInImport',
 }
 
 export enum FormScreens {

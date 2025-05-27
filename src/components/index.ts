@@ -13,3 +13,4 @@ export * from './SvgIcon/SvgIcon';
 export * from './TemplateSelector/TemplateSelector';
 export * from './TextInput';
 export * from './Typography';
+export * from './TipsCard';

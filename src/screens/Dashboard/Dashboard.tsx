@@ -12,6 +12,7 @@ import {Alert, FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {styles} from './Dashboard.styles';
 import {renderResumeItem} from './ResumeItem';
+import {RootScreens} from '@/navigation/constants';
 
 export const Dashboard = () => {
   const navigation = useNavigation<NavigationProp<any>>();
@@ -75,6 +76,14 @@ export const Dashboard = () => {
     navigate('UploadResume');
     setShowDropdown(false);
   };
+
+  const hanldeImportResume = () => {
+    posthog.capture('import_resume_initiated', {
+      user_name: userName || 'Anonymous',
+    });
+    navigate(RootScreens.LINKEDIN_IMPORT);
+    setShowDropdown(false);
+  };
   return (
     <GestureHandlerRootView style={globalStyles.keyboardAvoidingView}>
       <View style={styles.container}>
@@ -93,6 +102,7 @@ export const Dashboard = () => {
           onClose={() => setShowDropdown(false)}
           onCreateManual={handleCreateManual}
           onUploadResume={handleUploadResume}
+          onImportResume={hanldeImportResume}
         />
 
         <FlatList
