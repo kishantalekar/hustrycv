@@ -72,6 +72,15 @@ export const BORDER_RADIUS = {
   round: 9999,
 };
 
+export const FONT_WEIGHT = {
+  light: '300' as '300',
+  regular: 'normal' as 'normal', // '400' is also 'normal'
+  medium: '500' as '500',
+  semibold: '600' as '600',
+  bold: 'bold' as 'bold', // '700' is also 'bold'
+  extrabold: '800' as '800',
+};
+
 export const TYPOGRAPHY = {
   size: {
     xs: 12,

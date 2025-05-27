@@ -1,5 +1,4 @@
 import {LottieAnimation} from '@/components';
-import {SPACING} from '@/theme';
 import {generatePDF} from '@/utils/pdfUtils';
 import * as Sentry from '@sentry/react-native';
 import React, {useEffect, useState} from 'react';
@@ -9,6 +8,7 @@ import Pdf from 'react-native-pdf';
 import {ResumePreviewProps} from './ResumePreview.types';
 import {getTemplateById} from '@/templates';
 import {styles} from './ResumePreview.styles';
+import {SPACING} from '@/theme';
 
 export function ResumePreview({
   resumeData,
@@ -17,6 +17,7 @@ export function ResumePreview({
 }: Readonly<ResumePreviewProps>) {
   const [pdfBase64, setPdfBase64] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [pdfKey, setPdfKey] = useState(0);
 
   console.log('[ResumePreview] Initial render - resumeData:', resumeData);
   useEffect(() => {
@@ -82,8 +83,12 @@ export function ResumePreview({
         setIsLoading(false);
       }
     }
+
+    return () => {
+      setPdfKey(prevKey => prevKey + 1);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedTemplate, resumeData, templates]);
+  }, [selectedTemplate, resumeData]);
 
   if (!resumeData) {
     return (
@@ -93,15 +98,13 @@ export function ResumePreview({
     );
   }
 
-  const showLottieAnimation = isLoading;
-  console.log(
-    '[ResumePreview] Render state - isLoading:',
-    isLoading,
-    'showLottieAnimation:',
-    showLottieAnimation,
-    'hasPDF:',
-    !!pdfBase64,
-  );
+  // console.log(
+  //   '[ResumePreview] Render state - isLoading:',
+  //   isLoading,
+  //   'showLottieAnimation:',
+  //   'hasPDF:',
+  //   !!pdfBase64,
+  // );
   return (
     <ScrollView
       style={styles.container}
@@ -118,6 +121,7 @@ export function ResumePreview({
         </View>
       ) : (
         <Pdf
+          key={pdfKey}
           source={{uri: `data:application/pdf;base64,${pdfBase64}`}}
           style={styles.pdfView}
           spacing={SPACING.lg}

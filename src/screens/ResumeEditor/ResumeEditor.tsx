@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {DownloadScreen} from '../Download/DownloadScreen';
 import {PreviewScreen} from '../Preview/PreviewScreen';
 import {styles} from './ResumeEditor.styles';
+import {AIImprove} from '../AIImprove/AIImprove';
 
 type ResumeEditorRouteProp = RouteProp<
   RootStackParamList,
@@ -71,11 +72,11 @@ export const ResumeEditor = ({route}: Props) => {
       />
       <Tab.Screen
         name="Improve"
-        component={ImproveScreen}
+        component={AIImprove}
         options={{
           tabBarLabel: 'Improve',
           tabBarIcon: ({color, size}) => (
-            <Icon name="magic" size={size} color={color} />
+            <Icon name="robot" size={size} color={color} />
           ),
         }}
       />
