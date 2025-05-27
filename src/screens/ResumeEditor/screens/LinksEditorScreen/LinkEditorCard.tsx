@@ -40,7 +40,7 @@ export function LinkEditorCard({
       </View>
     </View>
   );
-  console.log(link.url);
+  // console.log(link.url);
   return (
     <CollapsibleCard
       expanded={expanded}

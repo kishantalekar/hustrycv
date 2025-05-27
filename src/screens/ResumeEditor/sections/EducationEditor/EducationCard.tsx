@@ -118,7 +118,7 @@ export function EducationCard({
         <Toggle
           value={edu.isPercentage || false}
           onValueChange={value => {
-            console.log(value);
+            // console.log(value);
             updateEducation(edu.id, {
               ...edu,
               isPercentage: value,

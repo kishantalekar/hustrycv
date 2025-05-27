@@ -112,7 +112,7 @@ export const WorkExperienceEditor = () => {
                     </View>
                   )}
                   onDragEnd={({data}) => {
-                    console.log('onDragEnd', data);
+                    // console.log('onDragEnd', data);
                     updateAllWorkExperiences(data);
                   }}
                 />

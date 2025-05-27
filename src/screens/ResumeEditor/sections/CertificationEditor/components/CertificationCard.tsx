@@ -26,7 +26,7 @@ export function CertificationCard({
   isDraggableListVisible,
   drag,
 }: Readonly<CertificationCardProps>) {
-  console.log('CertificationCard', cert.name);
+  // console.log('CertificationCard', cert.name);
   const header = (
     <CardHeader
       title={cert.name}

@@ -24,9 +24,9 @@ export const parseResumeWithAI = async (resumeText: string) => {
     }
 
     try {
-      console.log('[AI] AI response:', result.text);
+      // console.log('[AI] AI response:', result.text);
       const parsedData = extractJsonFromCodeBlock(result.text);
-      console.log('[AI] Parsed AI response:', parsedData);
+      // console.log('[AI] Parsed AI response:', parsedData);
       return parsedData;
     } catch (parseError) {
       Sentry.captureException(parseError, {
@@ -153,7 +153,7 @@ export const convertToResumeFormat = (parsedData: any) => {
         }),
       );
     }
-    console.log(' convertToResumeFormat [AI] Resume structure:', resume);
+    // console.log(' convertToResumeFormat [AI] Resume structure:', resume);
 
     return resume;
   } catch (error) {

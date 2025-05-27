@@ -14,14 +14,13 @@ import {DocumentPickerResponse} from '@react-native-documents/picker';
 import * as Sentry from '@sentry/react-native';
 import React, {useEffect, useState} from 'react';
 import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import Config from 'react-native-config';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {styles} from './UploadResumeScreen.styles';
 import {useAppStore} from '@/store/useAppStore';
 import {API_URL} from '@/constants';
 
-console.log('GOOGLE_GEMINI_API_KEY', Config.GOOGLE_GEMINI_API_KEY);
+// console.log('GOOGLE_GEMINI_API_KEY', Config.GOOGLE_GEMINI_API_KEY);
 const loadingStyles = StyleSheet.create({
   container: {
     flex: 1,
@@ -46,7 +45,7 @@ export const UploadResumeScreen = () => {
     useState<DocumentPickerResponse | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [progressMessage, setProgressMessage] = useState('');
-  const {addResume, setActiveResume} = useResumeStore();
+  const {addResume, setActiveResume, getActiveResume} = useResumeStore();
   const userName = useAppStore(state => state.userName);
 
   useEffect(() => {
@@ -80,12 +79,12 @@ export const UploadResumeScreen = () => {
     setIsUploading(true);
     try {
       setProgressMessage('Starting resume upload process...');
-      console.log('[Upload] Selected file:', {
-        name: selectedFile.name,
-        size: selectedFile.size,
-        type: selectedFile.type,
-        uri: selectedFile.uri,
-      });
+      // console.log('[Upload] Selected file:', {
+      //   name: selectedFile.name,
+      //   size: selectedFile.size,
+      //   type: selectedFile.type,
+      //   uri: selectedFile.uri,
+      // });
 
       setProgressMessage('Extracting text from your resume...');
       const data = await handleUpload(selectedFile);
@@ -94,42 +93,45 @@ export const UploadResumeScreen = () => {
         // Parse the extracted text with Gemini AI
         setProgressMessage('Analyzing your resume with AI...');
         const parsedResumeData = await parseResumeWithAI(data.text);
-        console.log('[AI] Parsing completed:', {
-          hasName: !!parsedResumeData?.name,
-          hasEmail: !!parsedResumeData?.email,
-          sections: {
-            work: parsedResumeData?.work?.length || 0,
-            education: parsedResumeData?.education?.length || 0,
-            skills: parsedResumeData?.skills?.length || 0,
-            projects: parsedResumeData?.projects?.length || 0,
-            certifications: parsedResumeData?.certifications?.length || 0,
-          },
-        });
+        // console.log('[AI] Parsing completed:', {
+        //   hasName: !!parsedResumeData?.name,
+        //   hasEmail: !!parsedResumeData?.email,
+        //   sections: {
+        //     work: parsedResumeData?.work?.length || 0,
+        //     education: parsedResumeData?.education?.length || 0,
+        //     skills: parsedResumeData?.skills?.length || 0,
+        //     projects: parsedResumeData?.projects?.length || 0,
+        //     certifications: parsedResumeData?.certifications?.length || 0,
+        //   },
+        // });
 
         // Convert to our resume format and add to store
         setProgressMessage('Formatting your resume data...');
         const formattedResume = convertToResumeFormat(parsedResumeData);
-        console.log('[Format] Conversion completed:', {
-          id: formattedResume.metadata.id,
-          name: formattedResume.basics.name,
-          sections: {
-            work: formattedResume.sections.work.items.length,
-            education: formattedResume.sections.education.items.length,
-            skills: formattedResume.sections.skills.items.length,
-            projects: formattedResume.sections.projects.items.length,
-            certifications:
-              formattedResume.sections.certifications.items.length,
-          },
-        });
+        // console.log('[Format] Conversion completed:', {
+        //   id: formattedResume.metadata.id,
+        //   name: formattedResume.basics.name,
+        //   sections: {
+        //     work: formattedResume.sections.work.items.length,
+        //     education: formattedResume.sections.education.items.length,
+        //     skills: formattedResume.sections.skills.items.length,
+        //     projects: formattedResume.sections.projects.items.length,
+        //     certifications:
+        //       formattedResume.sections.certifications.items.length,
+        //   },
+        // });
         const id = addResume(formattedResume);
+        // console.log('active Resume', getActiveResume().metadata.id);
         setActiveResume(id);
+        // console.log('active Resume', getActiveResume().metadata.id, 'id', id);
+
         posthog.capture('resume_created', {
           type: 'upload',
           username: userName,
         });
-        replace(RootScreens.RESUME_EDITOR, {name: 'Preview'});
 
         setProgressMessage('Finalizing your resume...');
+        replace(RootScreens.DASHBOARD);
       } else {
         throw new Error('No text content extracted from PDF');
       }

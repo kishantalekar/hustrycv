@@ -25,7 +25,7 @@ const generateAIContent = async (
   try {
     let prompt = '';
     let context = '';
-    console.log('started');
+    // console.log('started');
     switch (contentType) {
       case 'professional_summary':
         context = `Name: ${
@@ -97,12 +97,12 @@ const generateAIContent = async (
     }
 
     if (!prompt) return '';
-    console.log('prompt', prompt);
+    // console.log('prompt', prompt);
     const result = await genAI.models.generateContent({
       model: 'gemini-2.0-flash',
       contents: prompt,
     });
-    console.log('result', result.text);
+    // console.log('result', result.text);
     return extractHtmlFromCodeBlock(result?.text || '') || '';
     // return '';
   } catch (error) {
