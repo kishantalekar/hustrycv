@@ -1,5 +1,10 @@
 /* eslint-disable react-native/no-inline-styles */
-import {LottieAnimation} from '@/components';
+import {
+  Button,
+  LottieAnimation,
+  Typography,
+  TypographyVariant,
+} from '@/components';
 import {Header} from '@/components/Header';
 import {RichTextEditor} from '@/components/RichTextEditor/RichTextEditor';
 import {RootStackParamList} from '@/navigation/AppNavigator';
@@ -116,7 +121,7 @@ const generateAIContent = async (
             context += `\nAdditional Context: ${additionalContext}`;
           }
 
-          prompt = `Create 4 technical bullet points for this project: ${context}. Include:
+          prompt = `Create 4 technical bullet points for this project: ${context} with each 1 or 2 lines. Include:
   - Challenge faced and technical solution
   - Specific tools/tech used (include versions if relevant)
   - Measurable outcome or performance gains
@@ -124,18 +129,20 @@ const generateAIContent = async (
   Format as HTML: <ul> with <li>. Use <strong> for technologies and metrics. Example:
   <li>Developed <strong>Python ETL pipeline</strong> reducing data processing time by 65%</li>
   if the project has skills then give like in this format <strong >Skills</strong> : skill1,skill2 and .. in appropriate format
+
+  if the user has given no context , then just simply return standard bulleted points for any role or responsibilities
   `;
         }
         break;
     }
 
     if (!prompt) return '';
-    // console.log('prompt', prompt);
+    console.log('prompt', prompt);
     const result = await genAI.models.generateContent({
       model: 'gemini-2.0-flash',
       contents: prompt,
     });
-    // console.log('result', result.text);
+    console.log('result', result.text);
     return extractHtmlFromCodeBlock(result?.text || '') || '';
     // return '';
   } catch (error) {
@@ -220,6 +227,7 @@ export const RichTextEditorScreen = ({route, navigation}: Props) => {
     setIsGenerating(true);
     setIsBottomSheetOpen(false);
     bottomSheetRef.current?.close();
+    console.log('started');
 
     try {
       const generatedContent = await generateAIContent(
@@ -229,6 +237,7 @@ export const RichTextEditorScreen = ({route, navigation}: Props) => {
         additionalContext,
         itemId,
       );
+      console.log('generated ai content', generateAIContent);
       if (generatedContent) {
         handleContentChange(generatedContent);
         editor.setContent(generatedContent);
@@ -304,21 +313,37 @@ export const RichTextEditorScreen = ({route, navigation}: Props) => {
             title={getTitle()}
             onRightPress={() => navigation.goBack()}
             customLeftComponent={
-              <TouchableOpacity
-                style={{width: 48, height: 48, marginRight: 20}}
+              // <TouchableOpacity
+              //   style={{
+              //     width: 48,
+              //     height: 48,
+              //     marginRight: 20,
+              //     justifyContent: 'center',
+
+              //   }}
+              //   disabled={isGenerating}
+              //   onPress={handleAIGenerate}>
+              //   {/* <LottieAnimation
+              //     style={{width: 48, height: 48}}
+              //     source={
+              //       isGenerating
+              //         ? require('@/assets/animations/ai_twinkle_loading.json')
+              //         : require('@/assets/animations/ai_foriday.json')
+              //     }
+              //     autoPlay={isGenerating}
+              //     loop={isGenerating}
+              //   /> */}
+              //   <Typography variant={TypographyVariant.Caption}>
+              //     Ai Writer
+              //   </Typography>
+              // </TouchableOpacity>
+              <Button
+                title="Ai Writer"
+                variant="primary"
+                onPress={handleAIGenerate}
                 disabled={isGenerating}
-                onPress={handleAIGenerate}>
-                <LottieAnimation
-                  style={{width: 48, height: 48}}
-                  source={
-                    isGenerating
-                      ? require('@/assets/animations/ai_twinkle_loading.json')
-                      : require('@/assets/animations/ai_foriday.json')
-                  }
-                  autoPlay={isGenerating}
-                  loop={isGenerating}
-                />
-              </TouchableOpacity>
+                loading={isGenerating}
+              />
             }
           />
           <RichTextEditor editor={editor} hiddenToolbar={hiddenToolBar} />

@@ -11,6 +11,7 @@ import React, {useState} from 'react';
 import {
   Alert,
   ScrollView,
+  Share,
   StatusBar,
   Text,
   TouchableOpacity,
@@ -61,14 +62,25 @@ export const DownloadScreen = () => {
     }
   };
 
-  const handleShare = () => {
-    posthog.capture('share_clicked', {
-      resume_name: activeResume?.basics?.name || 'My Resume',
-      template: getTemplateById(activeResume?.metadata?.templateId).name,
-      resume_id: activeResume?.metadata?.id,
-      user_name: userName || 'Anonymous',
-    });
-    Alert.alert('Coming Soon', 'Share functionality will be available soon!');
+  const handleShare = async () => {
+    try {
+      posthog.capture('share_clicked', {
+        resume_name: activeResume?.basics?.name || 'My Resume',
+        template: getTemplateById(activeResume?.metadata?.templateId).name,
+        resume_id: activeResume?.metadata?.id,
+        user_name: userName || 'Anonymous',
+      });
+
+      await Share.share({
+        title: 'Build your resume in minutes!',
+        message:
+          '🚀 Build stunning, professional resumes effortlessly with Hustry – the AI-powered Resume Builder! Perfect for freshers and professionals alike. Try it out and share it with your friends!  Download now: https://play.google.com/store/apps/details?id=com.hustrycv',
+        url: 'https://play.google.com/store/apps/details?id=com.hustrycv',
+      });
+    } catch (error) {
+      console.error('Error sharing:', error);
+      Alert.alert('Error', 'Failed to share the app. Please try again.');
+    }
   };
 
   const handleEmail = () => {

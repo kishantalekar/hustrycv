@@ -25,24 +25,24 @@ const resumeTemplates = [
     image: require('../../assets/templates/professional.png'),
     getHTML: getProfessionalResumeHTML,
   },
-  {
-    id: 'technical',
-    name: 'Technical',
-    image: require('../../assets/templates/technical.png'),
-    getHTML: getTechnicalResumeHTML,
-  },
+  // {
+  //   id: 'technical',
+  //   name: 'Technical',
+  //   image: require('../../assets/templates/technical.png'),
+  //   getHTML: getTechnicalResumeHTML,
+  // },
   // {
   //   id: 'minimalist',
   //   name: 'Minimalist',
   //   image: require('../../assets/templates/minimalist.png'),
   //   getHTML: getMinimalistResumeHTML,
   // },
-  {
-    id: 'modern',
-    name: 'Modern',
-    image: require('../../assets/templates/minimalist.png'),
-    getHTML: getModernResumeHTML,
-  },
+  // {
+  //   id: 'modern',
+  //   name: 'Modern',
+  //   image: require('../../assets/templates/minimalist.png'),
+  //   getHTML: getModernResumeHTML,
+  // },
 ];
 export const PreviewScreen = () => {
   const {resumes, activeResumeId, updateResumeTemplateId} = useResumeStore();

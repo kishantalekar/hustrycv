@@ -49,4 +49,17 @@ platform :android do
     )
   end
 
+  desc "Deploy to closed testing track"
+
+  lane :production do
+    # changelog = prompt(text: "Changelog: ")
+    gradle(task: "bundle", build_type: "Release")
+    upload_to_play_store(
+      track: "production", # Options: 'internal', 'alpha', 'beta', 'production'
+      aab: "./app/build/outputs/bundle/release/app-release.aab",
+      release_status: "completed",
+      skip_upload_apk: true
+    )
+  end
+
 end

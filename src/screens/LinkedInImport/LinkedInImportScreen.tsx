@@ -1,28 +1,28 @@
+import {posthog} from '@/analytics/posthog/PostHog';
+import {LottieAnimation} from '@/components';
+import {Header} from '@/components/Header';
+import {FONTS} from '@/constants';
+import {RootScreens} from '@/navigation/constants';
+import {useAppStore} from '@/store/useAppStore';
+import {useResumeStore} from '@/store/useResumeStore';
+import {COLORS, TYPOGRAPHY} from '@/theme';
+import {
+  convertToResumeFormat,
+  parseResumeWithAI,
+} from '@/utils/ai/resumeParser';
+import {replace} from '@/utils/navigation';
 import React, {useState} from 'react';
 import {
-  View,
-  TextInput,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
   Alert,
   KeyboardAvoidingView,
   Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {COLORS, TYPOGRAPHY} from '@/theme';
-import {FONTS} from '@/constants';
-import {useResumeStore} from '@/store/useResumeStore';
-import {posthog} from '@/analytics/posthog/PostHog';
-import {RootScreens} from '@/navigation/constants';
-import {replace} from '@/utils/navigation';
-import {
-  parseResumeWithAI,
-  convertToResumeFormat,
-} from '@/utils/ai/resumeParser';
-import {useAppStore} from '@/store/useAppStore';
-import {LottieAnimation} from '@/components';
-import {Header} from '@/components/Header';
 
 export const LinkedInImportScreen = () => {
   const [linkedinUrl, setLinkedinUrl] = useState('');
@@ -31,12 +31,21 @@ export const LinkedInImportScreen = () => {
   const {addResume, setActiveResume} = useResumeStore();
   const userName = useAppStore(state => state.userName);
 
+  function checkValidLinkedInProfileUrl(url: string): boolean {
+    const regex =
+      /^(https?:\/\/)?(www\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?$/;
+    return regex.test(url);
+  }
   const handleImport = async () => {
     if (!linkedinUrl) {
       Alert.alert('Error', 'Please enter your LinkedIn profile URL');
       return;
     }
 
+    if (!checkValidLinkedInProfileUrl(linkedinUrl)) {
+      Alert.alert('Error', 'Pleas e enter a valid LinkedIn profile URL');
+      return;
+    }
     setIsLoading(true);
     try {
       const url =

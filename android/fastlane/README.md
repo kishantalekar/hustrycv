@@ -47,6 +47,14 @@ Deploy a new version to the Google Play
 
 Deploy to closed testing track
 
+### android production
+
+```sh
+[bundle exec] fastlane android production
+```
+
+Deploy to closed testing track
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.

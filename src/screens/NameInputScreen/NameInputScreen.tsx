@@ -12,7 +12,7 @@ import {useAppStore} from '@/store/useAppStore';
 import {useResumeStore} from '@/store/useResumeStore';
 import {globalStyles} from '@/styles';
 import {createInitialResume} from '@/types';
-import {replace} from '@/utils/navigation';
+import {navigate, replace} from '@/utils/navigation';
 import React, {useState} from 'react';
 import {
   Alert,
@@ -76,8 +76,17 @@ export const NameInputScreen: React.FC = () => {
         type: 'upload_from_name_input',
         user_name: name,
       });
-      replace(RootScreens.UPLOAD_RESUME);
+      navigate(RootScreens.UPLOAD_RESUME);
     });
+  };
+  const handleLinkedIn = () => {
+    saveNameAndProceed(() => {
+      posthog.capture('create_resume', {
+        type: 'linkedin_from_name_input',
+        user_name: name,
+      });
+    });
+    navigate(RootScreens.LINKEDIN_IMPORT);
   };
 
   return (
@@ -117,6 +126,13 @@ export const NameInputScreen: React.FC = () => {
             onPress={handleUploadPdf}
             style={styles.button}
             variant="outline"
+            disabled={!name.trim()}
+          />
+          <Button
+            title="Import from LinkedIn"
+            onPress={handleLinkedIn}
+            style={styles.button}
+            variant="secondary"
             disabled={!name.trim()}
           />
         </View>
