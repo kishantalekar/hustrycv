@@ -1,63 +1,40 @@
-export const getProjectsHTML = (projects: Section<ProjectItem>): string => {
-  if (!projects.items.length) {
-    return '';
-  }
 
+import { getSocialIcon } from '../icons';
+import { formatDateRange } from '../Professional/utils/formatDate';
+
+export const getTechnicalProjectsHTML = (projects: Section<ProjectItem>, settings: Settings) => {
   return `
-    <div class="section">
-      <h2 class="section-title">Projects</h2>
+    <div class="technical-section">
+      <h2 class="technical-section-title">Projects</h2>
       ${projects.items
-        .map(item => {
-          // Create project links HTML
-          const projectLinks =
-            item.links && item.links.length > 0
-              ? `<div class="project-links">
-                ${item.links
-                  .map(
-                    link => `
-                  <a href="${link.url}" class="project-link" target="_blank" rel="noopener noreferrer">
-                    ${link.label}
-                  </a>
-                `,
-                  )
-                  .join('')}
-              </div>`
-              : '';
-
-          // Create status badge if available
-          const statusBadge = item.status
-            ? `<span class="status-badge status-${item.status.toLowerCase()}">${
-                item.status
-              }</span>`
-            : '';
-
-          return `
-          <div class="project-item">
-            <div class="project-header">
-              <div class="project-title">${item.name || ''} ${statusBadge}</div>
-              ${
-                item.startDate
-                  ? `<div class="project-date">${item.startDate || ''} - ${
-                      item.endDate || (item.current ? 'Present' : '')
-                    }</div>`
-                  : ''
-              }
+        .map(
+          (item) => `
+        <div class="technical-item">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8pt;">
+            <div style="display: flex; align-items: center; gap: 12pt;">
+              <div class="technical-item-title">${item.name}</div>
+              ${item.links.length > 0 ? `
+                <div style="display: flex; gap: 8pt;">
+                  ${item.links.map(link => `
+                    <a href="${link.url}" style="color: #059669; text-decoration: none; display: inline-flex; align-items: center; gap: 3pt; font-size: 9pt; font-family: 'JetBrains Mono', monospace;">
+                      ${getSocialIcon(link.icon)}
+                      ${link.label}
+                    </a>
+                  `).join('')}
+                </div>
+              ` : ''}
             </div>
-            <div class="project-description">${item.description || ''}</div>
-            ${projectLinks}
-            ${
-              item.keywords && item.keywords.length
-                ? `<div class="tech-tag-container">
-                  ${item.keywords
-                    .map(keyword => `<span class="tech-tag">${keyword}</span>`)
-                    .join('')}
-                </div>`
-                : ''
-            }
+            <div class="technical-item-meta">
+              ${formatDateRange(item.startDate, item.endDate, item.current)}
+            </div>
           </div>
-        `;
-        })
-        .join('')}
+          <div style="font-size: 10pt; color: #4b5563; line-height: 1.6;">
+            ${item.description}
+          </div>
+        </div>
+      `
+        )
+        .join("")}
     </div>
   `;
 };

@@ -86,30 +86,16 @@ export const getProfessionalResumeHTML = (resumeData: Resume): string => {
       case 'hobbies':
         sectionText += ` ${
           resumeData.sections?.hobbies?.items.length
-            ? getHobbieHTML(resumeData.sections.hobbies)
+            ? getHobbieHTML(resumeData.sections.hobbies, resumeData?.settings)
             : ''
         }
         `;
         break;
       case 'references':
-        sectionText += ` ${
-          resumeData.sections?.references?.items.length
-            ? getReferencesHTML(
-                resumeData.sections.references,
-                resumeData?.settings,
-              )
-            : ''
-        }`;
+        sectionText += ` ${resumeData.sections?.references?.items.length ? getReferencesHTML(resumeData.sections.references, resumeData?.settings) : ''}`;
         break;
       case 'strengths':
-        sectionText += ` ${
-          resumeData.sections?.strengths?.items.length
-            ? getStrengthsHTML(
-                resumeData.sections.strengths,
-                resumeData?.settings,
-              )
-            : ''
-        }`;
+        sectionText += ` ${resumeData.sections?.strengths?.items.length ? getStrengthsHTML(resumeData.sections.strengths, resumeData?.settings) : ''}`;
         break;
     }
   });

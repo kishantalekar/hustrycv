@@ -1,63 +1,40 @@
-export const getProjectsHTML = (projects: Section<ProjectItem>): string => {
-  if (!projects.items.length) {
-    return '';
-  }
 
+import { getSocialIcon } from '../icons';
+import { formatDateRange } from '../Professional/utils/formatDate';
+
+export const getMinimalistProjectsHTML = (projects: Section<ProjectItem>, settings: Settings) => {
   return `
-    <div class="section">
-      <h2 class="section-title">Projects</h2>
+    <div class="minimalist-section">
+      <h2 class="minimalist-section-title">projects</h2>
       ${projects.items
         .map(
-          item => `
-        <div class="item ${item.status}">
-          <div class="item-header">
-            <div class="item-title-row">
-              <div class="item-title">${item.name || ''}</div>
-              ${
-                item.status
-                  ? `<span class="status-badge">${item.status}</span>`
-                  : ''
-              }
+          (item) => `
+        <div class="minimalist-item">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6pt;">
+            <div style="display: flex; align-items: center; gap: 12pt;">
+              <div class="minimalist-item-title">${item.name}</div>
+              ${item.links.length > 0 ? `
+                <div style="display: flex; gap: 8pt;">
+                  ${item.links.map(link => `
+                    <a href="${link.url}" style="color: #666666; text-decoration: none; display: inline-flex; align-items: center; gap: 2pt; font-size: 9pt;">
+                      ${getSocialIcon(link.icon)}
+                      ${link.label}
+                    </a>
+                  `).join('')}
+                </div>
+              ` : ''}
             </div>
-            ${
-              item.links?.length
-                ? `
-              <div class="project-links">
-                ${item.links
-                  .map(
-                    link => `
-                  <a href="${link.url}" class="project-link" target="_blank" rel="noopener noreferrer">
-                    <i class="${link.icon}"></i>
-                    ${link.label}
-                  </a>
-                `,
-                  )
-                  .join('')}
-              </div>
-            `
-                : ''
-            }
+            <div class="minimalist-item-meta">
+              ${formatDateRange(item.startDate, item.endDate, item.current)}
+            </div>
           </div>
-          <div class="item-description">${item.description || ''}</div>
-          ${
-            item.keywords?.length
-              ? `
-            <div class="keywords">
-              ${item.keywords
-                .map(
-                  keyword => `
-                <span class="keyword">${keyword}</span>
-              `,
-                )
-                .join('')}
-            </div>
-          `
-              : ''
-          }
+          <div style="font-size: 10pt; color: #666666; line-height: 1.7; font-weight: 300;">
+            ${item.description}
+          </div>
         </div>
-      `,
+      `
         )
-        .join('')}
+        .join("")}
     </div>
   `;
 };

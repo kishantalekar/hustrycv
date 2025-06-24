@@ -1,47 +1,28 @@
-export const getWorkExperienceHTML = (work: Section<WorkItem>): string => {
-  if (!work.items.length) {
-    return '';
-  }
 
+import { formatDateRange } from "../Professional/utils/formatDate";
+
+export const getMinimalistWorkExperienceHTML = (work: Section<WorkItem>, settings: Settings) => {
   return `
-    <div class="section">
-      <h2 class="section-title">${work.title || 'Work Experience'}</h2>
+    <div class="minimalist-section">
+      <h2 class="minimalist-section-title">experience</h2>
       ${work.items
         .map(
-          item => `
-        <div class="item">
-          <div class="item-header">
-            <div>
-              <div class="item-title">${item.name || ''}</div>
-              <div class="item-subtitle">${item.position || ''}</div>
-            </div>
-            <div>
-              <div class="item-date">${item.startDate || ''} - ${
-            item.endDate || 'Present'
-          }</div>
-              <div class="item-location">${item.location || ''}</div>
+          (item) => `
+        <div class="minimalist-item">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6pt;">
+            <div class="minimalist-item-title">${item.position}</div>
+            <div class="minimalist-item-meta">
+              ${formatDateRange(item.startDate, item.endDate, item.current)}
             </div>
           </div>
-          <div class="item-description">${item.description || ''}</div>
-          ${
-            item.highlights && item.highlights.length
-              ? `
-            <ul class="bullet-list">
-              ${item.highlights
-                .map(
-                  highlight => `
-                <li class="bullet-item">${highlight}</li>
-              `,
-                )
-                .join('')}
-            </ul>
-          `
-              : ''
-          }
+          <div class="minimalist-item-subtitle">${item.company}, ${item.location}</div>
+          <div style="font-size: 10pt; color: #666666; line-height: 1.7; font-weight: 300;">
+            ${item.description}
+          </div>
         </div>
-      `,
+      `
         )
-        .join('')}
+        .join("")}
     </div>
   `;
 };

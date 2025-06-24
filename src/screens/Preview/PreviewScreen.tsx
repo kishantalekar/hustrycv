@@ -3,10 +3,10 @@ import {ResumePreview, TemplateSelector} from '@/components';
 import {useAppStore} from '@/store/useAppStore';
 import {useResumeStore} from '@/store/useResumeStore';
 import {globalStyles} from '@/styles';
-import {getProfessionalResumeHTML, getTemplateById} from '@/templates';
+import {getTemplateById, resumeTemplates} from '@/templates';
 import {COLORS} from '@/theme';
 import {goBack} from '@/utils/navigation';
-import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
+import BottomSheet, {BottomSheetScrollView} from '@gorhom/bottom-sheet';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
@@ -14,32 +14,6 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './PreviewScreen.styles';
 
-const resumeTemplates = [
-  {
-    id: 'professional',
-    name: 'Professional',
-    image: require('../../assets/templates/professional.png'),
-    getHTML: getProfessionalResumeHTML,
-  },
-  // {
-  //   id: 'technical',
-  //   name: 'Technical',
-  //   image: require('../../assets/templates/technical.png'),
-  //   getHTML: getTechnicalResumeHTML,
-  // },
-  // {
-  //   id: 'minimalist',
-  //   name: 'Minimalist',
-  //   image: require('../../assets/templates/minimalist.png'),
-  //   getHTML: getMinimalistResumeHTML,
-  // },
-  // {
-  //   id: 'modern',
-  //   name: 'Modern',
-  //   image: require('../../assets/templates/minimalist.png'),
-  //   getHTML: getModernResumeHTML,
-  // },
-];
 export const PreviewScreen = ({
   navigation,
 }: {
@@ -80,7 +54,7 @@ export const PreviewScreen = ({
     });
   };
 
-  const snapPoints = useMemo(() => ['40%'], []);
+  const snapPoints = useMemo(() => ['80%'], []);
 
   const handleSheetChanges = useCallback((index: number) => {
     setIsBottomSheetOpen(index === 0);
@@ -125,13 +99,13 @@ export const PreviewScreen = ({
           handleIndicatorStyle={styles.handleIndicator}
           handleStyle={styles.handleStyle}
           style={styles.bottomSheet}>
-          <BottomSheetView style={styles.bottomSheetContent}>
+          <BottomSheetScrollView style={styles.bottomSheetContent}>
             <TemplateSelector
               selectedTemplate={selectedTemplate}
               onSelectTemplate={handleTemplateSelect}
               templates={resumeTemplates}
             />
-          </BottomSheetView>
+          </BottomSheetScrollView>
         </BottomSheet>
       </GestureHandlerRootView>
     </SafeAreaView>

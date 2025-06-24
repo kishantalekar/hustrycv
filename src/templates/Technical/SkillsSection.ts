@@ -1,61 +1,26 @@
-export const getSkillsHTML = (skills: Section<SkillItem>): string => {
-  if (!skills.items.length) {
-    return '';
-  }
 
-  // Group skills by category if available
-  const skillsByCategory: Record<string, string[]> = {};
-
-  skills.items.forEach(item => {
-    const category = item.category || 'Other';
-    if (!skillsByCategory[category]) {
-      skillsByCategory[category] = [];
-    }
-    skillsByCategory[category].push(item.name || '');
-  });
-
-  const categories = Object.keys(skillsByCategory);
-
-  if (categories.length > 0) {
-    // Render skills grouped by category
-    return `
-      <div class="section">
-        <h2 class="section-title">${skills.title || 'Skills'}</h2>
-        ${categories
-          .map(
-            category => `
-          <div class="skill-category">
-            <div class="skill-category-name">${category}</div>
-            <div class="skill-items">
-              ${skillsByCategory[category]
-                .map(
-                  skill => `
-                <div class="skill-item">${skill}</div>
-              `,
-                )
-                .join('')}
-            </div>
+export const getTechnicalSkillsHTML = (skills: Section<SkillItem>, settings: Settings) => {
+  return `
+    <div class="technical-section">
+      <h2 class="technical-section-title">Technical Skills</h2>
+      ${skills.items
+        .map(
+          (item) => `
+        <div style="margin-bottom: 16pt;">
+          <div style="font-weight: 600; color: #1f2937; font-size: 11pt; margin-bottom: 8pt; font-family: 'JetBrains Mono', monospace;">
+            ${item.name}
           </div>
-        `,
-          )
-          .join('')}
-      </div>
-    `;
-  } else {
-    // Fallback to flat list if no categories
-    return `
-      <div class="section">
-        <h2 class="section-title">${skills.title || 'Skills'}</h2>
-        <div class="skill-items">
-          ${skills.items
-            .map(
-              item => `
-            <div class="skill-item">${item.name || ''}</div>
-          `,
-            )
-            .join('')}
+          <div style="display: flex; flex-wrap: wrap; gap: 6pt;">
+            ${item.keywords.map(keyword => `
+              <span style="background: #059669; color: white; padding: 4pt 8pt; border-radius: 4pt; font-size: 9pt; font-family: 'JetBrains Mono', monospace; font-weight: 500;">
+                ${keyword}
+              </span>
+            `).join('')}
+          </div>
         </div>
-      </div>
-    `;
-  }
+      `
+        )
+        .join("")}
+    </div>
+  `;
 };

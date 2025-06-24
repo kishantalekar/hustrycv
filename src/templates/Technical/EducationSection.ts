@@ -1,41 +1,30 @@
-export const getEducationHTML = (education: Section<EducationItem>): string => {
-  if (!education.items.length) {
-    return '';
-  }
 
+import { formatDateRange } from "../Professional/utils/formatDate";
+
+export const getTechnicalEducationHTML = (education: Section<EducationItem>, settings: Settings) => {
   return `
-    <div class="section">
-      <h2 class="section-title">Education</h2>
+    <div class="technical-section">
+      <h2 class="technical-section-title">Education</h2>
       ${education.items
         .map(
-          item => `
-        <div class="education-item">
-          <div class="education-header">
-            <div class="education-title">${item.degree || ''}</div>
-            <div class="education-date">${item.startDate || ''} - ${
-            item.current ? 'Present' : item.endDate || ''
-          }</div>
-          </div>
-          <div class="education-details">
-            <div class="education-institution">
-              <span class="institution-name">${item.institution || ''}</span>
-              ${
-                item.location
-                  ? `<span class="education-location">• ${item.location}</span>`
-                  : ''
-              }
+          (item) => `
+        <div class="technical-item">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+              <div class="technical-item-title">${item.institution}</div>
+              <div class="technical-item-subtitle">${item.degree}</div>
+              ${item.gpa ? `<div style="font-size: 9pt; color: #6b7280; margin-top: 4pt; font-family: 'JetBrains Mono', monospace;">
+                ${item.isPercentage ? "Score: " : "CGPA: "}${item.gpa}${item.isPercentage ? "%" : ""}
+              </div>` : ''}
             </div>
-            ${
-              item.gpa
-                ? `<div class="education-gpa">GPA: ${item.gpa}</div>`
-                : ''
-            }
-           
+            <div class="technical-item-meta">
+              ${formatDateRange(item.startDate, item.endDate, item.current)}
+            </div>
           </div>
         </div>
-      `,
+      `
         )
-        .join('')}
+        .join("")}
     </div>
   `;
 };

@@ -8,7 +8,6 @@ export const updatedMockResumeData: Resume = {
     createdAt: '2025-05-23T10:57:01.326Z',
     updatedAt: '2025-05-23T10:57:01.326Z',
     sectionOrder: [
-      'personal',
       'work',
       'education',
       'skills',
@@ -17,7 +16,7 @@ export const updatedMockResumeData: Resume = {
       'hobbies',
       'strengths',
       'references',
-    ],
+    ] as SectionType[],
   },
   basics: {
     name: 'Kishan Talekar',
@@ -290,5 +289,238 @@ export const updatedMockResumeData: Resume = {
       lineSpacing: 1.2,
     },
     dateFormat: 'dd/mm/yyyy',
+  },
+};
+
+// New mock data for the elegant template
+export const elegantMockResumeData: Resume = {
+  metadata: {
+    id: 'elegant-template-001',
+    templateId: 'elegant',
+    version: '1.0',
+    createdAt: '2025-06-21T10:00:00.000Z',
+    updatedAt: '2025-06-21T10:00:00.000Z',
+    sectionOrder: [
+      'work',
+      'education',
+      'skills',
+      'projects',
+      'certifications',
+    ] as SectionType[],
+  },
+  basics: {
+    name: 'Alexandra Chen',
+    email: 'alexandra.chen@email.com',
+    phone: '+1 (555) 123-4567',
+    location: 'San Francisco, CA',
+    socials: [
+      {
+        id: 'linkedin-001',
+        label: 'LinkedIn',
+        url: 'linkedin.com/in/alexandrachen',
+        icon: 'linkedin',
+      },
+      {
+        id: 'github-001',
+        label: 'GitHub',
+        url: 'github.com/alexandrachen',
+        icon: 'github',
+      },
+    ],
+    summary:
+      'Senior Software Engineer with 6+ years of experience building scalable web applications and leading cross-functional teams. Passionate about creating elegant solutions to complex problems and mentoring junior developers.',
+  },
+  sections: {
+    work: {
+      type: 'work',
+      visible: true,
+      items: [
+        {
+          id: 'work-001',
+          company: 'TechFlow Solutions',
+          position: 'Senior Software Engineer',
+          location: 'San Francisco, CA',
+          startDate: '2022-03',
+          endDate: '',
+          current: true,
+          description:
+            '<ul><li>Led development of microservices architecture serving 2M+ users, reducing response time by 45%</li><li>Mentored team of 5 junior developers, improving code quality and delivery speed by 30%</li><li>Implemented CI/CD pipelines using Docker and Kubernetes, reducing deployment time from 2 hours to 15 minutes</li><li>Collaborated with product managers and designers to deliver 15+ features ahead of schedule</li></ul>',
+          status: 'visible',
+        },
+        {
+          id: 'work-002',
+          company: 'InnovateTech Inc',
+          position: 'Full Stack Developer',
+          location: 'San Francisco, CA',
+          startDate: '2020-01',
+          endDate: '2022-02',
+          current: false,
+          description:
+            '<ul><li>Developed responsive web applications using React, Node.js, and PostgreSQL</li><li>Built real-time chat functionality using WebSocket, increasing user engagement by 25%</li><li>Optimized database queries and implemented caching strategies, improving performance by 40%</li><li>Worked closely with UX team to implement pixel-perfect designs</li></ul>',
+          status: 'visible',
+        },
+      ],
+    },
+    education: {
+      type: 'education',
+      visible: true,
+      items: [
+        {
+          id: 'edu-001',
+          institution: 'University of California, Berkeley',
+          degree: 'Bachelor of Science in Computer Science',
+          startDate: '2016-08',
+          endDate: '2020-05',
+          gpa: '3.8',
+          isPercentage: false,
+          current: false,
+          status: 'visible',
+          location: 'Berkeley, CA',
+        },
+      ],
+    },
+    skills: {
+      type: 'skills',
+      visible: true,
+      items: [
+        {
+          id: 'skill-001',
+          name: 'Programming Languages',
+          level: 'Expert',
+          keywords: ['JavaScript', 'TypeScript', 'Python', 'Java', 'Go'],
+        },
+        {
+          id: 'skill-002',
+          name: 'Frontend Technologies',
+          level: 'Expert',
+          keywords: [
+            'React',
+            'Vue.js',
+            'Next.js',
+            'HTML5',
+            'CSS3',
+            'Tailwind CSS',
+          ],
+        },
+        {
+          id: 'skill-003',
+          name: 'Backend & Database',
+          level: 'Advanced',
+          keywords: ['Node.js', 'Express', 'PostgreSQL', 'MongoDB', 'Redis'],
+        },
+        {
+          id: 'skill-004',
+          name: 'DevOps & Tools',
+          level: 'Advanced',
+          keywords: [
+            'Docker',
+            'Kubernetes',
+            'AWS',
+            'Git',
+            'Jenkins',
+            'Terraform',
+          ],
+        },
+      ],
+    },
+    projects: {
+      type: 'projects',
+      visible: true,
+      items: [
+        {
+          id: 'project-001',
+          name: 'EcoTrack',
+          description:
+            '<ul><li>Built a sustainability tracking platform used by 50+ companies to monitor their carbon footprint</li><li>Implemented real-time data visualization using D3.js and Chart.js</li><li>Integrated with multiple APIs for energy consumption data collection</li></ul>',
+          url: '',
+          links: [
+            {
+              id: 'proj-link-001',
+              label: 'GitHub',
+              url: 'https://github.com/alexandrachen/ecotrack',
+              icon: 'github',
+            },
+            {
+              id: 'proj-link-002',
+              label: 'Live Demo',
+              url: 'https://ecotrack.demo.com',
+              icon: 'external-link',
+            },
+          ],
+          startDate: '2023-01',
+          endDate: '2023-06',
+          status: 'visible',
+          current: false,
+        },
+        {
+          id: 'project-002',
+          name: 'TaskFlow',
+          description:
+            '<ul><li>Developed a project management tool with drag-and-drop functionality</li><li>Built collaborative features including real-time comments and file sharing</li><li>Implemented role-based access control and team management features</li></ul>',
+          url: '',
+          links: [
+            {
+              id: 'proj-link-003',
+              label: 'GitHub',
+              url: 'https://github.com/alexandrachen/taskflow',
+              icon: 'github',
+            },
+          ],
+          startDate: '2022-08',
+          endDate: '2022-12',
+          status: 'visible',
+          current: false,
+        },
+      ],
+    },
+    certifications: {
+      type: 'certifications',
+      visible: true,
+      items: [
+        {
+          id: 'cert-001',
+          name: 'AWS Certified Solutions Architect',
+          authority: 'Amazon Web Services',
+          certificationUrlOrCode: 'https://aws.amazon.com/certification/',
+          description: '',
+          date: '2023-09',
+        },
+        {
+          id: 'cert-002',
+          name: 'Certified Kubernetes Administrator',
+          authority: 'Cloud Native Computing Foundation',
+          certificationUrlOrCode: 'https://cncf.io/certification/cka/',
+          description: '',
+          date: '2023-05',
+        },
+      ],
+    },
+    customSections: [],
+    hobbies: {
+      type: 'hobbies',
+      visible: true,
+      items: [],
+    },
+    strengths: {
+      type: 'strengths',
+      visible: true,
+      items: [],
+    },
+    references: {
+      type: 'references',
+      visible: true,
+      items: [],
+    },
+  },
+  settings: {
+    atsOptimized: true,
+    theme: 'light',
+    language: 'en',
+    font: {
+      family: 'Inter',
+      size: getFontSize('m'),
+      lineSpacing: 1.4,
+    },
+    dateFormat: 'mm/dd/yyyy',
   },
 };
