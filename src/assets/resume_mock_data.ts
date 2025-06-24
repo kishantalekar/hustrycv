@@ -9,11 +9,14 @@ export const updatedMockResumeData: Resume = {
     updatedAt: '2025-05-23T10:57:01.326Z',
     sectionOrder: [
       'personal',
-      'experience',
+      'work',
       'education',
       'skills',
       'projects',
       'certifications',
+      'hobbies',
+      'strengths',
+      'references',
     ],
   },
   basics: {
@@ -210,6 +213,72 @@ export const updatedMockResumeData: Resume = {
       ],
     },
     customSections: [],
+    hobbies: {
+      type: 'hobbies',
+      visible: true,
+      items: [
+        {
+          id: 'f-112770557658',
+          name: 'Coding',
+          link: {
+            id: '5074a1a7-692c-48c2-a0fe-f42ddab22cb6',
+            label: 'LinkedIn',
+            url: 'linkedin.com/in/kishantalekar',
+            icon: 'linkedin',
+          },
+        },
+        {
+          id: 'f-112770557659',
+          name: 'Gaming',
+          link: {
+            id: 'badf4462-29b9-4896-8bbd-f57c389d2c2b',
+            label: 'GitHub',
+            url: 'github.com/kishantalekar',
+            icon: 'github',
+          },
+        },
+      ],
+    },
+    strengths: {
+      type: 'strengths',
+      visible: true,
+      items: [
+        {
+          id: 'f-112770557658',
+          name: 'Coding',
+        },
+        {
+          id: 'f-112770557659',
+          name: 'Gaming',
+        },
+      ],
+    },
+    references: {
+      type: 'references',
+      visible: true,
+      items: [
+        {
+          id: 'f-112770557658',
+          name: 'Coding',
+          position: 'Frontend Developer',
+          company: 'Kishan Talekar',
+          contact1: '+91 9353167354',
+          contact2: 'kishantalekar024@gmail.com',
+          referenceText:
+            '<p> I am a Frontend Developer with a keen interest in React Native, React.js, Next.js, Flutter, and other related technologies. I have a strong background in JavaScript, TypeScript, and Python, and have experience in building scalable and maintainable web applications. I am passionate about contributing to open-source projects and continuously learning new skills to stay up-to-date with the latest trends and technologies.</p>',
+        },
+        {
+          id: 'f-112770557659',
+          name: 'Gaming',
+          position: 'Game Developer',
+          company: 'Kishan Talekar',
+          contact1: '+91 9353167354',
+          contact2: 'kishantalekar024@gmail.com',
+          referenceText:
+            '<p> I am a Game Developer with a passion for creating immersive and engaging gaming experiences. I have a strong background in game development, particularly in the Unity game engine, and have experience in building high-quality games for various platforms. I am skilled in using C# and C++ for game development, and have a strong understanding of game physics and artificial intelligence. I am excited to bring my skills and experience to the gaming industry and contribute to the development of innovative and engaging games.</p>',
+        },
+      ],
+    },
   },
   settings: {
     atsOptimized: true,

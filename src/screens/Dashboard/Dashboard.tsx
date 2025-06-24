@@ -1,23 +1,44 @@
 import {posthog} from '@/analytics/posthog/PostHog';
-import {LottieAnimation, Typography, TypographyVariant} from '@/components';
+import {
+  ChangesLogModal,
+  LottieAnimation,
+  Typography,
+  TypographyVariant,
+} from '@/components';
 import {CreateResumeModal} from '@/components/CreateResumeModal/CreateResumeModal';
-import {useResumeStore} from '@/store/useResumeStore';
+import {RootScreens} from '@/navigation/constants';
 import {useAppStore} from '@/store/useAppStore';
+import {useResumeStore} from '@/store/useResumeStore';
 import {globalStyles} from '@/styles';
 import {createInitialResume} from '@/types';
 import {navigate} from '@/utils/navigation';
+import BottomSheet from '@gorhom/bottom-sheet';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Alert, FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {styles} from './Dashboard.styles';
 import {renderResumeItem} from './ResumeItem';
-import {RootScreens} from '@/navigation/constants';
+import {checkForChangeLogUpdates} from '@/utils/changelogUtils';
 
 export const Dashboard = () => {
   const navigation = useNavigation<NavigationProp<any>>();
   const {setActiveResume, resumes, addResume, deleteResume} = useResumeStore();
   const {userName} = useAppStore();
+  const [changelogVisible, setChangelogVisible] = useState(false);
+  const [unseenChanges, setUnseenChanges] = useState([]);
+  const bottomSheetRef = useRef<BottomSheet>(null);
+
+  useEffect(() => {
+    async function check() {
+      const changes = await checkForChangeLogUpdates();
+      if (changes) {
+        setUnseenChanges(changes);
+        setChangelogVisible(true);
+      }
+    }
+    check();
+  }, []);
 
   const handleResumePress = (resumeId: string) => {
     setActiveResume(resumeId);
@@ -57,7 +78,7 @@ export const Dashboard = () => {
 
   const handleCreateManual = () => {
     const newResume = createInitialResume();
-    addResume(newResume);
+    addResume(newResume as Resume);
     const id = newResume.metadata.id;
     posthog.capture('create_resume', {
       type: 'manual',
@@ -84,6 +105,7 @@ export const Dashboard = () => {
     navigate(RootScreens.LINKEDIN_IMPORT);
     setShowDropdown(false);
   };
+
   return (
     <GestureHandlerRootView style={globalStyles.keyboardAvoidingView}>
       <View style={styles.container}>
@@ -139,6 +161,12 @@ export const Dashboard = () => {
           }
         />
       </View>
+      <ChangesLogModal
+        bottomSheetRef={bottomSheetRef}
+        isVisible={changelogVisible}
+        onClose={() => setChangelogVisible(false)}
+        changes={unseenChanges}
+      />
     </GestureHandlerRootView>
   );
 };

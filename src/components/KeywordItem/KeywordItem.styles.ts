@@ -1,12 +1,12 @@
+import {COLORS, SPACING} from '@/theme';
 import {StyleSheet} from 'react-native';
-import {COLORS} from '@/theme';
 
 export const styles = StyleSheet.create({
   keywordItem: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLORS.primary + '15',
-    paddingHorizontal: 16,
+    paddingHorizontal: SPACING.md,
     paddingVertical: 8,
     borderRadius: 20,
     marginBottom: 8,

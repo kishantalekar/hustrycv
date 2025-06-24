@@ -1,7 +1,9 @@
+import {posthog} from '@/analytics/posthog/PostHog';
 import {LoadingIndicator} from '@/components/LoadingIndicator';
 import {
   Dashboard,
   KeywordsEditor,
+  LinkedInImportScreen,
   NameInputScreen,
   OnboardingScreen,
   PreviewScreen,
@@ -9,12 +11,9 @@ import {
   ResumeEditor,
   SocialProfilesScreen,
   UploadResumeScreen,
-  LinkedInImportScreen,
 } from '@/screens';
-import {
-  ContentType,
-  RichTextEditorScreen,
-} from '@/screens/ResumeEditor/screens/RichTextEditorScreen';
+import {RichTextEditorScreen} from '@/screens/ResumeEditor/screens/RichTextEditorScreen/RichTextEditorScreen';
+import {ContentType} from '@/screens/ResumeEditor/screens/RichTextEditorScreen/RichTextEditorScreen.types';
 import {useAppStore} from '@/store/useAppStore';
 import {navigationRef} from '@/utils/navigation';
 import {NavigationContainer} from '@react-navigation/native';
@@ -25,8 +24,6 @@ import {
 import React, {useEffect} from 'react'; // Added useEffect
 import BootSplash from 'react-native-bootsplash'; // Added BootSplash
 import {RootScreens} from './constants';
-import {posthog} from '@/analytics/posthog/PostHog';
-import {COLORS} from '@/theme';
 
 export type RootStackParamList = {
   [RootScreens.ONBOARDING]: undefined;

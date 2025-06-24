@@ -10,8 +10,11 @@ import {
   createSkillsSlice,
   createWorkSlice,
 } from './management';
+import {createHobbiesSlice} from './management/createHobbiesSlice';
+import {createLanguageSlice} from './management/languageSlice';
+import {createReferencesSlice} from './management/referenceSlice';
+import {createStrengthsSlice} from './management/strengthSlice';
 import {createResumeSlice} from './slices/resumeSlice';
-
 export interface ResumeState {
   resumes: Resume[];
   activeResumeId: string;
@@ -25,6 +28,9 @@ export interface ResumeState {
   // Actions ----------------------------------------------------------------
   updateMetadata: (metadata: Partial<Metadata>) => void;
   updateBasics: (basics: Partial<Basics>) => void;
+
+  // Delete Section
+  deleteSection: (type: SectionType) => void;
 
   // Work Experience
   addWorkExperience: (experience: Omit<WorkItem, 'id'>) => string;
@@ -53,6 +59,34 @@ export interface ResumeState {
   updateAllProjects: (projects: ProjectItem[]) => void; // New method
   removeProject: (id: string) => void; // New function
   toggleProjectsVisibility: (visible: boolean) => void;
+
+  // Hobbies
+  addHobbie: (hobbie: Omit<HobbieItem, 'id'>) => string;
+  updateHobbie: (id: string, hobbie: Partial<HobbieItem>) => void;
+  updateAllHobbies: (hobbies: HobbieItem[]) => void; // New method to update all hobbies in the resume data
+  removeHobbie: (id: string) => void; // New function
+  toggleHobbiesVisibility: (visible: boolean) => void;
+
+  // Strengths
+  addStrength: (Strength: Omit<StrengthItem, 'id'>) => string;
+  updateStrength: (id: string, Strength: Partial<StrengthItem>) => void;
+  updateAllStrengths: (Strengths: StrengthItem[]) => void; // New method to update all Strengths in the resume data
+  removeStrength: (id: string) => void; // New function
+  toggleStrengthsVisibility: (visible: boolean) => void;
+
+  //references
+  addReference: (Reference: Omit<ReferenceItem, 'id'>) => string;
+  updateReference: (id: string, Reference: Partial<ReferenceItem>) => void;
+  updateAllReferences: (References: ReferenceItem[]) => void;
+  removeReference: (id: string) => void; // New function
+  toggleReferencesVisibility: (visible: boolean) => void;
+
+  //languages
+  addLanguage: (language: Omit<LanguageItem, 'id'>) => string;
+  updateLanguage: (id: string, language: Partial<LanguageItem>) => void;
+  updateAllLanguage: (languages: LanguageItem[]) => void; // New method
+  removeLanguage: (id: string) => void;
+  toggleLanguageVisibility: (visible: boolean) => void;
 
   // Custom Sections
   addCustomSection: (
@@ -90,9 +124,14 @@ export const useResumeStore = create<ResumeState>()(
 
       settings: {
         atsOptimized: true,
-        font: 'Arial',
         theme: 'light',
         language: 'en',
+        font: {
+          family: '',
+          size: undefined,
+          lineSpacing: 0,
+        },
+        dateFormat: 'dd/mm/yyyy',
       },
       // Helper function to get active resume
       ...createResumeSlice(set, get),
@@ -103,6 +142,30 @@ export const useResumeStore = create<ResumeState>()(
               ? {
                   ...resume,
                   basics: {...resume.basics, ...basics},
+                  metadata: {
+                    ...resume.metadata,
+                    updatedAt: new Date().toISOString(),
+                  },
+                }
+              : resume,
+          ),
+        })),
+
+      // handle section delete
+      deleteSection: type =>
+        set(state => ({
+          resumes: state.resumes.map(resume =>
+            resume.metadata.id === state.activeResumeId
+              ? {
+                  ...resume,
+                  sections: {
+                    ...resume.sections,
+                    [type]: {
+                      //@ts-ignore
+                      ...resume.sections[type],
+                      items: [],
+                    },
+                  },
                   metadata: {
                     ...resume.metadata,
                     updatedAt: new Date().toISOString(),
@@ -124,6 +187,14 @@ export const useResumeStore = create<ResumeState>()(
       ...createCustomSectionSlice(set),
       // Certifications Actions
       ...createCertificationsSlice(set),
+      // Hobbies Actions
+      ...createHobbiesSlice(set),
+      //strengths Action
+      ...createStrengthsSlice(set),
+      //reference Actions
+      ...createReferencesSlice(set),
+      //languages Action
+      ...createLanguageSlice(set),
       // Settings Actions
       updateSettings: settings =>
         set(state => ({

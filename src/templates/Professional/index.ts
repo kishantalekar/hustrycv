@@ -1,9 +1,12 @@
 import {getCommonStyles} from '../styles/resumeStyles';
 import {getCertificationsHTML} from './CertificationsSection';
 import {getEducationHTML} from './EducationSection';
+import {getHobbieHTML} from './hobbieSection';
 import {getPersonalInfoHTML} from './PersonalInfoHeader';
 import {getProjectsHTML} from './ProjectsSection';
+import {getReferencesHTML} from './referencesSection';
 import {getSkillsHTML} from './SkillsSection';
+import {getStrengthsHTML} from './strengthsSection';
 import {getSummaryHTML} from './SummarySection';
 import {getWorkExperienceHTML} from './WorkExperienceSection';
 
@@ -27,7 +30,90 @@ export const getProfessionalResumeHTML = (resumeData: Resume): string => {
   if (!fontFamily) {
     fontFamily = 'Fira Sans';
   }
-  // @ts-ignore
+
+  const sectionOrder = resumeData.metadata.sectionOrder;
+
+  let sectionText = '';
+  sectionOrder?.forEach(section => {
+    switch (section) {
+      case 'work':
+        sectionText += ` ${
+          resumeData.sections?.work?.items.length
+            ? getWorkExperienceHTML(
+                resumeData.sections.work,
+                resumeData?.settings,
+              )
+            : ''
+        }`;
+        break;
+      case 'projects':
+        sectionText += `  ${
+          resumeData.sections?.projects?.items.length
+            ? getProjectsHTML(
+                resumeData.sections.projects,
+                resumeData?.settings,
+              )
+            : ''
+        }`;
+        break;
+      case 'education':
+        sectionText += ` ${
+          resumeData.sections?.education?.items.length
+            ? getEducationHTML(
+                resumeData.sections.education,
+                resumeData?.settings,
+              )
+            : ''
+        }`;
+        break;
+      case 'certifications':
+        sectionText += `  ${
+          resumeData.sections?.certifications?.items.length
+            ? getCertificationsHTML(
+                resumeData.sections.certifications,
+                resumeData?.settings,
+              )
+            : ''
+        }`;
+        break;
+      case 'skills':
+        sectionText += `${
+          resumeData.sections?.skills?.items.length
+            ? getSkillsHTML(resumeData.sections.skills, resumeData?.settings)
+            : ''
+        }`;
+        break;
+      case 'hobbies':
+        sectionText += ` ${
+          resumeData.sections?.hobbies?.items.length
+            ? getHobbieHTML(resumeData.sections.hobbies)
+            : ''
+        }
+        `;
+        break;
+      case 'references':
+        sectionText += ` ${
+          resumeData.sections?.references?.items.length
+            ? getReferencesHTML(
+                resumeData.sections.references,
+                resumeData?.settings,
+              )
+            : ''
+        }`;
+        break;
+      case 'strengths':
+        sectionText += ` ${
+          resumeData.sections?.strengths?.items.length
+            ? getStrengthsHTML(
+                resumeData.sections.strengths,
+                resumeData?.settings,
+              )
+            : ''
+        }`;
+        break;
+    }
+  });
+
   return `
     <html>
       <head>
@@ -76,43 +162,8 @@ export const getProfessionalResumeHTML = (resumeData: Resume): string => {
             ? getSummaryHTML(resumeData.basics, resumeData?.settings)
             : ''
         }
-         ${
-           resumeData.sections?.education?.items.length
-             ? getEducationHTML(
-                 resumeData.sections.education,
-                 resumeData?.settings,
-               )
-             : ''
-         }
-        ${
-          resumeData.sections?.work?.items.length
-            ? getWorkExperienceHTML(
-                resumeData.sections.work,
-                resumeData?.settings,
-              )
-            : ''
-        }
-        ${
-          resumeData.sections?.projects?.items.length
-            ? getProjectsHTML(
-                resumeData.sections.projects,
-                resumeData?.settings,
-              )
-            : ''
-        }
-         ${
-           resumeData.sections?.skills?.items.length
-             ? getSkillsHTML(resumeData.sections.skills, resumeData?.settings)
-             : ''
-         }
-        ${
-          resumeData.sections?.certifications?.items.length
-            ? getCertificationsHTML(
-                resumeData.sections.certifications,
-                resumeData?.settings,
-              )
-            : ''
-        }
+        
+       ${sectionText}
        </div>
       </body>
     </html>
