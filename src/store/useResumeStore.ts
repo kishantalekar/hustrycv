@@ -15,6 +15,7 @@ import {createLanguageSlice} from './management/languageSlice';
 import {createReferencesSlice} from './management/referenceSlice';
 import {createStrengthsSlice} from './management/strengthSlice';
 import {createResumeSlice} from './slices/resumeSlice';
+import {RESUME_STORAGE_KEY} from '@/constants';
 export interface ResumeState {
   resumes: Resume[];
   activeResumeId: string;
@@ -202,7 +203,7 @@ export const useResumeStore = create<ResumeState>()(
         })),
     }),
     {
-      name: 'resume-storage',
+      name: RESUME_STORAGE_KEY,
       storage: createJSONStorage(() => AsyncStorage),
       partialize: state => ({
         resumes: state.resumes,
