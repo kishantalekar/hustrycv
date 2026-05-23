@@ -78,6 +78,17 @@ jobs:
           mkdir -p android/keys
           echo "$PLAY_STORE_JSON_KEY" > android/keys/play-store-key.json
 
+      - name: Write Sentry Properties
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        run: |
+          cat > android/sentry.properties << EOF
+          auth.token=${SENTRY_AUTH_TOKEN}
+          defaults.org=kirito-9p
+          defaults.project=react-native
+          defaults.url=https://sentry.io/
+          EOF
+
       - name: Build and Deploy via Fastlane
         env:
           PLAY_STORE_TRACK: ${{ github.event.inputs.track || 'internal' }}
