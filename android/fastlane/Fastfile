@@ -34,6 +34,9 @@ platform :android do
   lane :deploy do |options|
     track = options[:track] || ENV["PLAY_STORE_TRACK"] || "internal"
 
+    # Auto-increment version code for unique builds
+    increment_version_code(gradle_file_path: "app/build.gradle")
+
     # Build release Android App Bundle (AAB)
     gradle(
       task: "clean bundle",
@@ -52,6 +55,9 @@ platform :android do
   desc "Deploy to closed testing track"
   
   lane :closed_testing do
+    # Auto-increment version code for unique builds
+    increment_version_code(gradle_file_path: "app/build.gradle")
+
     # changelog = prompt(text: "Changelog: ")
     gradle(task: "bundle", build_type: "Release")
     upload_to_play_store(
@@ -62,9 +68,12 @@ platform :android do
     )
   end
 
-  desc "Deploy to closed testing track"
+  desc "Deploy to production track"
 
   lane :production do
+    # Auto-increment version code for unique builds
+    increment_version_code(gradle_file_path: "app/build.gradle")
+
     # changelog = prompt(text: "Changelog: ")
     gradle(task: "bundle", build_type: "Release")
     upload_to_play_store(
