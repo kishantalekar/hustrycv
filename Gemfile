@@ -10,8 +10,6 @@ gem 'xcodeproj', '< 1.26.0'
 gem 'concurrent-ruby', '< 1.3.4'
 
 # Fastlane plugins
-gem 'fastlane-plugin-increment_version_code'
-
 # Ruby 3.4.0 has removed some libraries from the standard library.
 gem 'bigdecimal'
 gem 'logger'
