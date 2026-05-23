@@ -83,6 +83,8 @@ export const styles = StyleSheet.create({
   linkUrlInput: {
     flex: 1,
     backgroundColor: '#F8F8F8',
+    // width: getScreenWidth(50),
+    // ...typographyStyles[TypographyVariant.Caption],
   },
   iconSelectorButton: {
     flexDirection: 'row',
@@ -101,13 +103,14 @@ export const styles = StyleSheet.create({
   urlInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingRight: 12,
   },
   urlActions: {
     flexDirection: 'row',
     marginLeft: 8,
     justifyContent: 'space-around',
-    // backgroundColor: 'red',
-    // flex: 1,
+
     gap: SPACING.sectionGap,
   },
   urlActionButton: {

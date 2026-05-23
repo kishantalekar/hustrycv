@@ -1,57 +1,40 @@
-import {ResumePreview, TemplateSelector} from '@/components';
-import {FONTS} from '@/constants';
 import {posthog} from '@/analytics/posthog/PostHog';
-import {useResumeStore} from '@/store/useResumeStore';
+import {ResumePreview, TemplateSelector} from '@/components';
 import {useAppStore} from '@/store/useAppStore';
-import {
-  getModernResumeHTML,
-  getProfessionalResumeHTML,
-  getTechnicalResumeHTML,
-  getTemplateById,
-} from '@/templates';
+import {useResumeStore} from '@/store/useResumeStore';
+import {globalStyles} from '@/styles';
+import {getTemplateById, resumeTemplates} from '@/templates';
 import {COLORS} from '@/theme';
 import {goBack} from '@/utils/navigation';
-import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
-import React, {useCallback, useMemo, useRef, useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import BottomSheet, {BottomSheetScrollView} from '@gorhom/bottom-sheet';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {Text, TouchableOpacity, View} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import {globalStyles} from '@/styles';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {styles} from './PreviewScreen.styles';
 
-const resumeTemplates = [
-  {
-    id: 'professional',
-    name: 'Professional',
-    image: require('../../assets/templates/professional.png'),
-    getHTML: getProfessionalResumeHTML,
-  },
-  {
-    id: 'technical',
-    name: 'Technical',
-    image: require('../../assets/templates/technical.png'),
-    getHTML: getTechnicalResumeHTML,
-  },
-  // {
-  //   id: 'minimalist',
-  //   name: 'Minimalist',
-  //   image: require('../../assets/templates/minimalist.png'),
-  //   getHTML: getMinimalistResumeHTML,
-  // },
-  {
-    id: 'modern',
-    name: 'Modern',
-    image: require('../../assets/templates/minimalist.png'),
-    getHTML: getModernResumeHTML,
-  },
-];
-export const PreviewScreen = () => {
-  const {resumes, activeResumeId, updateResumeTemplateId} = useResumeStore();
+export const PreviewScreen = ({
+  navigation,
+}: {
+  navigation: NativeStackNavigationProp<any>;
+}) => {
+  const {activeResumeId, updateResumeTemplateId, getActiveResume} =
+    useResumeStore();
   const {userName} = useAppStore();
-  const activeResume = resumes.find(
-    resume => resume.metadata.id === activeResumeId,
-  );
-  const templateId = activeResume?.metadata?.templateId;
-  const defaultTemplate = getTemplateById(templateId);
+  const [activeResume, setActiveResume] = useState<Resume>();
+  // const activeResume = getActiveResume();
+
+  function loadResume() {
+    setActiveResume(getActiveResume());
+  }
+  useEffect(() => {
+    const subscribe = navigation.addListener('focus', loadResume);
+    return subscribe;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigation]);
+
+  const defaultTemplate = getTemplateById(activeResume?.metadata?.templateId);
   const [selectedTemplate, setSelectedTemplate] = useState(defaultTemplate.id);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
@@ -67,11 +50,11 @@ export const PreviewScreen = () => {
       template_id: templateId,
       resume_id: activeResumeId,
       previous_template: defaultTemplate.id,
-      user_name: userName || 'Anonymous',
+      user_name: userName ?? 'Anonymous',
     });
   };
 
-  const snapPoints = useMemo(() => ['40%'], []);
+  const snapPoints = useMemo(() => ['80%'], []);
 
   const handleSheetChanges = useCallback((index: number) => {
     setIsBottomSheetOpen(index === 0);
@@ -80,8 +63,10 @@ export const PreviewScreen = () => {
     posthog.capture('template_selector_interaction', {
       action: index === 0 ? 'open' : 'close',
       resume_id: activeResumeId,
-      user_name: userName || 'Anonymous',
+      user_name: userName ?? 'Anonymous',
     });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -111,82 +96,18 @@ export const PreviewScreen = () => {
           backgroundStyle={{
             backgroundColor: COLORS.background.primary,
           }}
-          handleIndicatorStyle={{
-            backgroundColor: COLORS.border,
-            width: 40,
-            height: 4,
-          }}
-          handleStyle={{
-            backgroundColor: COLORS.background.primary,
-            borderTopLeftRadius: 8,
-            borderTopRightRadius: 8,
-            paddingVertical: 10,
-          }}
+          handleIndicatorStyle={styles.handleIndicator}
+          handleStyle={styles.handleStyle}
           style={styles.bottomSheet}>
-          <BottomSheetView style={styles.bottomSheetContent}>
+          <BottomSheetScrollView style={styles.bottomSheetContent}>
             <TemplateSelector
               selectedTemplate={selectedTemplate}
               onSelectTemplate={handleTemplateSelect}
               templates={resumeTemplates}
             />
-          </BottomSheetView>
+          </BottomSheetScrollView>
         </BottomSheet>
       </GestureHandlerRootView>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  bottomSheet: {
-    flex: 1,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: -4,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  bottomSheetContent: {
-    flex: 1,
-    backgroundColor: COLORS.background.secondary,
-    paddingBottom: 46,
-  },
-  flex: {
-    flex: 1,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.background.primary,
-    marginTop: 40,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 16,
-    backgroundColor: COLORS.background.primary,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.border,
-  },
-  backButton: {
-    padding: 8,
-  },
-  backButtonText: {
-    fontSize: 16,
-    color: COLORS.primary,
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
-  },
-  templateButton: {
-    backgroundColor: COLORS.primary,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
-  },
-  templateButtonText: {
-    color: COLORS.text.light,
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
-    fontSize: 14,
-  },
-});

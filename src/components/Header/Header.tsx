@@ -76,6 +76,9 @@ export const Header: React.FC<HeaderProps> = ({
             autoFocus
             containerStyle={styles.textInputContainer}
             rightIcon="close"
+            onRightIconPress={() => {
+              setIsEditing(false);
+            }}
           />
         )}
       </View>

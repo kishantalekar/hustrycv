@@ -1,9 +1,12 @@
 import {getCommonStyles} from '../styles/resumeStyles';
 import {getCertificationsHTML} from './CertificationsSection';
 import {getEducationHTML} from './EducationSection';
+import {getHobbieHTML} from './hobbieSection';
 import {getPersonalInfoHTML} from './PersonalInfoHeader';
 import {getProjectsHTML} from './ProjectsSection';
+import {getReferencesHTML} from './referencesSection';
 import {getSkillsHTML} from './SkillsSection';
+import {getStrengthsHTML} from './strengthsSection';
 import {getSummaryHTML} from './SummarySection';
 import {getWorkExperienceHTML} from './WorkExperienceSection';
 
@@ -18,7 +21,85 @@ export const getProfessionalResumeHTML = (resumeData: Resume): string => {
       </html>
     `;
   }
-  // @ts-ignore
+
+  let fontFamily = '';
+  try {
+    fontFamily = resumeData.settings?.font.family;
+  } catch (error) {}
+
+  if (!fontFamily) {
+    fontFamily = 'Fira Sans';
+  }
+
+  const sectionOrder = resumeData.metadata.sectionOrder;
+
+  let sectionText = '';
+  sectionOrder?.forEach(section => {
+    switch (section) {
+      case 'work':
+        sectionText += ` ${
+          resumeData.sections?.work?.items.length
+            ? getWorkExperienceHTML(
+                resumeData.sections.work,
+                resumeData?.settings,
+              )
+            : ''
+        }`;
+        break;
+      case 'projects':
+        sectionText += `  ${
+          resumeData.sections?.projects?.items.length
+            ? getProjectsHTML(
+                resumeData.sections.projects,
+                resumeData?.settings,
+              )
+            : ''
+        }`;
+        break;
+      case 'education':
+        sectionText += ` ${
+          resumeData.sections?.education?.items.length
+            ? getEducationHTML(
+                resumeData.sections.education,
+                resumeData?.settings,
+              )
+            : ''
+        }`;
+        break;
+      case 'certifications':
+        sectionText += `  ${
+          resumeData.sections?.certifications?.items.length
+            ? getCertificationsHTML(
+                resumeData.sections.certifications,
+                resumeData?.settings,
+              )
+            : ''
+        }`;
+        break;
+      case 'skills':
+        sectionText += `${
+          resumeData.sections?.skills?.items.length
+            ? getSkillsHTML(resumeData.sections.skills, resumeData?.settings)
+            : ''
+        }`;
+        break;
+      case 'hobbies':
+        sectionText += ` ${
+          resumeData.sections?.hobbies?.items.length
+            ? getHobbieHTML(resumeData.sections.hobbies, resumeData?.settings)
+            : ''
+        }
+        `;
+        break;
+      case 'references':
+        sectionText += ` ${resumeData.sections?.references?.items.length ? getReferencesHTML(resumeData.sections.references, resumeData?.settings) : ''}`;
+        break;
+      case 'strengths':
+        sectionText += ` ${resumeData.sections?.strengths?.items.length ? getStrengthsHTML(resumeData.sections.strengths, resumeData?.settings) : ''}`;
+        break;
+    }
+  });
+
   return `
     <html>
       <head>
@@ -35,7 +116,7 @@ export const getProfessionalResumeHTML = (resumeData: Resume): string => {
           }
           body {
             margin: 0;
-            font-family: 'Fira Sans', sans-serif;
+            font-family: "${fontFamily}, "sans-serif";
              background-color: #FFFFFF;
             text-color:#111111
           }
@@ -44,7 +125,7 @@ export const getProfessionalResumeHTML = (resumeData: Resume): string => {
               size: a4 portrait;
               margin: 10mm;
             }
-            h1,h2, p {
+            h1,h2,h3,h4,h5,h6, p {
             margin:0;
             padding:0;
             }
@@ -57,33 +138,18 @@ export const getProfessionalResumeHTML = (resumeData: Resume): string => {
       </head>
       <body class="body">
        <div class="a4-page">
-        ${resumeData.basics ? getPersonalInfoHTML(resumeData.basics) : ''}
-        ${resumeData.basics?.summary ? getSummaryHTML(resumeData.basics) : ''}
-         ${
-           resumeData.sections?.education?.items.length
-             ? getEducationHTML(resumeData.sections.education)
-             : ''
-         }
         ${
-          resumeData.sections?.work?.items.length
-            ? getWorkExperienceHTML(resumeData.sections.work)
+          resumeData.basics
+            ? getPersonalInfoHTML(resumeData.basics, resumeData?.settings)
             : ''
         }
         ${
-          resumeData.sections?.projects?.items.length
-            ? getProjectsHTML(resumeData.sections.projects)
+          resumeData.basics?.summary
+            ? getSummaryHTML(resumeData.basics, resumeData?.settings)
             : ''
         }
-         ${
-           resumeData.sections?.skills?.items.length
-             ? getSkillsHTML(resumeData.sections.skills)
-             : ''
-         }
-        ${
-          resumeData.sections?.certifications?.items.length
-            ? getCertificationsHTML(resumeData.sections.certifications)
-            : ''
-        }
+        
+       ${sectionText}
        </div>
       </body>
     </html>

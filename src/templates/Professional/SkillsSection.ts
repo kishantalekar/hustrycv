@@ -1,6 +1,9 @@
-import {getResumeStyles} from '../styles/resumeStyles';
+import { getResumeStyles } from "../styles/resumeStyles";
 
-export const getSkillsHTML = (skills: Section<SkillItem>) => {
+export const getSkillsHTML = (
+  skills: Section<SkillItem>,
+  settings: Settings
+) => {
   const styles = getResumeStyles();
   return `
   <div class="section">
@@ -12,13 +15,13 @@ export const getSkillsHTML = (skills: Section<SkillItem>) => {
           (item: any) => `
         <div style="margin-bottom: 2px;">
           <div class="text-regular" >
-          <span class="text-bold">${
+          <span class="card-title">${
             item.name
-          }</span>:&nbsp;&nbsp;${item.keywords.join(', ')}</div>
+          }</span>:&nbsp;&nbsp;${item.keywords.join(", ")}</div>
         </div>
-      `,
+      `
         )
-        .join('')}
+        .join("")}
     </div>
   </div>
 `;

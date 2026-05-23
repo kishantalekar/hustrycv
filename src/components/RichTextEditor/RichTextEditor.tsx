@@ -8,12 +8,14 @@ import {DEFAULT_TOOLBAR_ITEMS} from './Toolbar/Actions';
 
 interface RichTextEditorProps {
   editor: EditorBridge;
+  hiddenToolbar?: boolean;
 }
 
 export const RichTextEditor: React.FC<RichTextEditorProps> = ({
   // initialContent = '',
   // onChangeContent,
   editor,
+  hiddenToolbar = false,
 }) => {
   // const editor = useEditorBridge({
   //   autofocus: true,
@@ -34,7 +36,11 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
       style={globalStyles.keyboardAvoidingView}>
       <RichText editor={editor} style={styles.editor} />
       <View style={{height: 60}}>
-        <Toolbar editor={editor} hidden={false} items={DEFAULT_TOOLBAR_ITEMS} />
+        <Toolbar
+          editor={editor}
+          hidden={hiddenToolbar}
+          items={DEFAULT_TOOLBAR_ITEMS}
+        />
       </View>
     </KeyboardAvoidingView>
   );

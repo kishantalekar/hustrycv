@@ -1,33 +1,37 @@
 // Helper function to format dates
 const formatDate = (dateString?: string): string => {
-  if (!dateString) {return '';}
+  if (!dateString) {
+    return "";
+  }
 
   const date = new Date(dateString);
   if (isNaN(date.getTime())) {
     // If it's not a full date, it might be a year-month format
-    const parts = dateString.split('-');
+    const parts = dateString.split("-");
     if (parts.length === 2) {
       const year = parts[0];
       const month = new Date(
         parseInt(parts[0]),
         parseInt(parts[1]) - 1,
-        1,
-      ).toLocaleString('default', { month: 'short' });
+        1
+      ).toLocaleString("default", { month: "short" });
       return `${month} ${year}`;
     }
     return dateString; // Return as is if we can't parse it
   }
 
-  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+  return date.toLocaleDateString("en-US", { year: "numeric", month: "short" });
 };
 
 // Reusable function to format date range
 export const formatDateRange = (
   startDate?: string,
   endDate?: string,
-  current?: boolean,
+  current?: boolean
 ): string => {
-  if (!startDate) {return '';}
+  if (!startDate) {
+    return "";
+  }
 
   const formattedStartDate = formatDate(startDate);
 
@@ -41,4 +45,15 @@ export const formatDateRange = (
 
   const formattedEndDate = formatDate(endDate);
   return `${formattedStartDate} - ${formattedEndDate}`;
+};
+
+export const getFontSize = (size: Settings["font"]["size"]) => FONT_SIZES[size];
+export const FONT_SIZES: FontSize = {
+  xxs: 8,
+  xs: 10,
+  s: 12,
+  m: 14,
+  l: 16,
+  xl: 18,
+  xxl: 20,
 };

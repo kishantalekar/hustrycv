@@ -11,6 +11,7 @@ export enum RootScreens {
   UPLOAD_RESUME = 'UploadResume',
   AI_CHAT = 'AIChat',
   NAME_INPUT = 'NameInputScreen',
+  LINKEDIN_IMPORT = 'LinkedInImport',
 }
 
 export enum FormScreens {
@@ -22,6 +23,10 @@ export enum FormScreens {
   SKILLS = 'Skills',
   PROJECTS = 'Projects',
   CERTIFICATIONS = 'Certifications',
+  ADD_SECTIONS = 'AddSections',
+  HOBBIES = 'Hobbies',
+  STRENGTHS = 'Strengths',
+  REFERENCES = 'References',
 }
 
 export enum ResumeEditorTabs {

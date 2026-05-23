@@ -122,8 +122,8 @@ export function WorkExperienceCard({
           color={COLORS.primary}
         />
         <Divider style={globalStyles.divider} />
-        <Text style={styles.label}>Technical skills</Text>
-        <TouchableOpacity
+        {/* <Text style={styles.label}>Technical skills</Text> */}
+        {/* <TouchableOpacity
           onPress={() =>
             navigation.navigate('KeywordsEditor', {
               id: experience.id,
@@ -135,7 +135,7 @@ export function WorkExperienceCard({
               ? `${experience?.keywords.length} skills added`
               : 'tap to add technical skills'}
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <Text style={styles.label}>Description</Text>
         <TouchableOpacity
           onPress={() =>

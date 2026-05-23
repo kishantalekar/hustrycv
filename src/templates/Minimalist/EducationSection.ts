@@ -1,38 +1,30 @@
-export const getEducationHTML = (education: Section<EducationItem>): string => {
-  if (!education.items.length) {
-    return '';
-  }
 
+import { formatDateRange } from "../Professional/utils/formatDate";
+
+export const getMinimalistEducationHTML = (education: Section<EducationItem>, settings: Settings) => {
   return `
-    <div class="section">
-      <h2 class="section-title">${education.title || 'Education'}</h2>
+    <div class="minimalist-section">
+      <h2 class="minimalist-section-title">education</h2>
       ${education.items
         .map(
-          item => `
-        <div class="item">
-          <div class="item-header">
+          (item) => `
+        <div class="minimalist-item">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
             <div>
-              <div class="item-title">${item.institution || ''}</div>
-              <div class="item-subtitle">${item.studyType || ''} ${
-            item.area ? `in ${item.area}` : ''
-          }</div>
+              <div class="minimalist-item-title">${item.institution}</div>
+              <div class="minimalist-item-subtitle">${item.degree}</div>
+              ${item.gpa ? `<div style="font-size: 9pt; color: #999999; margin-top: 4pt; font-weight: 300;">
+                ${item.isPercentage ? "Score: " : "CGPA: "}${item.gpa}${item.isPercentage ? "%" : ""}
+              </div>` : ''}
             </div>
-            <div>
-              <div class="item-date">${item.startDate || ''} - ${
-            item.endDate || 'Present'
-          }</div>
-              <div class="item-location">${item.location || ''}</div>
+            <div class="minimalist-item-meta">
+              ${formatDateRange(item.startDate, item.endDate, item.current)}
             </div>
           </div>
-          ${
-            item.score
-              ? `<div class="item-description">GPA: ${item.score}</div>`
-              : ''
-          }
         </div>
-      `,
+      `
         )
-        .join('')}
+        .join("")}
     </div>
   `;
 };

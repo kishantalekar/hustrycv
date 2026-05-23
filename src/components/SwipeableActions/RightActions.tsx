@@ -11,6 +11,7 @@ interface RightActionsProps {
   item?: Resume;
   id?: string;
   handleDelete: (id: string) => void;
+  showDelete?: boolean;
 }
 
 export function RightActions({
@@ -19,6 +20,7 @@ export function RightActions({
   item,
   handleDelete,
   id,
+  showDelete = true,
 }: Readonly<RightActionsProps>) {
   const styleAnimation = useAnimatedStyle(() => {
     return {
@@ -30,7 +32,7 @@ export function RightActions({
     <TouchableOpacity onPress={() => handleDelete(id ?? item?.metadata?.id)}>
       <Animated.View style={[styles.deleteAction, styleAnimation]}>
         <Icon name="delete" size={24} color={COLORS.white} />
-        <Text style={styles.deleteActionText}>Delete</Text>
+        {showDelete && <Text style={styles.deleteActionText}>Delete</Text>}
       </Animated.View>
     </TouchableOpacity>
   );

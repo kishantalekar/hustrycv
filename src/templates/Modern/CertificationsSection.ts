@@ -1,38 +1,33 @@
-export const getCertificationsHTML = (
-  certifications: Section<CertificateItem>,
-): string => {
-  if (!certifications.items.length) {
-    return '';
-  }
 
+import { getExternalLinkIcon } from "../icons/icons";
+import { formatDateRange } from "../Professional/utils/formatDate";
+
+export const getModernCertificationsHTML = (certifications: Section<CertificateItem>, settings: Settings) => {
   return `
-    <div class="section">
-      <h2 class="section-title">Certifications</h2>
+    <div class="modern-section">
+      <h2 class="modern-section-title">Certifications</h2>
       ${certifications.items
         .map(
-          item => `
-        <div class="certification-item">
-          <div class="certification-name">${item.name || ''}</div>
-          <div class="certification-authority">${item.authority || ''}</div>
-          <div class="certification-date">${formatDate(item.date)}</div>
+          (item) => `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16pt; padding: 16pt; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 10pt; box-shadow: 0 2pt 4pt rgba(102, 126, 234, 0.1);">
+          <div>
+            <div class="modern-item-title">
+              ${item.certificationUrlOrCode ? `
+                <a href="${item.certificationUrlOrCode}" style="color: #667eea; text-decoration: none;" target="_blank">
+                  ${item.name}
+                  ${getExternalLinkIcon({ size: 12 })}
+                </a>
+              ` : item.name}
+            </div>
+            ${item.authority ? `<div class="modern-item-subtitle">${item.authority}</div>` : ''}
+          </div>
+          <div class="modern-item-meta" style="background: #764ba2; color: white; padding: 6pt 10pt; border-radius: 8pt; font-size: 8pt;">
+            ${formatDateRange(item.date)}
+          </div>
         </div>
-      `,
+      `
         )
-        .join('')}
+        .join("")}
     </div>
   `;
 };
-
-// Helper function to format dates
-function formatDate(dateString?: string): string {
-  if (!dateString) {
-    return '';
-  }
-
-  const date = new Date(dateString);
-  if (isNaN(date.getTime())) {
-    return dateString; // Return as is if we can't parse it
-  }
-
-  return date.toLocaleDateString('en-US', {year: 'numeric', month: 'short'});
-}

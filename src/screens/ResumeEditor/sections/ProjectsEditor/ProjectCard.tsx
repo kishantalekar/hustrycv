@@ -33,10 +33,11 @@ export function ProjectCard({
   isDraggableListVisible,
   drag,
 }: Readonly<ProjectCardProps>) {
+  const subtitle = project?.links?.map(link => link.label)?.join(', ') || '';
   const header = (
     <CardHeader
       title={project.name}
-      subtitle={project.url}
+      subtitle={subtitle}
       titlePlaceholder="Project Name"
       subtitlePlaceholder="Project Url"
       rightIcon={isDraggableListVisible ? 'drag-handle' : undefined}
@@ -109,10 +110,11 @@ export function ProjectCard({
               : 'tap to add project links'}
           </Text>
         </TouchableOpacity>
+        <Divider style={globalStyles.divider} />
 
-        <Text style={styles.label}>Skills & Technologies Used</Text>
+        {/* <Text style={styles.label}>Skills & Technologies Used</Text> */}
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() =>
             navigation.navigate('KeywordsEditor', {
               id: project.id,
@@ -125,7 +127,7 @@ export function ProjectCard({
               ? `${project?.keywords.length} skills added`
               : 'tap to add project skills'}
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <Text style={styles.label}>Description</Text>
         <TouchableOpacity

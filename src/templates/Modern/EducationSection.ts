@@ -1,65 +1,30 @@
-export const getEducationHTML = (education: Section<EducationItem>): string => {
-  if (!education.items.length) {
-    return '';
-  }
 
+import { formatDateRange } from "../Professional/utils/formatDate";
+
+export const getModernEducationHTML = (education: Section<EducationItem>, settings: Settings) => {
   return `
-    <div class="section">
-      <h2 class="section-title">Education</h2>
+    <div class="modern-section">
+      <h2 class="modern-section-title">Education</h2>
       ${education.items
         .map(
-          item => `
-        <div class="education-item">
-          <div class="item-header">
-            <div class="item-title">${item.degree || ''}</div>
-            <div class="item-subtitle">${item.institution || ''} ${
-            item.location ? `• ${item.location}` : ''
-          }</div>
-            <div class="item-date">${formatDate(item.startDate)} - ${
-            item.current ? 'Present' : formatDate(item.endDate)
-          }</div>
-          </div>
-          ${item.gpa ? `<div class="item-gpa">GPA: ${item.gpa}</div>` : ''}
-          ${
-            item.keywords && item.keywords.length
-              ? `
-            <div class="skill-keywords">
-              ${item.keywords
-                .map(keyword => `<span class="skill-keyword">${keyword}</span>`)
-                .join('')}
+          (item) => `
+        <div class="modern-item">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+              <div class="modern-item-title">${item.institution}</div>
+              <div class="modern-item-subtitle">${item.degree}</div>
+              ${item.gpa ? `<div style="font-size: 9pt; color: #718096; margin-top: 4pt; font-weight: 500;">
+                ${item.isPercentage ? "Score: " : "CGPA: "}${item.gpa}${item.isPercentage ? "%" : ""}
+              </div>` : ''}
             </div>
-          `
-              : ''
-          }
+            <div class="modern-item-meta" style="background: #764ba2; color: white; padding: 4pt 8pt; border-radius: 6pt; font-size: 8pt;">
+              ${formatDateRange(item.startDate, item.endDate, item.current)}
+            </div>
+          </div>
         </div>
-      `,
+      `
         )
-        .join('')}
+        .join("")}
     </div>
   `;
 };
-
-// Helper function to format dates
-function formatDate(dateString?: string): string {
-  if (!dateString) {
-    return '';
-  }
-
-  const date = new Date(dateString);
-  if (isNaN(date.getTime())) {
-    // If it's not a full date, it might be a year-month format
-    const parts = dateString.split('-');
-    if (parts.length === 2) {
-      const year = parts[0];
-      const month = new Date(
-        parseInt(parts[0]),
-        parseInt(parts[1]) - 1,
-        1,
-      ).toLocaleString('default', {month: 'short'});
-      return `${month} ${year}`;
-    }
-    return dateString; // Return as is if we can't parse it
-  }
-
-  return date.toLocaleDateString('en-US', {year: 'numeric', month: 'short'});
-}

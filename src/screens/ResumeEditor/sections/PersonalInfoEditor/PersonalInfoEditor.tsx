@@ -21,7 +21,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 export const PersonalInfoEditor = () => {
   const {getActiveResume, updateBasics} = useResumeStore();
   const navigation = useNavigation<AppNavigationProp>();
-  console.log('basics', getActiveResume());
+  // console.log('basics', getActiveResume());
   const basics = getActiveResume().basics;
   return (
     <SafeAreaView style={globalStyles.keyboardAvoidingView}>

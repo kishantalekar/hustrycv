@@ -8,7 +8,7 @@ const renderProjectHeader = (name: string, links: LinkItem[]) => {
   const styles = getResumeStyles();
   return `
     <div class="flex space-between gap-4">
-      <span class="text-bold">${name}</span>
+      <span class="card-title">${name}</span>
       ${links.length > 0 ? ' | ' : ''}
       ${links
         .map(
@@ -35,7 +35,7 @@ const renderProjectHeader = (name: string, links: LinkItem[]) => {
 // };
 
 const renderProjectHeading = (item: ProjectItem) => {
-  console.log('current', item.current);
+  // console.log("current", item.current);
   return `
     <div class="flex align-center space-between">
       ${renderProjectHeader(item.name, item.links)}
@@ -45,20 +45,22 @@ const renderProjectHeading = (item: ProjectItem) => {
 };
 
 const renderProjectItem = (item: ProjectItem, index: number) => {
+  // console.log('item', item.links);
   return `
   <div style="margin-bottom: 8pt;page-break-inside:avoid;">
-  ${index === 0 ? '<h2 class="section-title">Projects</h2>   <hr/>' : ''} 
+  ${index === 0 ? '<h3 class="section-title">Projects</h3>   <hr/>' : ''} 
       ${renderProjectHeading(item)}
       ${renderJobDescription(item.description)}
-      ${renderKeywords(item.keywords || [])}
     </div>
   `;
 };
 
-export const getProjectsHTML = (projects: Section<ProjectItem>) => {
+export const getProjectsHTML = (
+  projects: Section<ProjectItem>,
+  settings: Settings,
+) => {
   return `
     <div class="section" style="page-break-inside:auto;">
- 
       <div style="page-break-inside:auto;">
         ${projects.items.map(renderProjectItem).join('')}
       </div>

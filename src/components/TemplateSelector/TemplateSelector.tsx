@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import {FONTS} from '@/constants';
 import {SPACING, TYPOGRAPHY, COLORS, BORDER_RADIUS, SHADOW} from '@/theme';
+import {Typography, TypographyVariant} from '../Typography';
 
 type Template = {
   id: string;
@@ -34,7 +35,11 @@ export const TemplateSelector = ({
             ]}
             onPress={() => onSelectTemplate(template.id)}>
             <Image source={template.image} style={styles.templateImage} />
-            <Text style={styles.templateName}>{template.name}</Text>
+            <Typography
+              variant={TypographyVariant.Caption}
+              color={COLORS.text.secondary}>
+              {template.name}
+            </Typography>
           </TouchableOpacity>
         ))}
       </View>
@@ -75,11 +80,5 @@ const styles = StyleSheet.create({
     height: 120,
     borderRadius: BORDER_RADIUS.sm,
     marginBottom: SPACING.xs,
-  },
-  templateName: {
-    fontSize: TYPOGRAPHY.size.sm,
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
-    color: COLORS.text.primary,
-    textAlign: 'center',
   },
 });

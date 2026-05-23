@@ -1,12 +1,14 @@
 import {LottieAnimation} from '@/components';
-import {FONTS} from '@/constants';
-import {COLORS, SPACING, TYPOGRAPHY} from '@/theme';
 import {generatePDF} from '@/utils/pdfUtils';
 import * as Sentry from '@sentry/react-native';
 import React, {useEffect, useState} from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+
+import {ScrollView, Text, View} from 'react-native';
 import Pdf from 'react-native-pdf';
 import {ResumePreviewProps} from './ResumePreview.types';
+import {getTemplateById} from '@/templates';
+import {styles} from './ResumePreview.styles';
+import {SPACING} from '@/theme';
 
 export function ResumePreview({
   resumeData,
@@ -15,23 +17,37 @@ export function ResumePreview({
 }: Readonly<ResumePreviewProps>) {
   const [pdfBase64, setPdfBase64] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [pdfKey, setPdfKey] = useState(0);
 
+  console.log('[ResumePreview] Initial render - resumeData:', resumeData);
   useEffect(() => {
     if (resumeData && templates) {
       setIsLoading(true);
       setPdfBase64(null);
-
+      // console.log(
+      //   '[ResumePreview] useEffect triggered - isLoading:',
+      //   isLoading,
+      //   'selectedTemplate:',
+      //   selectedTemplate,
+      // );
       // Start a transaction for PDF generation
 
-      const selectedTemplateData = templates.find(
-        t => t.id === selectedTemplate,
-      );
-
+      const selectedTemplateData = getTemplateById(selectedTemplate);
+      // console.log(
+      //   '[ResumePreview] Template data found:',
+      //   !!selectedTemplateData,
+      //   'templateId:',
+      //   selectedTemplate,
+      // );
       if (selectedTemplateData) {
         generatePDF(selectedTemplateData.getHTML(resumeData))
           .then(base64 => {
             if (base64) {
               setPdfBase64(base64);
+              // console.log(
+              //   '[ResumePreview] PDF generated successfully - base64 exists:',
+              //   !!base64,
+              // );
             } else {
               throw new Error('PDF generation returned null');
             }
@@ -50,6 +66,9 @@ export function ResumePreview({
             });
           })
           .finally(() => {
+            console.log(
+              '[ResumePreview] Setting loading to false after PDF operation',
+            );
             setIsLoading(false);
           });
       } else {
@@ -64,7 +83,12 @@ export function ResumePreview({
         setIsLoading(false);
       }
     }
-  }, [selectedTemplate, resumeData, templates]);
+
+    return () => {
+      setPdfKey(prevKey => prevKey + 1);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedTemplate, resumeData]);
 
   if (!resumeData) {
     return (
@@ -73,11 +97,19 @@ export function ResumePreview({
       </View>
     );
   }
+
+  // console.log(
+  //   '[ResumePreview] Render state - isLoading:',
+  //   isLoading,
+  //   'showLottieAnimation:',
+  //   'hasPDF:',
+  //   !!pdfBase64,
+  // );
   return (
     <ScrollView
       style={styles.container}
       contentContainerStyle={styles.contentContainer}>
-      {isLoading || !pdfBase64 ? (
+      {isLoading ? (
         <View style={styles.loadingContainer}>
           <LottieAnimation
             source={require('../../assets/animations/cv_loading.json')}
@@ -89,6 +121,7 @@ export function ResumePreview({
         </View>
       ) : (
         <Pdf
+          key={pdfKey}
           source={{uri: `data:application/pdf;base64,${pdfBase64}`}}
           style={styles.pdfView}
           spacing={SPACING.lg}
@@ -97,62 +130,3 @@ export function ResumePreview({
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: COLORS.background.primary,
-    minHeight: 400,
-  },
-  loadingAnimation: {
-    width: 150,
-    height: 150,
-  },
-  loadingText: {
-    marginTop: SPACING.md,
-    fontSize: TYPOGRAPHY.size.md,
-    color: COLORS.text.secondary,
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.background.primary,
-  },
-  contentContainer: {
-    padding: SPACING.container,
-    justifyContent: 'flex-start',
-    minHeight: 'auto',
-    height: '100%',
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: COLORS.background.primary,
-  },
-  emptyText: {
-    fontSize: TYPOGRAPHY.size.md,
-    color: COLORS.text.secondary,
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
-  },
-  // exportButton: {
-  //   paddingHorizontal: SPACING.lg,
-  //   paddingVertical: SPACING.sm,
-  //   backgroundColor: COLORS.primary,
-  //   borderRadius: BORDER_RADIUS.md,
-  //   marginTop: SPACING.lg,
-  //   ...SHADOW.light,
-  // },
-  // exportButtonText: {
-  //   color: COLORS.text.light,
-  //   fontSize: TYPOGRAPHY.size.md,
-  //   fontFamily: FONTS.FIRA_SANS.REGULAR,
-  // },
-
-  pdfView: {
-    flex: 1,
-    backgroundColor: COLORS.background.primary,
-  },
-});

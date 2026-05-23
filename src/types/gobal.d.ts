@@ -3,7 +3,6 @@ declare global {
   //Resume
   interface BaseItem {
     id: string;
-    keywords?: string[];
   }
   interface Metadata {
     id: string;
@@ -12,7 +11,7 @@ declare global {
     version: string;
     createdAt: string;
     updatedAt: string;
-    sectionOrder?: string[];
+    sectionOrder?: SectionType[];
   }
   interface Basics {
     name: string;
@@ -39,6 +38,7 @@ declare global {
     endDate: string;
     // TODO:need to add a toggle for percentage or gpa
     gpa?: string;
+    isPercentage: boolean;
     current: boolean;
     status?: string;
     location?: string;
@@ -46,12 +46,13 @@ declare global {
   interface SkillItem extends BaseItem {
     name: string;
     level: string;
+    keywords: string[];
   }
   interface LinkItem {
-    id: string;
-    label: string;
-    url: string;
-    icon: string;
+    id?: string;
+    label?: string;
+    url?: string;
+    icon?: string;
     iconVariant?: IconVariant;
   }
   interface ProjectItem extends BaseItem {
@@ -73,18 +74,92 @@ declare global {
     description: string;
     date: string;
   }
+  interface HobbieItem extends BaseItem {
+    id: string;
+    name: string;
+    link: LinkItem;
+  }
+  interface StrengthItem extends BaseItem {
+    id: string;
+    name: string;
+  }
+
+  interface ReferenceItem extends BaseItem {
+    id: string;
+    name: string;
+    position: string;
+    company: string;
+    contact1: string;
+    contact2: string;
+    referenceText?: string;
+  }
+  interface LanguageItem extends BaseItem {
+    name: string;
+    level: string;
+  }
+  interface AwardItem extends BaseItem {
+    title: string;
+    issuer: string;
+    date: string;
+    url: string;
+    description: string;
+  }
+  interface PublicationItem extends BaseItem {
+    title: string;
+    publisher: string;
+    date: string;
+    url: string;
+    description: string;
+  }
+
+  interface VolunteeringItem extends BaseItem {
+    name: string;
+    organization: string;
+    position: string;
+    startDate: string;
+    endDate: string;
+    location: string;
+    url: string;
+    description: string;
+  }
   interface CustomSectionItem {
     id: string;
     [key: string]: any;
   }
+
+  type SectionType =
+    | 'work'
+    | 'education'
+    | 'skills'
+    | 'projects'
+    | 'certifications'
+    | 'hobbies'
+    | 'custom'
+    | 'strengths'
+    | 'references'
+    | 'personal'
+    | 'volunteering'
+    | 'languages'
+    | 'awards'
+    | 'publications';
+
   interface Section<T> {
-    type: string;
+    type: SectionType;
     visible: boolean;
     items: T[];
   }
+
+  type FontSize = {
+    [key in Settings['font']['size']]: number;
+  };
   interface Settings {
     atsOptimized: boolean;
-    font: string;
+    font: {
+      family: string; // Font family name (e.g., "Arial", "Helvetica")
+      size: FontSize; // Base font size in points (e.g., 11, 12)
+      lineSpacing: number; // Line height multiplier (e.g., 1.2 for 120%)
+    };
+    dateFormat: 'dd/mm/yyyy' | 'mm/dd/yyyy' | 'dd.mm.yyyy' | 'yyyy-mm-dd';
     theme: 'light' | 'dark';
     language: string;
   }
@@ -97,8 +172,16 @@ declare global {
       skills: Section<SkillItem>;
       projects: Section<ProjectItem>;
       certifications: Section<CertificateItem>;
+      hobbies: Section<HobbieItem>;
+      strengths: Section<StrengthItem>;
+      references: Section<ReferenceItem>;
+      languages: Section<LanguageItem>;
+      awards: Section<AwardItem>;
+      publications: Section<PublicationItem>;
+      volunteering: Section<VolunteeringItem>;
       customSections: Section<CustomSectionItem>[];
     };
+    settings: Settings;
   }
 
   //common

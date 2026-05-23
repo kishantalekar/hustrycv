@@ -1,17 +1,19 @@
+import {posthog} from '@/analytics/posthog/PostHog';
 import {LoadingIndicator} from '@/components/LoadingIndicator';
-import {Dashboard} from '@/screens/Dashboard/Dashboard';
-import {NameInputScreen} from '@/screens/NameInputScreen/NameInputScreen';
-import {OnboardingScreen} from '@/screens/Onboarding/OnboardingScreen';
-import {PreviewScreen} from '@/screens/Preview/PreviewScreen';
-import {UploadResumeScreen} from '@/screens/UploadResume/UploadResumeScreen';
-import {ResumeEditor} from '@/screens/ResumeEditor/ResumeEditor';
-import {KeywordsEditor} from '@/screens/ResumeEditor/screens/KeywordsEditor/KeywordsEditor';
-import {ProjectLinksScreen} from '@/screens/ResumeEditor/screens/LinksEditorScreen/ProjectLinksScreen';
-import {SocialProfilesScreen} from '@/screens/ResumeEditor/screens/SocialProfilesScreen/SocialProfilesScreen';
 import {
-  ContentType,
-  RichTextEditorScreen,
-} from '@/screens/ResumeEditor/screens/RichTextEditorScreen';
+  Dashboard,
+  KeywordsEditor,
+  LinkedInImportScreen,
+  NameInputScreen,
+  OnboardingScreen,
+  PreviewScreen,
+  ProjectLinksScreen,
+  ResumeEditor,
+  SocialProfilesScreen,
+  UploadResumeScreen,
+} from '@/screens';
+import {RichTextEditorScreen} from '@/screens/ResumeEditor/screens/RichTextEditorScreen/RichTextEditorScreen';
+import {ContentType} from '@/screens/ResumeEditor/screens/RichTextEditorScreen/RichTextEditorScreen.types';
 import {useAppStore} from '@/store/useAppStore';
 import {navigationRef} from '@/utils/navigation';
 import {NavigationContainer} from '@react-navigation/native';
@@ -22,7 +24,6 @@ import {
 import React, {useEffect} from 'react'; // Added useEffect
 import BootSplash from 'react-native-bootsplash'; // Added BootSplash
 import {RootScreens} from './constants';
-import {posthog} from '@/analytics/posthog/PostHog';
 
 export type RootStackParamList = {
   [RootScreens.ONBOARDING]: undefined;
@@ -46,6 +47,7 @@ export type RootStackParamList = {
   };
   [RootScreens.UPLOAD_RESUME]: undefined;
   [RootScreens.AI_CHAT]: undefined;
+  [RootScreens.LINKEDIN_IMPORT]: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -110,7 +112,19 @@ export const AppNavigator = () => {
         <Stack.Screen
           name={RootScreens.UPLOAD_RESUME}
           component={UploadResumeScreen}
-          options={{title: 'Upload Resume'}}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name={RootScreens.LINKEDIN_IMPORT}
+          component={LinkedInImportScreen}
+          options={{
+            headerShown: false,
+            // title: 'Import from LinkedIn',
+
+            // headerTintColor: COLORS.text.primary,
+          }}
         />
 
         <Stack.Screen

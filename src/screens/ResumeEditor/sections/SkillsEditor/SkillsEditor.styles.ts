@@ -1,6 +1,6 @@
-import {FONTS} from '@/constants';
-import {SPACING} from '@/theme';
 import {StyleSheet} from 'react-native';
+import {FONTS} from '@/constants';
+import {COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOW} from '@/theme';
 
 export const styles = StyleSheet.create({
   container: {
@@ -19,17 +19,11 @@ export const styles = StyleSheet.create({
     color: '#333',
   },
   skillCard: {
-    backgroundColor: 'white',
-    borderRadius: 12,
-    marginBottom: 16,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 4},
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-    elevation: 5,
+    backgroundColor: COLORS.background.secondary,
+    ...SHADOW.card,
+    borderColor: COLORS.border,
     borderWidth: 1,
-    borderColor: '#F0F0F0',
+    borderRadius: BORDER_RADIUS.md,
   },
   cardHeader: {
     flexDirection: 'row',
@@ -90,22 +84,18 @@ export const styles = StyleSheet.create({
     color: '#666',
   },
   deleteButton: {
-    backgroundColor: '#FF3B30',
-    padding: 8,
-    borderRadius: 4,
-    alignItems: 'center',
-    marginTop: 12,
+    backgroundColor: COLORS.status.error,
+    borderRadius: BORDER_RADIUS.xs,
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: SPACING.sm,
   },
   deleteButtonText: {
-    color: 'white',
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
-    fontSize: 14,
+    color: COLORS.text.light,
+    fontSize: TYPOGRAPHY.size.sm,
+    fontFamily: FONTS.FIRA_SANS.MEDIUM,
   },
   addButton: {
-    backgroundColor: '#007AFF',
-    padding: 16,
-    borderRadius: 8,
-    alignItems: 'center',
+    backgroundColor: COLORS.accent,
   },
   addButtonText: {
     color: 'white',

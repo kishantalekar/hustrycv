@@ -1,5 +1,6 @@
-import {Button} from '@/components';
+import {Button, TipsCard, TipSets} from '@/components';
 import {Header} from '@/components/Header';
+import {REORDER_TIPS_SHOWN, SWIPE_TIPS_SHOWN} from '@/constants';
 import {useResumeStore} from '@/store/useResumeStore';
 import {globalStyles} from '@/styles/globalStyles';
 import {COLORS} from '@/theme';
@@ -53,6 +54,26 @@ export const CertificationsEditor = () => {
             onRightPress={handleDragIconPress}
           />
           <ScrollView style={styles.container}>
+            {certifications?.items.length > 0 && (
+              <TipsCard
+                tips={TipSets.swipe}
+                variant="default"
+                dismissible={true}
+                showOnce={true}
+                storageKey={SWIPE_TIPS_SHOWN}
+                animationType="fade"
+              />
+            )}
+            {certifications?.items.length > 2 && (
+              <TipsCard
+                tips={TipSets.reorder}
+                variant="default"
+                dismissible={true}
+                showOnce={true}
+                storageKey={REORDER_TIPS_SHOWN}
+                animationType="fade"
+              />
+            )}
             <NestableScrollContainer>
               <NestableDraggableFlatList
                 data={certifications?.items || []}

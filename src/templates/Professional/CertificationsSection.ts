@@ -1,27 +1,41 @@
-import {getExternalLinkIcon} from '../icons/icons';
-import {getResumeStyles} from '../styles/resumeStyles';
-import {formatDateRange} from './utils/formatDate';
+import { getExternalLinkIcon } from "../icons/icons";
+import { getResumeStyles } from "../styles/resumeStyles";
+import { formatDateRange } from "./utils/formatDate";
 
-const renderCertificateTitle = (name: string) => {
+const renderCertificateTitle = (name: string, url: string) => {
+  if (url === "") {
+    return `
+      <div class="card-title">
+        ${name}
+      </div>
+    `;
+  }
   return `
-    <div class="text-bold">${name}</div>
+    <div class="card-title">
+
+      <a href="${url}" 
+      style="color: #000;  display: inline-flex; align-items: center; margin-left: 4px;" 
+      target="_blank">
+      ${name}
+      </a>
+  </div>
   `;
 };
 
 const renderCertificateLink = (url: string) => {
-  if (url.length === 0) return '';
+  if (url.length === 0) return "";
   return `
     <a href="${url}" 
       style="color: #000; text-decoration: none; display: inline-flex; align-items: center; margin-left: 4px;" 
       target="_blank">
-      ${getExternalLinkIcon({size: 18})}
+      ${getExternalLinkIcon({ size: 18 })}
     </a>
   `;
 };
 
 const renderCertificateAuthority = (authority: string) => {
   if (!authority) {
-    return '';
+    return "";
   }
   return `
     <div class="text-regular"> - ${authority}</div>
@@ -33,7 +47,7 @@ const renderCertificateItem = (cert: CertificateItem) => {
   return `
     <div style="${styles.certificationItem}" class="space-between">
     <div style="${styles.certificationItem}">
-      ${renderCertificateTitle(cert.name)}
+      ${renderCertificateTitle(cert.name, cert.certificationUrlOrCode)}
       ${renderCertificateLink(cert?.certificationUrlOrCode)}
       ${renderCertificateAuthority(cert.authority)}
 </div>
@@ -49,6 +63,7 @@ const renderCertificateItem = (cert: CertificateItem) => {
 
 export const getCertificationsHTML = (
   certifications: Section<CertificateItem>,
+  settings: Settings
 ) => {
   const styles = getResumeStyles();
   return `
@@ -56,7 +71,7 @@ export const getCertificationsHTML = (
       <h2 class="section-title">Certifications</h2>
       <hr/>
       <div style="${styles.certificationCard}">
-        ${certifications.items.map(renderCertificateItem).join('')}
+        ${certifications.items.map(renderCertificateItem).join("")}
       </div>
     </div>
   `;
