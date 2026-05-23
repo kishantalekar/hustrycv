@@ -1,19 +1,5 @@
-import {createInitialResume} from '@/types';
-import {GOOGLE_GEMINI_API_KEY} from '@/utils/apiKeys';
-import {GoogleGenAI} from '@google/genai/web';
+import {AIService} from '@/services/ai';
 import {v4 as uuidv4} from 'uuid';
-
-// Initialize Google GenAI with API key lazily
-let genAIInstance: GoogleGenAI | null = null;
-const getGenAI = () => {
-  if (!genAIInstance) {
-    if (!GOOGLE_GEMINI_API_KEY) {
-      throw new Error('Google Gemini API Key is missing. Please set GOOGLE_GEMINI_API_KEY in your environment/Config.');
-    }
-    genAIInstance = new GoogleGenAI({apiKey: GOOGLE_GEMINI_API_KEY});
-  }
-  return genAIInstance;
-};
 
 type Section =
   | 'basics'
@@ -94,19 +80,23 @@ export const processChatMessage = async (
     
     Please provide a natural, conversational response that helps gather the necessary information for this section.
     Keep the conversation flowing naturally while ensuring you collect all required details.
-    If you have enough information, format it as JSON. Otherwise, ask for more details.
+    
+    IMPORTANT RULE: If and ONLY IF you have collected enough information to complete the section, you MUST output a valid JSON code block enclosed in \`\`\`json and \`\`\`. 
+    Do not output JSON until you have enough info. If you need more info, reply conversationally without JSON.
     `;
 
-    const result = await getGenAI().models.generateContent({
-      model: 'gemini-2.0-flash',
-      contents: prompt,
+    const aiService = AIService.getInstance();
+    const result = await aiService.execute<string>({
+      prompt,
+      type: 'text',
+      context,
     });
 
-    if (!result || !result.text) {
+    if (!result || !result.data) {
       throw new Error('Failed to get response from AI model');
     }
 
-    return result.text;
+    return result.data;
   } catch (error) {
     console.error('Error processing chat message:', error);
     throw error instanceof Error
@@ -117,13 +107,9 @@ export const processChatMessage = async (
 
 export const formatSectionData = (section: Section, data: any) => {
   try {
-    const resume = createInitialResume();
-    const currentDate = new Date().toISOString();
-
     switch (section) {
       case 'basics':
-        resume.basics = {
-          ...resume.basics,
+        return {
           name: data.name?.trim() || '',
           email: data.email?.trim() || '',
           phone: data.phone?.trim() || '',
@@ -137,30 +123,79 @@ export const formatSectionData = (section: Section, data: any) => {
               icon: social.icon?.trim() || '',
             })) || [],
         };
-        break;
 
       case 'work':
         if (Array.isArray(data)) {
-          resume.sections.work.items = data.map(work => ({
-            id: uuidv4(),
+          return data.map(work => ({
             company: work.company?.trim() || '',
             position: work.position?.trim() || '',
             location: work.location?.trim() || '',
             startDate: work.startDate?.trim() || '',
             endDate: work.endDate?.trim() || '',
-            current:
-              !work.endDate || work.endDate.toLowerCase().includes('present'),
+            current: !work.endDate || work.endDate.toLowerCase().includes('present'),
             description: work.description?.trim() || '',
             status: 'visible',
             keywords: work.keywords || [],
           }));
         }
-        break;
+        return [];
 
-      // Add similar cases for other sections
+      case 'education':
+        if (Array.isArray(data)) {
+          return data.map(edu => ({
+            institution: edu.institution?.trim() || '',
+            degree: edu.degree?.trim() || '',
+            major: edu.major?.trim() || '',
+            location: edu.location?.trim() || '',
+            startDate: edu.startDate?.trim() || '',
+            endDate: edu.endDate?.trim() || '',
+            gpa: edu.gpa?.trim() || '',
+            current: !edu.endDate || edu.endDate.toLowerCase().includes('present'),
+            status: 'visible',
+          }));
+        }
+        return [];
+
+      case 'skills':
+        if (Array.isArray(data)) {
+          return data.map(skill => ({
+            name: skill.name?.trim() || '',
+            level: skill.level || 3,
+            keywords: skill.keywords || [],
+            status: 'visible',
+          }));
+        }
+        return [];
+        
+      case 'projects':
+        if (Array.isArray(data)) {
+          return data.map(proj => ({
+            name: proj.name?.trim() || '',
+            description: proj.description?.trim() || '',
+            startDate: proj.startDate?.trim() || '',
+            endDate: proj.endDate?.trim() || '',
+            url: proj.url?.trim() || '',
+            keywords: proj.keywords || [],
+            status: 'visible',
+          }));
+        }
+        return [];
+
+      case 'certifications':
+        if (Array.isArray(data)) {
+          return data.map(cert => ({
+            name: cert.name?.trim() || '',
+            issuer: cert.issuer?.trim() || '',
+            date: cert.date?.trim() || '',
+            url: cert.url?.trim() || '',
+            status: 'visible',
+          }));
+        }
+        return [];
+
+      default:
+        return data;
     }
-
-    return resume;
   } catch (error) {
     console.error('Error formatting section data:', error);
     throw new Error('Failed to format section data');

@@ -9,7 +9,7 @@ on:
       track:
         description: 'Google Play Store Track (internal, alpha, beta, production)'
         required: true
-        default: 'internal'
+        default: 'production'
         type: choice
         options:
           - internal
@@ -91,7 +91,7 @@ jobs:
 
       - name: Build and Deploy via Fastlane
         env:
-          PLAY_STORE_TRACK: ${{ github.event.inputs.track || 'internal' }}
+          PLAY_STORE_TRACK: ${{ github.event.inputs.track || 'production' }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         run: |
           cd android

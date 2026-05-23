@@ -5,8 +5,8 @@
  * Returns plain text ready to put in resume.basics.summary.
  */
 
-import {callAIText, fillPrompt} from './aiClient';
-import {SUMMARY_PROMPT} from './prompts/index';
+import {AIService} from '@/services/ai';
+import {SUMMARY_PROMPT, fillPrompt} from './prompts/index';
 
 export interface SummaryInput {
   name: string;
@@ -81,7 +81,9 @@ export const generateSummary = async (
     targetRole: input.targetRole || input.recentRole || 'a senior role',
   });
 
-  const summary = await callAIText(prompt, 'summaryAI');
+  const aiService = AIService.getInstance();
+  const response = await aiService.execute<string>({ prompt, type: 'text' });
+  const summary = response.data;
   // Remove any accidental quotes or markdown
   const cleaned = summary.replace(/^["']|["']$/g, '').trim();
 

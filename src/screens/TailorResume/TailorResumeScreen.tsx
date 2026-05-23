@@ -25,6 +25,10 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Progress from 'react-native-progress';
 import {LottieAnimation, Button} from '@/components';
 import {Header} from '@/components/Header';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {RootStackParamList} from '@/navigation/AppNavigator';
+import {RootScreens} from '@/navigation/constants';
 import {useResumeStore} from '@/store/useResumeStore';
 import {selectActiveResume} from '@/store/selectors/resumeSelectors';
 import {COLORS, SPACING, TYPOGRAPHY, FONT_WEIGHT, typography} from '@/theme';
@@ -131,6 +135,8 @@ const BulletsPanel = ({bullets}: {bullets: JobMatchResult['improvedBullets']}) =
 
 export const TailorResumeScreen = () => {
   const activeResume = useResumeStore(selectActiveResume);
+  const { duplicateResume, setActiveResume, updateBasics, updateWorkExperience } = useResumeStore();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const [jobDescription, setJobDescription] = useState('');
   const [result, setResult] = useState<JobMatchResult | null>(null);
@@ -150,6 +156,34 @@ export const TailorResumeScreen = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleApplyTailoredVariant = () => {
+    if (!activeResume || !result) return;
+    
+    // 1. Clone the active resume
+    const newTitle = `${activeResume.metadata.title} (Tailored)`;
+    const newResumeId = duplicateResume(activeResume.metadata.id, newTitle);
+    
+    // 2. Set the cloned resume as active
+    setActiveResume(newResumeId);
+    
+    // 3. Apply the tailored summary if provided
+    if (result.suggestedSummary) {
+      updateBasics({ summary: result.suggestedSummary });
+    }
+    
+    // 4. Apply the tailored bullets if provided
+    if (result.improvedBullets && result.improvedBullets.length > 0) {
+      result.improvedBullets.forEach(b => {
+        if (b.itemId) {
+          updateWorkExperience(b.itemId, { description: b.improved });
+        }
+      });
+    }
+    
+    // 5. Navigate to the editor so they can review their new tailored resume
+    navigation.navigate(RootScreens.RESUME_EDITOR, { resumeId: newResumeId });
   };
 
   return (
@@ -210,6 +244,13 @@ export const TailorResumeScreen = () => {
             ) : null}
             <BulletsPanel bullets={result.improvedBullets} />
 
+            <Button
+              title="Apply & Create Tailored Variant"
+              variant="primary"
+              onPress={handleApplyTailoredVariant}
+              style={[styles.retryButton, {marginTop: SPACING.xl}]}
+              leftIcon={<Icon name="magic-staff" size={16} color="#fff" />}
+            />
             <Button
               title="Try Another Job"
               variant="outline"

@@ -27,7 +27,7 @@ export function ProjectLinksScreen({
 }: Readonly<ProjectConfigScreenProps>) {
   const {id} = route.params;
   const {activeResumeId, resumes, updateProject} = useResumeStore();
-  const activeResume = resumes.find(r => r.metadata.id === activeResumeId);
+  const activeResume = resumes[activeResumeId];
 
   const project = activeResume?.sections.projects?.items?.find(
     p => p.id === id,

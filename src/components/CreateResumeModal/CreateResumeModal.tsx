@@ -5,6 +5,7 @@ import {styles} from './CreateResumeModal.styles';
 interface CreateResumeModalProps {
   visible: boolean;
   onClose: () => void;
+  onCreateWithAI: () => void;
   onCreateManual: () => void;
   onUploadResume: () => void;
   onImportResume: () => void;
@@ -13,6 +14,7 @@ interface CreateResumeModalProps {
 export const CreateResumeModal: React.FC<CreateResumeModalProps> = ({
   visible,
   onClose,
+  onCreateWithAI,
   onCreateManual,
   onUploadResume,
   onImportResume,
@@ -52,6 +54,14 @@ export const CreateResumeModal: React.FC<CreateResumeModalProps> = ({
             opacity: translateY,
           },
         ]}>
+        <TouchableOpacity
+          style={styles.dropdownItem}
+          onPress={e => {
+            e.stopPropagation();
+            onCreateWithAI();
+          }}>
+          <Text style={styles.dropdownItemText}>✨ Build with AI Coach</Text>
+        </TouchableOpacity>
         <TouchableOpacity
           style={styles.dropdownItem}
           onPress={e => {

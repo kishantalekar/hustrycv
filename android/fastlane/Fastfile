@@ -30,12 +30,38 @@ platform :android do
     # You can also use other beta testing services here
   end
 
+  private_lane :get_next_version_code do
+    tracks = ['internal', 'alpha', 'beta', 'production']
+    max_version_code = 0
+    tracks.each do |t|
+      begin
+        codes = google_play_track_version_codes(track: t)
+        if codes && !codes.empty?
+          track_max = codes.max
+          max_version_code = track_max if track_max > max_version_code
+        end
+      rescue => ex
+        UI.message("Could not fetch version codes for track #{t}: #{ex.message}")
+      end
+    end
+    
+    if max_version_code > 0
+      max_version_code + 1
+    else
+      nil
+    end
+  end
+
   desc "Deploy a new version to the Google Play"
   lane :deploy do |options|
-    track = options[:track] || ENV["PLAY_STORE_TRACK"] || "internal"
+    track = options[:track] || ENV["PLAY_STORE_TRACK"] || "production"
 
-    # Auto-increment version code for unique builds
-    increment_version_code(gradle_file_path: "app/build.gradle")
+    next_version = get_next_version_code
+    if next_version
+      increment_version_code(gradle_file_path: "app/build.gradle", version_code: next_version)
+    else
+      increment_version_code(gradle_file_path: "app/build.gradle")
+    end
 
     # Build release Android App Bundle (AAB)
     gradle(
@@ -55,8 +81,12 @@ platform :android do
   desc "Deploy to closed testing track"
   
   lane :closed_testing do
-    # Auto-increment version code for unique builds
-    increment_version_code(gradle_file_path: "app/build.gradle")
+    next_version = get_next_version_code
+    if next_version
+      increment_version_code(gradle_file_path: "app/build.gradle", version_code: next_version)
+    else
+      increment_version_code(gradle_file_path: "app/build.gradle")
+    end
 
     # changelog = prompt(text: "Changelog: ")
     gradle(task: "bundle", build_type: "Release")
@@ -71,8 +101,12 @@ platform :android do
   desc "Deploy to production track"
 
   lane :production do
-    # Auto-increment version code for unique builds
-    increment_version_code(gradle_file_path: "app/build.gradle")
+    next_version = get_next_version_code
+    if next_version
+      increment_version_code(gradle_file_path: "app/build.gradle", version_code: next_version)
+    else
+      increment_version_code(gradle_file_path: "app/build.gradle")
+    end
 
     # changelog = prompt(text: "Changelog: ")
     gradle(task: "bundle", build_type: "Release")

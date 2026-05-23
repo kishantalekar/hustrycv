@@ -1,7 +1,7 @@
 import {ResumeState} from '../useResumeStore';
 
 export const selectActiveResume = (state: ResumeState) =>
-  state.resumes.find(r => r.metadata.id === state.activeResumeId);
+  state.resumes[state.activeResumeId];
 
 export const selectMetadata = (state: ResumeState) =>
   selectActiveResume(state)?.metadata;

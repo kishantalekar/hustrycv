@@ -1,4 +1,4 @@
 import {createSectionSlice} from './createSectionSlice';
 
-export const createWorkSlice = (set: any) =>
+export const createWorkSlice = (set: Function) =>
   createSectionSlice<WorkItem>(set, 'work', 'WorkExperience');

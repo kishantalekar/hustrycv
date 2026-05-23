@@ -77,9 +77,23 @@ export const Dashboard = () => {
     setShowDropdown(!showDropdown);
   };
 
+  const handleCreateWithAI = () => {
+    const newResume = createInitialResume();
+    addResume(newResume as any);
+    const id = newResume.metadata.id;
+    posthog.capture('create_resume', {
+      type: 'ai_coach',
+      resume_id: id,
+      user_name: userName || 'Anonymous',
+    });
+    setActiveResume(id);
+    navigate(RootScreens.AI_CHAT);
+    setShowDropdown(false);
+  };
+
   const handleCreateManual = () => {
     const newResume = createInitialResume();
-    addResume(newResume as Resume);
+    addResume(newResume as any);
     const id = newResume.metadata.id;
     posthog.capture('create_resume', {
       type: 'manual',
@@ -123,13 +137,14 @@ export const Dashboard = () => {
         <CreateResumeModal
           visible={showDropdown}
           onClose={() => setShowDropdown(false)}
+          onCreateWithAI={handleCreateWithAI}
           onCreateManual={handleCreateManual}
           onUploadResume={handleUploadResume}
           onImportResume={handleImportResume}
         />
 
         <FlatList
-          data={resumes}
+          data={Object.values(resumes)}
           renderItem={item =>
             renderResumeItem({
               item: item.item,

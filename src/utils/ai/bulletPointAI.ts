@@ -5,8 +5,8 @@
  * Returns an HTML <ul>...</ul> fragment ready to inject into a RichText editor.
  */
 
-import {callAIText, fillPrompt} from './aiClient';
-import {BULLET_POINT_PROMPT} from './prompts/index';
+import {AIService} from '@/services/ai';
+import {BULLET_POINT_PROMPT, fillPrompt} from './prompts/index';
 
 export interface BulletPointInput {
   position: string;
@@ -34,7 +34,9 @@ export const generateBulletPoints = async (
     existingDescription: input.existingDescription || 'None provided',
   });
 
-  const rawHtml = await callAIText(prompt, 'bulletPointAI');
+  const aiService = AIService.getInstance();
+  const response = await aiService.execute<string>({ prompt, type: 'text' });
+  const rawHtml = response.data;
 
   // Strip any accidental markdown code fences
   const cleaned = rawHtml

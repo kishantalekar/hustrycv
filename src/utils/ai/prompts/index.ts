@@ -12,6 +12,19 @@
 
 import {getAvailableIcons} from '@/templates/icons';
 
+// ─── Template Substitution ────────────────────────────────────────────────────
+/**
+ * Replaces {{PLACEHOLDER}} tokens in a prompt template with real values.
+ */
+export const fillPrompt = (
+  template: string,
+  vars: Record<string, string>,
+): string =>
+  Object.entries(vars).reduce(
+    (t, [key, value]) => t.replace(new RegExp(`{{${key}}}`, 'g'), value ?? ''),
+    template,
+  );
+
 export const RESUME_PARSE_PROMPT = `
   Parse the following resume text and return a JSON object with these fields:
   {
@@ -142,6 +155,7 @@ Return a JSON object with this structure:
   "suggestedSummary": string,
   "improvedBullets": {
     "sectionTitle": string,
+    "itemId": "The 'id' string from the provided work or project entry",
     "original": string,
     "improved": string
   }[],

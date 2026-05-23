@@ -8,8 +8,8 @@
 import {createInitialResume} from '@/types/common/resume.types';
 import * as Sentry from '@sentry/react-native';
 import {v4 as uuidv4} from 'uuid';
-import {callAIJson, fillPrompt} from './aiClient';
-import {RESUME_ANALYSIS_PROMPT, RESUME_PARSE_PROMPT} from './prompts/index';
+import {AIService} from '@/services/ai';
+import {RESUME_ANALYSIS_PROMPT, RESUME_PARSE_PROMPT, fillPrompt} from './prompts/index';
 
 // ─── Resume Parsing ───────────────────────────────────────────────────────────
 
@@ -25,7 +25,9 @@ export const parseResumeWithAI = async (
     ? resumeText
     : fillPrompt(RESUME_PARSE_PROMPT, {resumeText});
 
-  return callAIJson(prompt, 'parseResumeWithAI');
+  const aiService = AIService.getInstance();
+  const response = await aiService.execute<any>({ prompt, type: 'json' });
+  return response.data;
 };
 
 // ─── Resume Analysis ──────────────────────────────────────────────────────────
@@ -60,7 +62,9 @@ export const analyzeResumeWithAI = async (
     ? fillPrompt(RESUME_ANALYSIS_PROMPT, {resumeData: promptForAI})
     : promptForAI;
 
-  const result = await callAIJson<AnalysisResult>(prompt, 'analyzeResumeWithAI');
+  const aiService = AIService.getInstance();
+  const res = await aiService.execute<AnalysisResult>({ prompt, type: 'json' });
+  const result = res.data;
 
   if (
     typeof result?.overall !== 'number' ||

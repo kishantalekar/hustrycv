@@ -13,6 +13,8 @@ import {
   Platform,
   Text,
   TouchableOpacity,
+  ScrollView,
+  View,
 } from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -21,6 +23,8 @@ import {
   generateAIContent,
   getInitialContent,
 } from './RichTextEditorScreen.utils';
+import {useTextAnalysis} from '@/hooks/useTextAnalysis';
+import {useAITransform, TransformAction} from '@/hooks/useAITransform';
 
 type Props = NativeStackScreenProps<
   RootStackParamList,
@@ -51,18 +55,51 @@ export const RichTextEditorScreen = ({route, navigation}: Props) => {
 
   const initialContent = getInitialContent(activeResume, contentType, itemId);
 
+  const [currentHtml, setCurrentHtml] = useState(initialContent);
+  const {issues, isAnalyzing} = useTextAnalysis(currentHtml);
+  const {status: transformStatus, result: transformResult, transformText, accept: acceptTransform, discard: discardTransform} = useAITransform();
+
+  const handleTransformAction = (action: TransformAction) => {
+    transformText(action, currentHtml);
+  };
+
+  const handleAcceptTransform = () => {
+    if (transformResult?.transformed) {
+      editor.setContent(transformResult.transformed);
+      setCurrentHtml(transformResult.transformed);
+      handleContentChange(transformResult.transformed);
+    }
+    acceptTransform();
+    bottomSheetRef.current?.close();
+  };
+
+  const handleDiscardTransform = () => {
+    discardTransform();
+  };
+
   const editor = useEditorBridge({
     autofocus: true,
     initialContent: initialContent,
     onChange: () => {
       if (handleContentChange && editor) {
         editor.getHTML().then(html => {
+          setCurrentHtml(html);
           return handleContentChange(html);
         });
       }
     },
     bridgeExtensions: TenTapStartKit,
   });
+
+  const handleFixIssue = (issue: any) => {
+    if (issue.replacementText && activeResume) {
+      const regex = new RegExp(`\\b${issue.originalText}\\b`, 'i');
+      const newHtml = currentHtml.replace(regex, issue.replacementText);
+      editor.setContent(newHtml);
+      setCurrentHtml(newHtml);
+      handleContentChange(newHtml);
+    }
+  };
 
   const handleAIGenerate = () => {
     setIsBottomSheetOpen(true);
@@ -180,6 +217,27 @@ export const RichTextEditorScreen = ({route, navigation}: Props) => {
           />
           <RichTextEditor editor={editor} hiddenToolbar={hiddenToolBar} />
 
+          {issues.length > 0 && !hiddenToolBar && (
+            <View style={{height: 50, borderTopWidth: 1, borderTopColor: COLORS.border, backgroundColor: COLORS.background.secondary}}>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{alignItems: 'center', paddingHorizontal: 10}}>
+                {issues.map(issue => (
+                  <TouchableOpacity
+                    key={issue.id}
+                    onPress={() => handleFixIssue(issue)}
+                    style={{
+                      marginHorizontal: 5,
+                      paddingHorizontal: 12,
+                      paddingVertical: 6,
+                      borderRadius: 16,
+                      backgroundColor: issue.severity === 'error' ? COLORS.danger : (issue.severity === 'warning' ? '#F59E0B' : COLORS.primary),
+                    }}>
+                    <Text style={{color: 'white', fontSize: 12, fontWeight: 'bold'}}>{issue.message}</Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </View>
+          )}
+
           <BottomSheet
             ref={bottomSheetRef}
             index={isBottomSheetOpen ? 0 : -1}
@@ -198,25 +256,46 @@ export const RichTextEditorScreen = ({route, navigation}: Props) => {
             <BottomSheetView style={styles.bottomSheetContent}>
               <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-                <Text style={styles.bottomSheetTitle}>Enhance with AI</Text>
-                <Text style={styles.bottomSheetDescription}>
-                  Add details to make the content more specific
-                </Text>
-                <TextInput
-                  multiline
-                  numberOfLines={4}
-                  style={styles.contextInput}
-                  placeholder={getContextPlaceholder()}
-                  value={additionalContext}
-                  onChangeText={setAdditionalContext}
-                />
-                <TouchableOpacity
-                  style={styles.generateButton}
-                  onPress={handleGenerateWithContext}>
-                  <Text style={styles.generateButtonText}>
-                    Generate With AI
-                  </Text>
-                </TouchableOpacity>
+                <Text style={styles.bottomSheetTitle}>AI Assistant</Text>
+                
+                {transformStatus === 'idle' && (
+                  <>
+                    <Text style={styles.bottomSheetDescription}>
+                      Choose an action to improve your content instantly:
+                    </Text>
+                    <View style={{flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginTop: 15}}>
+                      <Button title="✨ Rewrite" onPress={() => handleTransformAction('rewrite')} />
+                      <Button title="✂️ Shorten" onPress={() => handleTransformAction('shorten')} />
+                      <Button title="📝 Expand" onPress={() => handleTransformAction('expand')} />
+                      <Button title="📊 Quantify" onPress={() => handleTransformAction('quantify')} />
+                    </View>
+                  </>
+                )}
+
+                {transformStatus === 'loading' && (
+                  <View style={{padding: 20, alignItems: 'center'}}>
+                    <Text style={{color: COLORS.text.secondary, fontSize: 16}}>✨ AI is thinking...</Text>
+                  </View>
+                )}
+
+                {transformStatus === 'preview' && transformResult && (
+                  <View style={{marginTop: 15}}>
+                    <Text style={{fontWeight: 'bold', marginBottom: 5, color: COLORS.text.secondary}}>Original:</Text>
+                    <Text style={{color: COLORS.text.secondary, marginBottom: 15}} numberOfLines={3}>{transformResult.original.replace(/<[^>]*>?/gm, '')}</Text>
+                    
+                    <Text style={{fontWeight: 'bold', marginBottom: 5, color: COLORS.primary}}>AI Suggestion:</Text>
+                    <Text style={{color: COLORS.text.primary, marginBottom: 20, fontSize: 16}}>{transformResult.transformed}</Text>
+                    
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', gap: 10}}>
+                      <View style={{flex: 1}}>
+                        <Button title="Discard" variant="outline" onPress={handleDiscardTransform} />
+                      </View>
+                      <View style={{flex: 1}}>
+                        <Button title="Accept" variant="primary" onPress={handleAcceptTransform} />
+                      </View>
+                    </View>
+                  </View>
+                )}
               </KeyboardAvoidingView>
             </BottomSheetView>
           </BottomSheet>

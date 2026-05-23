@@ -17,7 +17,7 @@ import {createStrengthsSlice} from './management/strengthSlice';
 import {createResumeSlice} from './slices/resumeSlice';
 import {RESUME_STORAGE_KEY} from '@/constants';
 export interface ResumeState {
-  resumes: Resume[];
+  resumes: Record<string, Resume>;
   activeResumeId: string;
   settings: Settings;
   previewVisible: boolean;
@@ -28,6 +28,7 @@ export interface ResumeState {
   addResume: (newResume: Resume) => string;
   deleteResume: (id: string) => void;
   updateResumeTemplateId: (id: string) => void;
+  duplicateResume: (id: string, newTitle?: string) => string;
   // Actions ----------------------------------------------------------------
   updateMetadata: (metadata: Partial<Metadata>) => void;
   updateBasics: (basics: Partial<Basics>) => void;
@@ -122,10 +123,10 @@ export interface ResumeState {
 export const useResumeStore = create<ResumeState>()(
   persist(
     (set, get) => ({
-      resumes: [],
+      resumes: {},
       activeResumeId: '',
       previewVisible: false,
-      togglePreviewVisible: () => set((state: any) => ({ previewVisible: !state.previewVisible })),
+      togglePreviewVisible: () => set(state => ({ previewVisible: !state.previewVisible })),
 
       settings: {
         atsOptimized: true,
@@ -141,44 +142,49 @@ export const useResumeStore = create<ResumeState>()(
       // Helper function to get active resume
       ...createResumeSlice(set, get),
       updateBasics: (basics: Partial<Basics>) =>
-        set(state => ({
-          resumes: state.resumes.map(resume =>
-            resume.metadata.id === state.activeResumeId
-              ? {
-                  ...resume,
-                  basics: {...resume.basics, ...basics},
-                  metadata: {
-                    ...resume.metadata,
-                    updatedAt: new Date().toISOString(),
-                  },
-                }
-              : resume,
-          ),
-        })),
+        set(state => {
+          const resume = state.resumes[state.activeResumeId];
+          if (!resume) return state;
+          return {
+            resumes: {
+              ...state.resumes,
+              [state.activeResumeId]: {
+                ...resume,
+                basics: {...resume.basics, ...basics},
+                metadata: {
+                  ...resume.metadata,
+                  updatedAt: new Date().toISOString(),
+                },
+              },
+            },
+          };
+        }),
 
       // handle section delete
       deleteSection: (type: SectionType) =>
-        set(state => ({
-          resumes: state.resumes.map(resume =>
-            resume.metadata.id === state.activeResumeId
-              ? {
-                  ...resume,
-                  sections: {
-                    ...resume.sections,
-                    [type]: {
-                      //@ts-ignore
-                      ...resume.sections[type],
-                      items: [],
-                    },
+        set(state => {
+          const resume = state.resumes[state.activeResumeId];
+          if (!resume) return state;
+          return {
+            resumes: {
+              ...state.resumes,
+              [state.activeResumeId]: {
+                ...resume,
+                sections: {
+                  ...resume.sections,
+                  [type]: {
+                    ...resume.sections[type as keyof typeof resume.sections],
+                    items: [],
                   },
-                  metadata: {
-                    ...resume.metadata,
-                    updatedAt: new Date().toISOString(),
-                  },
-                }
-              : resume,
-          ),
-        })),
+                },
+                metadata: {
+                  ...resume.metadata,
+                  updatedAt: new Date().toISOString(),
+                },
+              },
+            },
+          };
+        }),
 
       // Work Experience Actions
       ...createWorkSlice(set),

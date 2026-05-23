@@ -1,5 +1,5 @@
 type State = {
-  resumes: Resume[];
+  resumes: Record<string, Resume>;
   activeResumeId: string;
 };
 
@@ -17,88 +17,100 @@ type Actions = {
 
 export const createCustomSectionSlice = (set: any): Actions => ({
   addCustomSection: section =>
-    set((state: State) => ({
-      resumes: state.resumes.map(resume =>
-        resume.metadata.id === state.activeResumeId
-          ? {
-              ...resume,
-              sections: {
-                ...resume.sections,
-                customSections: [
-                  ...resume.sections.customSections,
-                  {
-                    ...section,
-                    type: 'custom',
-                    items: [],
-                    visible: true,
-                  },
-                ],
-              },
-              metadata: {
-                ...resume.metadata,
-                updatedAt: new Date().toISOString(),
-              },
-            }
-          : resume,
-      ),
-    })),
+    set((state: State) => {
+      const resume = state.resumes[state.activeResumeId];
+      if (!resume) return state;
+      return {
+        resumes: {
+          ...state.resumes,
+          [state.activeResumeId]: {
+            ...resume,
+            sections: {
+              ...resume.sections,
+              customSections: [
+                ...resume.sections.customSections,
+                {
+                  ...section,
+                  type: 'custom',
+                  items: [],
+                  visible: true,
+                },
+              ],
+            },
+            metadata: {
+              ...resume.metadata,
+              updatedAt: new Date().toISOString(),
+            },
+          },
+        },
+      };
+    }),
 
   updateCustomSection: (index, section) =>
-    set((state: State) => ({
-      resumes: state.resumes.map(resume =>
-        resume.metadata.id === state.activeResumeId
-          ? {
-              ...resume,
-              sections: {
-                ...resume.sections,
-                customSections: resume.sections.customSections.map((sec, i) =>
-                  i === index ? {...sec, ...section} : sec,
-                ),
-              },
-              metadata: {
-                ...resume.metadata,
-                updatedAt: new Date().toISOString(),
-              },
-            }
-          : resume,
-      ),
-    })),
+    set((state: State) => {
+      const resume = state.resumes[state.activeResumeId];
+      if (!resume) return state;
+      return {
+        resumes: {
+          ...state.resumes,
+          [state.activeResumeId]: {
+            ...resume,
+            sections: {
+              ...resume.sections,
+              customSections: resume.sections.customSections.map((sec, i) =>
+                i === index ? {...sec, ...section} : sec,
+              ),
+            },
+            metadata: {
+              ...resume.metadata,
+              updatedAt: new Date().toISOString(),
+            },
+          },
+        },
+      };
+    }),
 
   removeCustomSection: index =>
-    set((state: State) => ({
-      resumes: state.resumes.map(resume =>
-        resume.metadata.id === state.activeResumeId
-          ? {
-              ...resume,
-              sections: {
-                ...resume.sections,
-                customSections: resume.sections.customSections.filter(
-                  (_, i) => i !== index,
-                ),
-              },
-              metadata: {
-                ...resume.metadata,
-                updatedAt: new Date().toISOString(),
-              },
-            }
-          : resume,
-      ),
-    })),
+    set((state: State) => {
+      const resume = state.resumes[state.activeResumeId];
+      if (!resume) return state;
+      return {
+        resumes: {
+          ...state.resumes,
+          [state.activeResumeId]: {
+            ...resume,
+            sections: {
+              ...resume.sections,
+              customSections: resume.sections.customSections.filter(
+                (_, i) => i !== index,
+              ),
+            },
+            metadata: {
+              ...resume.metadata,
+              updatedAt: new Date().toISOString(),
+            },
+          },
+        },
+      };
+    }),
 
   toggleCustomSectionVisibility: (index, visible) =>
-    set((state: State) => ({
-      resumes: state.resumes.map(resume =>
-        resume.metadata.id === state.activeResumeId
-          ? {
-              ...resume,
-              sections: {
-                ...resume.sections,
-                customSections: resume.sections.customSections.map((sec, i) =>
-                  i === index ? {...sec, visible} : sec,
-                ),
-              },
-            }
-          : resume,
-      ),
-    })),
+    set((state: State) => {
+      const resume = state.resumes[state.activeResumeId];
+      if (!resume) return state;
+      return {
+        resumes: {
+          ...state.resumes,
+          [state.activeResumeId]: {
+            ...resume,
+            sections: {
+              ...resume.sections,
+              customSections: resume.sections.customSections.map((sec, i) =>
+                i === index ? {...sec, visible} : sec,
+              ),
+            },
+          },
+        },
+      };
+    }),
 });

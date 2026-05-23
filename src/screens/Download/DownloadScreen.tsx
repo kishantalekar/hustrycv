@@ -23,9 +23,7 @@ import {styles} from './DownloadScreen.styles';
 export const DownloadScreen = () => {
   const {resumes, activeResumeId} = useResumeStore();
   const {userName} = useAppStore();
-  const activeResume = resumes.find(
-    resume => resume.metadata.id === activeResumeId,
-  );
+  const activeResume = resumes[activeResumeId];
   const [downloadStarted, setDownloadStarted] = useState(false);
 
   const handleDownload = async () => {

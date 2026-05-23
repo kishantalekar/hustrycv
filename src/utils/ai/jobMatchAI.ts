@@ -8,13 +8,14 @@
  *  - Improved bullet point suggestions for existing work entries
  */
 
-import {callAIJson, fillPrompt} from './aiClient';
-import {JOB_TAILOR_PROMPT} from './prompts/index';
+import {AIService} from '@/services/ai';
+import {JOB_TAILOR_PROMPT, fillPrompt} from './prompts/index';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface ImprovedBullet {
   sectionTitle: string;
+  itemId?: string;
   original: string;
   improved: string;
 }
@@ -52,11 +53,13 @@ export const tailorResumeForJob = async (
       keywords: s.keywords,
     })),
     work: resume.sections?.work?.items?.map(w => ({
+      id: w.id,
       position: w.position,
       company: w.company,
       description: w.description,
     })),
     projects: resume.sections?.projects?.items?.map(p => ({
+      id: p.id,
       name: p.name,
       description: p.description,
     })),
@@ -67,7 +70,9 @@ export const tailorResumeForJob = async (
     resumeData: JSON.stringify(resumeSnapshot, null, 2),
   });
 
-  const result = await callAIJson<JobMatchResult>(prompt, 'jobMatchAI');
+  const aiService = AIService.getInstance();
+  const res = await aiService.execute<JobMatchResult>({ prompt, type: 'json' });
+  const result = res.data;
 
   // Validate and normalize
   return {

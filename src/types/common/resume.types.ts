@@ -88,7 +88,7 @@ export const createInitialResume = () => ({
       items: [],
     },
     publications: {
-      type: 'awards',
+      type: 'publications',
       visible: true,
       items: [],
     },
