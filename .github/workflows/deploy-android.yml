@@ -53,7 +53,7 @@ jobs:
       - name: Set up Ruby & Bundler
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '>= 2.6.10'
+          ruby-version: '3.2'
           working-directory: android
           bundler-cache: true
 
