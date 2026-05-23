@@ -25,36 +25,36 @@ subprojects { project ->
         if (project.hasProperty('android')) {
             project.android {
                 if (namespace == null || namespace.isEmpty()) {
-                    // Method 1: Extract package from Java/Kotlin source files
-                    def mainDir = project.file("src/main")
-                    if (mainDir.exists()) {
-                        def sourceFile = null
-                        project.fileTree(dir: mainDir, includes: ['**/*.java', '**/*.kt']).each { File f ->
-                            if (sourceFile == null && !f.path.contains("build/")) {
-                                sourceFile = f
-                            }
-                        }
-                        if (sourceFile != null) {
-                            def firstLineWithPackage = sourceFile.readLines('UTF-8').find { it.trim().startsWith("package ") }
-                            if (firstLineWithPackage) {
-                                namespace = firstLineWithPackage.replace("package ", "").replace(";", "").trim()
-                            }
+                    // Method 1: Extract package from AndroidManifest.xml
+                    def manifestFile = null
+                    try {
+                        manifestFile = project.file("src/main/AndroidManifest.xml")
+                    } catch (Exception e) {
+                        // ignore
+                    }
+                    if (manifestFile != null && manifestFile.exists()) {
+                        def manifestContent = manifestFile.getText('UTF-8')
+                        def matcher = manifestContent =~ /package="([^"]*)"/
+                        if (matcher.find()) {
+                            namespace = matcher.group(1)
                         }
                     }
-                    
-                    // Method 2: Extract package from AndroidManifest.xml if Method 1 did not find it
+
+                    // Method 2: Extract package from Java/Kotlin source files if Method 1 did not find it
                     if (namespace == null || namespace.isEmpty()) {
-                        def manifestFile = null
-                        try {
-                            manifestFile = project.file("src/main/AndroidManifest.xml")
-                        } catch (Exception e) {
-                            // ignore
-                        }
-                        if (manifestFile != null && manifestFile.exists()) {
-                            def manifestContent = manifestFile.getText('UTF-8')
-                            def matcher = manifestContent =~ /package="([^"]*)"/
-                            if (matcher.find()) {
-                                namespace = matcher.group(1)
+                        def mainDir = project.file("src/main")
+                        if (mainDir.exists()) {
+                            def sourceFile = null
+                            project.fileTree(dir: mainDir, includes: ['**/*.java', '**/*.kt']).each { File f ->
+                                if (sourceFile == null && !f.path.contains("build/")) {
+                                    sourceFile = f
+                                }
+                            }
+                            if (sourceFile != null) {
+                                def firstLineWithPackage = sourceFile.readLines('UTF-8').find { it.trim().startsWith("package ") }
+                                if (firstLineWithPackage) {
+                                    namespace = firstLineWithPackage.replace("package ", "").replace(";", "").trim()
+                                }
                             }
                         }
                     }
@@ -64,21 +64,6 @@ subprojects { project ->
                         namespace = "com." + project.name.toLowerCase().replaceAll(/[^a-z0-9_]/, '_')
                     }
                 }
-            }
-            project.tasks.register("fixManifestsAndNamespace") {
-                doLast {
-                    def manifests = fileTree(dir: project.projectDir, includes: ['**/AndroidManifest.xml'])
-                    manifests.each { File manifestFile ->
-                        def manifestContent = manifestFile.getText('UTF-8')
-                        if (manifestContent.contains('package=')) {
-                            manifestContent = manifestContent.replaceAll(/package="[^"]*"/, '')
-                            manifestFile.write(manifestContent, 'UTF-8')
-                        }
-                    }
-                }
-            }
-            project.tasks.matching { it.name.startsWith("preBuild") }.all {
-                dependsOn project.tasks.named("fixManifestsAndNamespace")
             }
         }
     }
