@@ -3,6 +3,7 @@ import {Header} from '@/components/Header';
 import {REORDER_TIPS_SHOWN, SWIPE_TIPS_SHOWN} from '@/constants';
 import type {AppNavigationProp} from '@/navigation/AppNavigator';
 import {useResumeStore} from '@/store/useResumeStore';
+import {selectWorkSection} from '@/store/selectors/resumeSelectors';
 import {globalStyles} from '@/styles';
 import {COLORS} from '@/theme';
 import {useNavigation} from '@react-navigation/native';
@@ -21,13 +22,12 @@ import {styles} from './WorkExperienceEditor.styles';
 export const WorkExperienceEditor = () => {
   const navigation = useNavigation<AppNavigationProp>();
   const {
-    getActiveResume,
     addWorkExperience,
     updateWorkExperience,
     removeWorkExperience,
     updateAllWorkExperiences,
   } = useResumeStore();
-  const workExperience = getActiveResume().sections.work;
+  const workExperience = useResumeStore(selectWorkSection);
   const [isDraggableListVisible, setIsDraggableListVisible] = useState(false);
   const [expandedItems, setExpandedItems] = useState<{[key: string]: boolean}>(
     {},
@@ -61,6 +61,7 @@ export const WorkExperienceEditor = () => {
           <View style={globalStyles.keyboardAvoidingView}>
             <Header
               title="Work Experience"
+              showPreviewButton={true}
               rightComponent={
                 <Icon
                   name="drag-indicator"
@@ -71,7 +72,7 @@ export const WorkExperienceEditor = () => {
               onRightPress={handleDragIconPress}
             />
             <ScrollView style={styles.container}>
-              {workExperience?.items.length > 0 && (
+              {(workExperience?.items?.length ?? 0) > 0 && (
                 <TipsCard
                   tips={TipSets.swipe}
                   variant="default"
@@ -82,7 +83,7 @@ export const WorkExperienceEditor = () => {
                 />
               )}
 
-              {workExperience?.items.length > 2 && (
+              {(workExperience?.items?.length ?? 0) > 2 && (
                 <TipsCard
                   tips={TipSets.reorder}
                   variant="default"

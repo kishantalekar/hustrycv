@@ -28,18 +28,34 @@ export const styles = StyleSheet.create({
   tabBarItem: {
     paddingTop: SPACING.xs,
   },
-  placeholderContainer: {
-    flex: 1,
+  slideOutPanel: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: 10000,
+    backgroundColor: '#FFFFFF',
+  },
+  previewHeader: {
+    height: 56,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: COLORS.background.primary,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.border,
+    paddingHorizontal: SPACING.sm,
+  },
+  closeButton: {
+    width: 48,
+    height: 48,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: SPACING.lg,
-    backgroundColor: COLORS.background.primary,
   },
-  placeholderText: {
-    fontFamily: FONTS.FIRA_SANS.REGULAR,
-    fontSize: TYPOGRAPHY.size.md,
-    color: COLORS.text.secondary,
-    textAlign: 'center',
-    lineHeight: TYPOGRAPHY.lineHeight.md,
+  previewTitle: {
+    fontSize: 18,
+    fontFamily: FONTS.FIRA_SANS.MEDIUM,
+    color: COLORS.text.primary,
   },
 });

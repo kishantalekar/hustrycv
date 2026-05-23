@@ -47,7 +47,6 @@ export const DownloadScreen = () => {
       Alert.alert('Success', 'Resume saved successfully!');
     } catch (error) {
       Alert.alert('Error', 'Failed to save resume. Please try again.');
-      console.log('Error saving resume:', error);
       Sentry.captureException(error, {
         tags: {
           component: 'DownloadScreen',
@@ -67,7 +66,7 @@ export const DownloadScreen = () => {
       posthog.capture('share_clicked', {
         resume_name: activeResume?.basics?.name || 'My Resume',
         template: getTemplateById(activeResume?.metadata?.templateId).name,
-        resume_id: activeResume?.metadata?.id,
+        resume_id: activeResume?.metadata?.id || '',
         user_name: userName || 'Anonymous',
       });
 
@@ -87,7 +86,7 @@ export const DownloadScreen = () => {
     posthog.capture('email_clicked', {
       resume_name: activeResume?.basics?.name || 'My Resume',
       template: getTemplateById(activeResume?.metadata?.templateId).name,
-      resume_id: activeResume?.metadata?.id,
+      resume_id: activeResume?.metadata?.id || '',
       user_name: userName || 'Anonymous',
     });
     Alert.alert('Coming Soon', 'Email functionality will be available soon!');
@@ -187,7 +186,7 @@ export const DownloadScreen = () => {
               onPress={handleShare}
               activeOpacity={0.7}>
               <View
-                style={[styles.iconCircle, {backgroundColor: COLORS.accent}]}>
+                style={[styles.iconCircle, {backgroundColor: COLORS.accent.default}]}>
                 <Icon
                   name="share-variant"
                   size={24}

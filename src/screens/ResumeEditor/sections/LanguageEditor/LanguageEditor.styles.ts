@@ -95,7 +95,7 @@ export const styles = StyleSheet.create({
     fontFamily: FONTS.FIRA_SANS.MEDIUM,
   },
   addButton: {
-    backgroundColor: COLORS.accent,
+    backgroundColor: COLORS.accent.default,
   },
   addButtonText: {
     color: 'white',

@@ -20,13 +20,14 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {styles} from './Dashboard.styles';
 import {renderResumeItem} from './ResumeItem';
 import {checkForChangeLogUpdates} from '@/utils/changelogUtils';
+import type {ChangeLogItem} from '@/constants/changelog';
 
 export const Dashboard = () => {
   const navigation = useNavigation<NavigationProp<any>>();
   const {setActiveResume, resumes, addResume, deleteResume} = useResumeStore();
   const {userName} = useAppStore();
   const [changelogVisible, setChangelogVisible] = useState(false);
-  const [unseenChanges, setUnseenChanges] = useState([]);
+  const [unseenChanges, setUnseenChanges] = useState<ChangeLogItem[]>([]);
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   useEffect(() => {
@@ -98,7 +99,7 @@ export const Dashboard = () => {
     setShowDropdown(false);
   };
 
-  const hanldeImportResume = () => {
+  const handleImportResume = () => {
     posthog.capture('import_resume_initiated', {
       user_name: userName || 'Anonymous',
     });
@@ -124,7 +125,7 @@ export const Dashboard = () => {
           onClose={() => setShowDropdown(false)}
           onCreateManual={handleCreateManual}
           onUploadResume={handleUploadResume}
-          onImportResume={hanldeImportResume}
+          onImportResume={handleImportResume}
         />
 
         <FlatList

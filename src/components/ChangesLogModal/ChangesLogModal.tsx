@@ -12,7 +12,7 @@ import {Typography, TypographyVariant} from '../Typography';
 interface ChangesLogModalProps {
   isVisible?: boolean;
   onClose?: () => void;
-  bottomSheetRef: React.Ref<BottomSheet>;
+  bottomSheetRef: React.RefObject<BottomSheet | null> | any;
   changes: ChangeLogItem[];
 }
 

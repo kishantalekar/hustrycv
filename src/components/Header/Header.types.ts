@@ -14,4 +14,5 @@ export interface HeaderProps {
   editable?: boolean;
   textInputLabel?: string;
   customLeftComponent?: ReactNode;
+  showPreviewButton?: boolean;
 }

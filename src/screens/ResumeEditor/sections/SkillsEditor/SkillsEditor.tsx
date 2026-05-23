@@ -2,6 +2,7 @@ import {Button, TipsCard, TipSets} from '@/components';
 import {Header} from '@/components/Header';
 import {REORDER_TIPS_SHOWN, SWIPE_TIPS_SHOWN} from '@/constants';
 import {useResumeStore} from '@/store/useResumeStore';
+import {selectSkillsSection} from '@/store/selectors/resumeSelectors';
 import {globalStyles} from '@/styles/globalStyles';
 import {COLORS} from '@/theme';
 import React, {useCallback, useMemo, useState} from 'react';
@@ -17,9 +18,9 @@ import {SkillsCard} from './SkillsCard';
 import {styles} from './SkillsEditor.styles';
 
 export const SkillsEditor = () => {
-  const {getActiveResume, addSkill, updateSkill, removeSkill, updateAllSkills} =
+  const {addSkill, updateSkill, removeSkill, updateAllSkills} =
     useResumeStore();
-  const skills = getActiveResume().sections.skills;
+  const skills = useResumeStore(selectSkillsSection);
   const [expandedItemId, setExpandedItemId] = useState<string>('');
   const [isDraggableListVisible, setIsDraggableListVisible] = useState(false);
 
@@ -35,7 +36,7 @@ export const SkillsEditor = () => {
   }, []);
 
   const renderItem = useCallback(
-    ({item, drag, isActive}) => (
+    ({item, drag, isActive}: {item: SkillItem; drag: () => void; isActive: boolean}) => (
       <View style={styles.section}>
         <SkillsCard
           key={item.id}
@@ -62,7 +63,7 @@ export const SkillsEditor = () => {
     ],
   );
   const handleDragEnd = useCallback(
-    ({data}) => {
+    ({data}: {data: SkillItem[]}) => {
       updateAllSkills(data);
     },
     [updateAllSkills],
@@ -76,6 +77,7 @@ export const SkillsEditor = () => {
           style={globalStyles.keyboardAvoidingView}>
           <Header
             title="Skills"
+            showPreviewButton={true}
             rightComponent={
               <Icon
                 name="drag-indicator"

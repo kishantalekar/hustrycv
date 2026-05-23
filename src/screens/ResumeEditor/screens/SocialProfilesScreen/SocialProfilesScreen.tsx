@@ -50,7 +50,7 @@ export const SocialProfilesScreen = () => {
       iconVariant: 'material',
     };
     updateBasics({socials: [...socials, newSocial]});
-    setExpandedId(newSocial.id);
+    setExpandedId(newSocial.id || null);
   };
 
   const toggleExpand = (id: string) => {

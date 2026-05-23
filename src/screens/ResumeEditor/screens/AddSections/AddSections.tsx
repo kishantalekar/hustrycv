@@ -19,7 +19,7 @@ export const AddSections = () => {
     return !resumeSections?.includes(section.id);
   });
 
-  const handlePress = item => {
+  const handlePress = (item: any) => {
     if (resumeSections?.includes(item.id)) return;
     if (resumeSections) {
       updateMetadata({

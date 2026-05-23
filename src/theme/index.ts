@@ -7,7 +7,12 @@ export const COLORS = {
   // Primary Colors (10% usage)
   primary: '#FA6607', // Orange - Main CTAs
   secondary: '#00C2C4', // Teal - Secondary actions
-  accent: '#1565C0', // Deep Blue - Navigation, info
+  accent: {
+    default: '#1565C0', // Deep Blue - Navigation, info
+    warning: '#FFCC00', // Amber - warnings
+    error: '#FF3B30',   // Red - errors
+    success: '#4CAF50', // Green - success
+  },
   success: '#4CAF50', // Green - Success actions
   white: '#FFFFFF',
 
@@ -17,8 +22,9 @@ export const COLORS = {
   dangerText: '#FFFFFF',
   // Background Colors (60% usage)
   background: {
-    primary: '#F9FAFB', // Main surface color
+    primary: '#F9FAFB',   // Main surface color
     secondary: '#FFFFFF', // Card backgrounds
+    tertiary: '#EDF2F7',  // Muted backgrounds (progress bars, chips)
   },
 
   // Text Colors (30% usage)
@@ -50,6 +56,7 @@ export const COLORS = {
 
 export const SPACING = {
   // Base spacing units
+  xxs: 2,
   xs: 4,
   sm: 8,
   md: 16,

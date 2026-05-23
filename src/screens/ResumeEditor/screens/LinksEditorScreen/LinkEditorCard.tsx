@@ -30,7 +30,7 @@ export function LinkEditorCard({
       <View style={styles.linkUrlRow}>
         <CustomIcon
           variant={link.iconVariant}
-          name={link.icon}
+          name={link.icon || 'link'}
           size={14}
           color={'grey'}
         />
@@ -44,7 +44,7 @@ export function LinkEditorCard({
   return (
     <CollapsibleCard
       expanded={expanded}
-      onToggle={() => toggleExpand(link.id)}
+      onToggle={() => toggleExpand(link.id || '')}
       header={header}
       handleDelete={() => handleRemoveLink(index)}>
       <View>
@@ -110,7 +110,7 @@ export function LinkEditorCard({
           onPress={() => openIconSelector(index, link)}>
           <CustomIcon
             variant={link.iconVariant}
-            name={link.icon}
+            name={link.icon || 'link'}
             size={20}
             color={COLORS.text.secondary}
           />

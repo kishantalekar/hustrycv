@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
   dragButton: {
     padding: 8,
     borderRadius: 20,
-    backgroundColor: COLORS.background,
+    backgroundColor: COLORS.background.primary,
   },
   sectionTitle: {
     fontSize: 20,

@@ -20,6 +20,8 @@ export interface ResumeState {
   resumes: Resume[];
   activeResumeId: string;
   settings: Settings;
+  previewVisible: boolean;
+  togglePreviewVisible: () => void;
 
   getActiveResume: () => Resume;
   setActiveResume: (id: string) => void;
@@ -122,6 +124,8 @@ export const useResumeStore = create<ResumeState>()(
     (set, get) => ({
       resumes: [],
       activeResumeId: '',
+      previewVisible: false,
+      togglePreviewVisible: () => set((state: any) => ({ previewVisible: !state.previewVisible })),
 
       settings: {
         atsOptimized: true,
@@ -136,7 +140,7 @@ export const useResumeStore = create<ResumeState>()(
       },
       // Helper function to get active resume
       ...createResumeSlice(set, get),
-      updateBasics: basics =>
+      updateBasics: (basics: Partial<Basics>) =>
         set(state => ({
           resumes: state.resumes.map(resume =>
             resume.metadata.id === state.activeResumeId
@@ -153,7 +157,7 @@ export const useResumeStore = create<ResumeState>()(
         })),
 
       // handle section delete
-      deleteSection: type =>
+      deleteSection: (type: SectionType) =>
         set(state => ({
           resumes: state.resumes.map(resume =>
             resume.metadata.id === state.activeResumeId
@@ -197,11 +201,11 @@ export const useResumeStore = create<ResumeState>()(
       //languages Action
       ...createLanguageSlice(set),
       // Settings Actions
-      updateSettings: settings =>
+      updateSettings: (settings: Partial<Settings>) =>
         set(state => ({
           settings: {...state.settings, ...settings},
         })),
-    }),
+    }) as any,
     {
       name: RESUME_STORAGE_KEY,
       storage: createJSONStorage(() => AsyncStorage),

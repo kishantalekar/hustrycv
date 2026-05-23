@@ -69,7 +69,7 @@ export const TextInput: React.FC<TextInputProps> = ({
             disabled={!onRightIconPress}
             style={styles.iconContainer}>
             <Icon
-              name={rightIcon}
+              name={rightIcon as any}
               size={20}
               color={error ? COLORS.status.error : COLORS.text.secondary}
             />

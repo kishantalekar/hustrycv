@@ -3,6 +3,7 @@ import {Header} from '@/components/Header';
 import {REORDER_TIPS_SHOWN, SWIPE_TIPS_SHOWN} from '@/constants';
 import {AppNavigationProp} from '@/navigation/AppNavigator';
 import {useResumeStore} from '@/store/useResumeStore';
+import {selectReferencesSection} from '@/store/selectors/resumeSelectors';
 import {globalStyles} from '@/styles/globalStyles';
 import {COLORS} from '@/theme';
 import {useNavigation} from '@react-navigation/native';
@@ -23,13 +24,12 @@ import {styles} from './ReferenceEditor.styles';
 export const ReferenceEditor = () => {
   const navigation = useNavigation<AppNavigationProp>();
   const {
-    getActiveResume,
     addReference,
     updateReference,
     removeReference,
     updateAllReferences,
   } = useResumeStore();
-  const references = getActiveResume().sections.references;
+  const references = useResumeStore(selectReferencesSection);
   const [expandedItemId, setExpandedItemId] = useState<string>('');
   const [isDraggableListVisible, setIsDraggableListVisible] = useState(false);
 
@@ -51,6 +51,7 @@ export const ReferenceEditor = () => {
           style={globalStyles.keyboardAvoidingView}>
           <Header
             title="References"
+            showPreviewButton={true}
             rightComponent={
               <Icon
                 name="drag-indicator"
@@ -61,7 +62,7 @@ export const ReferenceEditor = () => {
             onRightPress={handleDragIconPress}
           />
           <ScrollView style={styles.container}>
-            {references?.items.length > 0 && (
+            {(references?.items?.length ?? 0) > 0 && (
               <TipsCard
                 tips={TipSets.swipe}
                 variant="default"
@@ -71,7 +72,7 @@ export const ReferenceEditor = () => {
                 animationType="fade"
               />
             )}
-            {references?.items.length > 2 && (
+            {(references?.items?.length ?? 0) > 2 && (
               <TipsCard
                 tips={TipSets.reorder}
                 variant="default"

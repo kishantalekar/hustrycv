@@ -59,7 +59,7 @@ export function ProjectLinksScreen({
       ...project,
       links: [...(projectLinks || []), newLink],
     });
-    setExpandedId(newLink.id);
+    setExpandedId(newLink.id || null);
   };
 
   const toggleExpand = (id: string) => {

@@ -1,6 +1,7 @@
 export * from './CertificationEditor/CertificationsEditor';
 export * from './EducationEditor/EducationEditor';
 export * from './HobbiesEditor/HobbiesEditor';
+export * from './LanguageEditor/LanguageEditor';
 export * from './PersonalInfoEditor/PersonalInfoEditor';
 export * from './ProjectsEditor/ProjectsEditor';
 export * from './ReferenceEditor/ReferenceEditor';

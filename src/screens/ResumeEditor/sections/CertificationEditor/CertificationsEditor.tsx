@@ -2,6 +2,7 @@ import {Button, TipsCard, TipSets} from '@/components';
 import {Header} from '@/components/Header';
 import {REORDER_TIPS_SHOWN, SWIPE_TIPS_SHOWN} from '@/constants';
 import {useResumeStore} from '@/store/useResumeStore';
+import {selectCertificationsSection} from '@/store/selectors/resumeSelectors';
 import {globalStyles} from '@/styles/globalStyles';
 import {COLORS} from '@/theme';
 import React, {useState} from 'react';
@@ -18,13 +19,12 @@ import {CertificationCard} from './components/CertificationCard';
 
 export const CertificationsEditor = () => {
   const {
-    getActiveResume,
     addCertification,
     removeCertification,
     updateCertification,
     updateAllCertifications,
   } = useResumeStore();
-  const certifications = getActiveResume().sections.certifications;
+  const certifications = useResumeStore(selectCertificationsSection);
   const [expandedItemId, setExpandedItemId] = useState<string>('');
   const [isDraggableListVisible, setIsDraggableListVisible] = useState(false);
 
@@ -43,7 +43,8 @@ export const CertificationsEditor = () => {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={globalStyles.keyboardAvoidingView}>
           <Header
-            title="Education"
+            title="Certifications"
+            showPreviewButton={true}
             rightComponent={
               <Icon
                 name="drag-indicator"
@@ -54,7 +55,7 @@ export const CertificationsEditor = () => {
             onRightPress={handleDragIconPress}
           />
           <ScrollView style={styles.container}>
-            {certifications?.items.length > 0 && (
+            {(certifications?.items?.length ?? 0) > 0 && (
               <TipsCard
                 tips={TipSets.swipe}
                 variant="default"
@@ -64,7 +65,7 @@ export const CertificationsEditor = () => {
                 animationType="fade"
               />
             )}
-            {certifications?.items.length > 2 && (
+            {(certifications?.items?.length ?? 0) > 2 && (
               <TipsCard
                 tips={TipSets.reorder}
                 variant="default"

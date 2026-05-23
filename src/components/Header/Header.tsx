@@ -8,6 +8,9 @@ import {CustomIcon} from '../CustomIcon';
 import {TextInput} from '../TextInput';
 import {styles} from './Header.styles';
 import {HeaderProps} from './Header.types';
+import {useResumeStore} from '@/store/useResumeStore';
+import {FEATURE_FLAGS} from '@/constants';
+
 
 export const Header: React.FC<HeaderProps> = ({
   title,
@@ -22,6 +25,7 @@ export const Header: React.FC<HeaderProps> = ({
   onTitleChange,
   editable = false,
   customLeftComponent,
+  showPreviewButton = false,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [titleValue, setTitleValue] = useState(title);
@@ -82,18 +86,28 @@ export const Header: React.FC<HeaderProps> = ({
           />
         )}
       </View>
-      {customLeftComponent ?? (
-        <TouchableOpacity
-          style={styles.iconContainer}
-          onPress={onRightPress}
-          disabled={!rightIcon && !rightComponent}>
-          {rightIcon ? (
-            <Icon name={rightIcon} size={24} color={COLORS.text.primary} />
-          ) : (
-            rightComponent
-          )}
-        </TouchableOpacity>
-      )}
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        {showPreviewButton && FEATURE_FLAGS.ENABLE_NEW_EDITOR_NAV && (
+          <TouchableOpacity
+            style={styles.iconContainer}
+            onPress={() => useResumeStore.getState().togglePreviewVisible()}>
+            <Icon name="visibility" size={24} color={COLORS.primary} />
+          </TouchableOpacity>
+        )}
+        {customLeftComponent ?? (
+          (rightIcon || rightComponent) ? (
+            <TouchableOpacity
+              style={styles.iconContainer}
+              onPress={onRightPress}>
+              {rightIcon ? (
+                <Icon name={rightIcon as any} size={24} color={COLORS.text.primary} />
+              ) : (
+                rightComponent
+              )}
+            </TouchableOpacity>
+          ) : null
+        )}
+      </View>
     </View>
   );
 };

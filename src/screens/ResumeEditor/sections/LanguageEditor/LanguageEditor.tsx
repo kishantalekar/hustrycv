@@ -2,6 +2,7 @@ import {Button, TipsCard, TipSets} from '@/components';
 import {Header} from '@/components/Header';
 import {REORDER_TIPS_SHOWN, SWIPE_TIPS_SHOWN} from '@/constants';
 import {useResumeStore} from '@/store/useResumeStore';
+import {selectLanguagesSection} from '@/store/selectors/resumeSelectors';
 import {globalStyles} from '@/styles/globalStyles';
 import {COLORS} from '@/theme';
 import React, {useCallback, useMemo, useState} from 'react';
@@ -13,17 +14,20 @@ import {
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {LanguageCard} from './LanguageCard';
 import {styles} from './LanguageEditor.styles';
-import {SkillsCard} from './SkillsCard';
 
 export const LanguageEditor = () => {
-  const {getActiveResume, addSkill, updateSkill, removeSkill, updateAllSkills} =
-    useResumeStore();
-  const skills = getActiveResume().sections.skills;
+  const {
+    addLanguage,
+    updateLanguage,
+    removeLanguage,
+    updateAllLanguage,
+  } = useResumeStore();
+
+  const languages = useResumeStore(selectLanguagesSection);
   const [expandedItemId, setExpandedItemId] = useState<string>('');
   const [isDraggableListVisible, setIsDraggableListVisible] = useState(false);
-
-  const [newKeyword, setNewKeyword] = useState('');
 
   const toggleExpand = useCallback((id: string) => {
     setExpandedItemId(prev => (prev === id ? '' : id));
@@ -35,17 +39,15 @@ export const LanguageEditor = () => {
   }, []);
 
   const renderItem = useCallback(
-    ({item, drag, isActive}) => (
+    ({item, drag, isActive}: {item: LanguageItem; drag: () => void; isActive: boolean}) => (
       <View style={styles.section}>
-        <SkillsCard
+        <LanguageCard
           key={item.id}
-          skill={item}
+          language={item}
           expandedItemId={expandedItemId}
           toggleExpand={toggleExpand}
-          updateSkill={updateSkill}
-          removeSkill={removeSkill}
-          newKeyword={newKeyword}
-          setNewKeyword={setNewKeyword}
+          updateLanguage={updateLanguage}
+          removeLanguage={removeLanguage}
           drag={drag}
           isActive={isActive}
           isDraggableListVisible={isDraggableListVisible}
@@ -55,19 +57,24 @@ export const LanguageEditor = () => {
     [
       expandedItemId,
       isDraggableListVisible,
-      newKeyword,
-      removeSkill,
+      removeLanguage,
       toggleExpand,
-      updateSkill,
+      updateLanguage,
     ],
   );
+
   const handleDragEnd = useCallback(
-    ({data}) => {
-      updateAllSkills(data);
+    ({data}: {data: LanguageItem[]}) => {
+      updateAllLanguage(data);
     },
-    [updateAllSkills],
+    [updateAllLanguage],
   );
-  const skillItems = useMemo(() => skills?.items || [], [skills?.items]);
+
+  const languageItems = useMemo(
+    () => languages?.items || [],
+    [languages?.items],
+  );
+
   return (
     <SafeAreaView style={globalStyles.keyboardAvoidingView}>
       <GestureHandlerRootView>
@@ -75,7 +82,8 @@ export const LanguageEditor = () => {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={globalStyles.keyboardAvoidingView}>
           <Header
-            title="Skills"
+            title="Languages"
+            showPreviewButton={true}
             rightComponent={
               <Icon
                 name="drag-indicator"
@@ -86,7 +94,7 @@ export const LanguageEditor = () => {
             onRightPress={handleDragIconPress}
           />
           <ScrollView style={styles.container}>
-            {skillItems?.length > 0 && (
+            {languageItems?.length > 0 && (
               <TipsCard
                 tips={TipSets.swipe}
                 variant="default"
@@ -96,7 +104,7 @@ export const LanguageEditor = () => {
                 animationType="fade"
               />
             )}
-            {skillItems?.length > 2 && (
+            {languageItems?.length > 2 && (
               <TipsCard
                 tips={TipSets.reorder}
                 variant="default"
@@ -108,7 +116,7 @@ export const LanguageEditor = () => {
             )}
             <NestableScrollContainer>
               <NestableDraggableFlatList
-                data={skillItems}
+                data={languageItems}
                 keyExtractor={item => item.id}
                 renderItem={renderItem}
                 onDragEnd={handleDragEnd}
@@ -116,12 +124,11 @@ export const LanguageEditor = () => {
             </NestableScrollContainer>
             <View style={styles.section}>
               <Button
-                title="Add New Skill"
+                title="Add Language"
                 onPress={() => {
-                  const id = addSkill({
+                  const id = addLanguage({
                     name: '',
-                    level: 'intermediate',
-                    keywords: [],
+                    level: 'Intermediate',
                   });
                   setExpandedItemId(id);
                 }}

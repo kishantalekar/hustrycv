@@ -99,4 +99,4 @@ export const createInitialResume = () => ({
     },
     customSections: [],
   },
-});
+} as unknown as Resume);

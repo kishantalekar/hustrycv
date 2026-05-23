@@ -66,5 +66,5 @@ export const CustomIcon: React.FC<CustomIconProps> = ({
     svg: MaterialIcons,
   }[variant];
 
-  return <IconComponent name={name} size={size} color={color} {...props} />;
+  return <IconComponent name={name as any} size={size} color={color} {...props} />;
 };

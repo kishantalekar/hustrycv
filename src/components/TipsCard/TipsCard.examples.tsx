@@ -167,7 +167,7 @@ export const ScreenSpecificExamples = {
     <TipsCard
       tips={TipSets.preview}
       variant="floating"
-      position="floating"
+      position="inline"
       dismissible={true}
       autoHide={true}
       autoHideDelay={5000}

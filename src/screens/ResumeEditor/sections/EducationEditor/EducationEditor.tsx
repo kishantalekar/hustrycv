@@ -2,6 +2,7 @@ import {Button, TipsCard, TipSets} from '@/components';
 import {Header} from '@/components/Header';
 import {REORDER_TIPS_SHOWN, SWIPE_TIPS_SHOWN} from '@/constants';
 import {useResumeStore} from '@/store/useResumeStore';
+import {selectEducationSection} from '@/store/selectors/resumeSelectors';
 import {globalStyles} from '@/styles/globalStyles';
 import {COLORS} from '@/theme';
 import React, {useState} from 'react';
@@ -18,13 +19,12 @@ import {styles} from './EducationEditor.styles';
 
 export const EducationEditor = () => {
   const {
-    getActiveResume,
     addEducation,
     updateEducation,
     updateAllEducation,
     removeEducation,
   } = useResumeStore();
-  const education = getActiveResume().sections.education;
+  const education = useResumeStore(selectEducationSection);
   const [expandedItems, setExpandedItems] = useState<{[key: string]: boolean}>(
     {},
   );
@@ -56,6 +56,7 @@ export const EducationEditor = () => {
           style={globalStyles.keyboardAvoidingView}>
           <Header
             title="Education"
+            showPreviewButton={true}
             rightComponent={
               <Icon
                 name="drag-indicator"
@@ -66,7 +67,7 @@ export const EducationEditor = () => {
             onRightPress={handleDragIconPress}
           />
           <ScrollView style={styles.container}>
-            {education?.items.length > 0 && (
+            {(education?.items?.length ?? 0) > 0 && (
               <TipsCard
                 tips={TipSets.swipe}
                 variant="default"
@@ -77,7 +78,7 @@ export const EducationEditor = () => {
               />
             )}
 
-            {education?.items.length > 2 && (
+            {(education?.items?.length ?? 0) > 2 && (
               <TipsCard
                 tips={TipSets.reorder}
                 variant="default"

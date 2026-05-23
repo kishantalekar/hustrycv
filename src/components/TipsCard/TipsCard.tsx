@@ -110,7 +110,7 @@ export const TipsCard: React.FC<TipsCardProps> = ({
   }
 
   const getContainerStyle = () => {
-    const baseStyle = [
+    const baseStyle: any[] = [
       variant === 'compact'
         ? styles.tipsCardCompact
         : variant === 'floating'

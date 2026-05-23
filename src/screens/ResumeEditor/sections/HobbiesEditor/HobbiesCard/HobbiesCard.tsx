@@ -17,7 +17,6 @@ interface HobbiesCardProps {
 }
 export const HobbiesCard = ({
   hobbie,
-  onPress,
   toggleExpand,
   expandedItemId,
   updateHobbie,

@@ -1,6 +1,16 @@
-import {getFontSize} from '../templates/Professional/utils/formatDate';
+const FONT_SIZES = {
+  xxs: 8,
+  xs: 10,
+  s: 12,
+  m: 14,
+  l: 16,
+  xl: 18,
+  xxl: 20,
+};
 
-export const updatedMockResumeData: Resume = {
+export const getFontSize = (size: string) => FONT_SIZES[size as keyof typeof FONT_SIZES] || 14;
+
+export const updatedMockResumeData = {
   metadata: {
     id: '06193fc2-7b5d-4205-a281-4a83f31668ce',
     templateId: 'professional',
@@ -290,10 +300,10 @@ export const updatedMockResumeData: Resume = {
     },
     dateFormat: 'dd/mm/yyyy',
   },
-};
+} as unknown as Resume;
 
 // New mock data for the elegant template
-export const elegantMockResumeData: Resume = {
+export const elegantMockResumeData = {
   metadata: {
     id: 'elegant-template-001',
     templateId: 'elegant',
@@ -523,4 +533,4 @@ export const elegantMockResumeData: Resume = {
     },
     dateFormat: 'mm/dd/yyyy',
   },
-};
+} as unknown as Resume;

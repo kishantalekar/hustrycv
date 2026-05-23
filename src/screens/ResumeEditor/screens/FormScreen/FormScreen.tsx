@@ -1,12 +1,15 @@
 import {posthog} from '@/analytics/posthog/PostHog';
-import {Button, Header, RightActions} from '@/components';
+import {Button, Header, RightActions, ResumePreview} from '@/components';
+import BottomSheet from '@gorhom/bottom-sheet';
 import {FormScreens, RootScreens} from '@/navigation/constants';
 import {useAppStore} from '@/store/useAppStore';
 import {useResumeStore} from '@/store/useResumeStore';
+import {selectActiveResume} from '@/store/selectors/resumeSelectors';
 import {globalStyles} from '@/styles/globalStyles';
 import {COLORS, SPACING} from '@/theme';
 import {navigate} from '@/utils/navigation';
 import {showAlert} from '@/utils/utils';
+import {FEATURE_FLAGS} from '@/constants';
 import React, {useEffect, useState} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {
@@ -71,13 +74,21 @@ export const sections: SectionsInterface[] = [
     title: 'References',
     screenName: 'References',
   },
+  {
+    id: 'languages',
+    title: 'Languages',
+    screenName: 'Languages',
+  },
 ];
 
 const FormScreen = () => {
-  const {updateMetadata, getActiveResume, deleteSection} = useResumeStore();
+  const {updateMetadata, deleteSection} = useResumeStore();
+  const activeResume = useResumeStore(selectActiveResume);
   const {userName} = useAppStore();
-  const activeResume = getActiveResume();
   const metadata = activeResume?.metadata;
+  
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const bottomSheetRef = React.useRef<BottomSheet>(null);
 
   function loadSections() {
     const resumeSections = metadata?.sectionOrder;
@@ -130,6 +141,14 @@ const FormScreen = () => {
           iconVariant="octicon"
           editable
           onTitleChange={newTitle => updateMetadata({title: newTitle})}
+          rightIcon="remove-red-eye"
+          onRightPress={() => {
+            if (FEATURE_FLAGS.ENABLE_NEW_EDITOR_NAV) {
+              useResumeStore.getState().togglePreviewVisible();
+            } else {
+              setIsPreviewOpen(true);
+            }
+          }}
         />
         {/* <ScrollView
           nestedScrollEnabled
@@ -160,9 +179,6 @@ const FormScreen = () => {
             // ListFooterComponentStyle={{marginBottom: 40}}
             renderItem={({item, drag, isActive, getIndex}) => {
               const isFirstItem = getIndex() === 0;
-              if (getIndex() === 0) {
-                console.log(item.title);
-              }
               const expanded = isFirstItem ? true : isActive;
               return (
                 <SwipeCard
@@ -197,13 +213,26 @@ const FormScreen = () => {
             }}
           />
         </NestableScrollContainer>
-
-        {/* <Button
-            onPress={() => navigate(FormScreens.ADD_SECTIONS)}
-            title="Add More Sections"
-            leftIcon={<Icon name="plus" size={24} color={COLORS.white} />}
-          />
-        </ScrollView> */}
+        
+        {!FEATURE_FLAGS.ENABLE_NEW_EDITOR_NAV && (
+          <BottomSheet
+            ref={bottomSheetRef}
+            index={isPreviewOpen ? 0 : -1}
+            snapPoints={['90%']}
+            enablePanDownToClose
+            onClose={() => setIsPreviewOpen(false)}
+            backgroundStyle={{
+              backgroundColor: COLORS.background.primary,
+            }}>
+            <View style={{flex: 1}}>
+              <ResumePreview
+                resumeData={activeResume}
+                selectedTemplate={metadata?.templateId || 'professional'}
+                templates={[]}
+              />
+            </View>
+          </BottomSheet>
+        )}
       </SafeAreaView>
     </GestureHandlerRootView>
   );
@@ -242,10 +271,6 @@ export const SwipeCard = ({
       friction={1}
       dragOffsetFromRightEdge={80}
       dragOffsetFromLeftEdge={80}
-      onSwipeableOpen={direction => console.log('Opened:', direction)}
-      onSwipeableClose={direction => console.log('Closed:', direction)}
-      onSwipeableWillOpen={direction => console.log('Will open:', direction)}
-      onSwipeableWillClose={direction => console.log('Will close:', direction)}
       renderRightActions={(progress, translation) =>
         RightActions({
           progress,

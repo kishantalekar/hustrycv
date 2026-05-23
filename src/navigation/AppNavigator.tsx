@@ -63,9 +63,6 @@ export const AppNavigator = () => {
     }
   }, [isHydrated, userName]);
 
-  console.log('onboardingCompleted', onboardingCompleted);
-  console.log('nameInputCompleted', nameInputCompleted);
-  console.log('isHydrated', isHydrated); // Log hydration status
   const initialRouteName = onboardingCompleted
     ? nameInputCompleted
       ? RootScreens.DASHBOARD

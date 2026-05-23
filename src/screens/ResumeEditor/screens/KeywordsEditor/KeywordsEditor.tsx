@@ -56,7 +56,7 @@ export function KeywordsEditor({route}: Readonly<KeywordsEditorProps>) {
   };
 
   const handleRemoveKeyword = (index: number) => {
-    const updatedKeywords = keywords.filter((_, i) => i !== index);
+    const updatedKeywords = keywords.filter((_: string, i: number) => i !== index);
     if (type === 'project') {
       updateProject(id, {...item, keywords: updatedKeywords});
     } else {
@@ -79,7 +79,7 @@ export function KeywordsEditor({route}: Readonly<KeywordsEditorProps>) {
                   No skills added yet. Add your first skill below!
                 </Text>
               ) : (
-                keywords.map((keyword, index) => (
+                keywords.map((keyword: string, index: number) => (
                   <KeywordItem
                     key={index}
                     keyword={keyword}

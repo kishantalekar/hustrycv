@@ -3,7 +3,9 @@ import {HTMLPreview} from '@/components/HTMLPreview/HTMLPreview';
 import {TextInput} from '@/components/TextInput';
 import {FONTS} from '@/constants';
 import type {AppNavigationProp} from '@/navigation/AppNavigator';
+import {RootScreens} from '@/navigation/constants';
 import {useResumeStore} from '@/store/useResumeStore';
+import {selectBasics} from '@/store/selectors/resumeSelectors';
 import {globalStyles} from '@/styles/globalStyles';
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
@@ -19,16 +21,16 @@ import {Card, Divider, Text} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 export const PersonalInfoEditor = () => {
-  const {getActiveResume, updateBasics} = useResumeStore();
+  const {updateBasics} = useResumeStore();
+  const basics = useResumeStore(selectBasics);
   const navigation = useNavigation<AppNavigationProp>();
-  // console.log('basics', getActiveResume());
-  const basics = getActiveResume().basics;
+  if (!basics) return null;
   return (
     <SafeAreaView style={globalStyles.keyboardAvoidingView}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={globalStyles.keyboardAvoidingView}>
-        <Header title="Personal Details" />
+        <Header title="Personal Details" showPreviewButton={true} />
         <ScrollView
           style={styles.container}
           showsVerticalScrollIndicator={false}>
@@ -76,7 +78,7 @@ export const PersonalInfoEditor = () => {
               {/* show the social profiles here  */}
               <Text style={styles.subsectionTitle}>Professional Profiles</Text>
               <TouchableOpacity
-                onPress={() => navigation.navigate('SocialProfiles')}>
+                onPress={() => navigation.navigate(RootScreens.SOCIAL_PROFILES)}>
                 <Text style={styles.summaryPreview}>
                   {basics?.socials?.length
                     ? `${basics?.socials?.length} profile${
@@ -90,7 +92,7 @@ export const PersonalInfoEditor = () => {
               <Text style={styles.subsectionTitle}>Professional Summary</Text>
               <TouchableOpacity
                 onPress={() =>
-                  navigation.navigate('RichTextEditor', {
+                  navigation.navigate(RootScreens.RICH_TEXT_EDITOR, {
                     initialContent: basics.summary || '',
                     contentType: 'professional_summary',
                   })

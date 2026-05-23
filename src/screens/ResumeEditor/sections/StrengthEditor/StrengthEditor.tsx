@@ -1,5 +1,6 @@
 import {Button, Header, KeywordItem, TextInput} from '@/components';
 import {useResumeStore} from '@/store/useResumeStore';
+import {selectStrengthsSection} from '@/store/selectors/resumeSelectors';
 import {globalStyles} from '@/styles';
 import {COLORS, SPACING} from '@/theme';
 import React, {useState} from 'react';
@@ -16,9 +17,9 @@ import {Divider} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 const StrengthEditor = () => {
-  const {getActiveResume, addStrength, removeStrength} = useResumeStore();
+  const {addStrength, removeStrength} = useResumeStore();
 
-  const strengths = getActiveResume().sections.strengths;
+  const strengths = useResumeStore(selectStrengthsSection);
   const [strength, setStrength] = useState('');
 
   const handleAddStrength = () => {
@@ -42,7 +43,7 @@ const StrengthEditor = () => {
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={globalStyles.keyboardAvoidingView}>
-          <Header title="Strengths" />
+          <Header title="Strengths" showPreviewButton={true} />
 
           <ScrollView style={styles.container}>
             <View style={styles.inputContainer}>

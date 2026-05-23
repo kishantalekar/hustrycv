@@ -89,13 +89,6 @@ export const getCommonStyles = () => `
     margin-bottom:16pt;
   }
   }
-  .test1{
-  background-color:red;
-  border:1pt solid red;
-  }
-  .test2{
-  background-color:yellow;
-  }
   .flex{
     display:flex;
   }

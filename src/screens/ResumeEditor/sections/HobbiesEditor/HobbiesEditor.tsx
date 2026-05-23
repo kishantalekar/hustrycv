@@ -1,6 +1,7 @@
 import {Button, Header, IconSelector, TipsCard, TipSets} from '@/components';
 import {FONTS, REORDER_TIPS_SHOWN, SWIPE_TIPS_SHOWN} from '@/constants';
 import {useResumeStore} from '@/store/useResumeStore';
+import {selectHobbiesSection} from '@/store/selectors/resumeSelectors';
 import {globalStyles} from '@/styles';
 import {COLORS, SPACING} from '@/theme';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
@@ -23,15 +24,16 @@ import {HobbiesCard} from './HobbiesCard/HobbiesCard';
 
 const HobbiesEditor = () => {
   const {
-    getActiveResume,
     addHobbie,
     removeHobbie,
     updateHobbie,
     updateAllHobbies,
   } = useResumeStore();
-  const hobbies = getActiveResume().sections.hobbies;
+  const hobbies = useResumeStore(selectHobbiesSection);
   const [isDraggableListVisible, setIsDraggableListVisible] = useState(false);
   const [expandedItemId, setExpandedItemId] = useState<string>('');
+
+  if (!hobbies) return null;
 
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ['50%'], []);
@@ -75,6 +77,7 @@ const HobbiesEditor = () => {
           style={globalStyles.keyboardAvoidingView}>
           <Header
             title="Hobbies & Interests"
+            showPreviewButton={true}
             rightComponent={
               <Icon
                 name="drag-indicator"
@@ -86,7 +89,7 @@ const HobbiesEditor = () => {
           />
 
           <ScrollView style={styles.container}>
-            {expandedItemId.length === 0 && hobbies?.items.length > 0 && (
+            {expandedItemId.length === 0 && (hobbies?.items?.length ?? 0) > 0 && (
               <TipsCard
                 tips={TipSets.swipe}
                 variant="default"
@@ -96,7 +99,7 @@ const HobbiesEditor = () => {
                 animationType="fade"
               />
             )}
-            {hobbies?.items.length > 2 && (
+            {(hobbies?.items?.length ?? 0) > 2 && (
               <TipsCard
                 tips={TipSets.reorder}
                 variant="default"

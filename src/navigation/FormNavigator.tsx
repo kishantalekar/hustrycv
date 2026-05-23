@@ -3,6 +3,7 @@ import {
   CertificationsEditor,
   EducationEditor,
   HobbiesEditor,
+  LanguageEditor,
   PersonalInfoEditor,
   ProjectsEditor,
   ReferenceEditor,
@@ -30,6 +31,7 @@ export type FormStackParamList = {
   [FormScreens.ADD_SECTIONS]: undefined;
   [FormScreens.HOBBIES]: undefined;
   [FormScreens.REFERENCES]: undefined;
+  [FormScreens.LANGUAGES]: undefined;
 };
 
 export type NavigationProp = NativeStackNavigationProp<FormStackParamList>;
@@ -91,6 +93,11 @@ export const FormNavigator = () => {
       <Stack.Screen
         name={FormScreens.REFERENCES}
         component={ReferenceEditor}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name={FormScreens.LANGUAGES}
+        component={LanguageEditor}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

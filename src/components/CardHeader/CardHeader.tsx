@@ -32,7 +32,7 @@ export function CardHeader({
         </Text>
         {!!location && <Text style={styles.location}>{location}</Text>}
       </View>
-      <View>{rightIcon && <Icon name={rightIcon} size={24} />}</View>
+      <View>{rightIcon && <Icon name={rightIcon as any} size={24} />}</View>
     </View>
   );
 }

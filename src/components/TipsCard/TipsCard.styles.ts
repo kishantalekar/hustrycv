@@ -5,7 +5,7 @@ import {FONTS} from '@/constants';
 export const styles = StyleSheet.create({
   // Default variant
   tipsCard: {
-    backgroundColor: COLORS.background || '#FFFFFF',
+    backgroundColor: COLORS.background.secondary || '#FFFFFF',
     borderRadius: 12,
     marginBottom: 16,
     padding: 16,
@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
 
   // Compact variant
   tipsCardCompact: {
-    backgroundColor: COLORS.background || '#FFFFFF',
+    backgroundColor: COLORS.background.secondary || '#FFFFFF',
     borderRadius: 8,
     marginBottom: 12,
     padding: 12,
@@ -142,7 +142,7 @@ export const styles = StyleSheet.create({
   },
 
   toastText: {
-    color: COLORS.background || '#FFFFFF',
+    color: COLORS.white || '#FFFFFF',
     fontSize: 14,
     fontFamily: FONTS.FIRA_SANS.REGULAR,
     flex: 1,

@@ -29,7 +29,7 @@ export function RightActions({
   });
 
   return (
-    <TouchableOpacity onPress={() => handleDelete(id ?? item?.metadata?.id)}>
+    <TouchableOpacity onPress={() => handleDelete(id ?? item?.metadata?.id ?? '')}>
       <Animated.View style={[styles.deleteAction, styleAnimation]}>
         <Icon name="delete" size={24} color={COLORS.white} />
         {showDelete && <Text style={styles.deleteActionText}>Delete</Text>}
