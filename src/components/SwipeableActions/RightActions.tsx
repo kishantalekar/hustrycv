@@ -2,7 +2,7 @@ import {COLORS} from '@/theme';
 import React from 'react';
 import {Text, TouchableOpacity} from 'react-native';
 import Animated, {SharedValue, useAnimatedStyle} from 'react-native-reanimated';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {MaterialDesignIcons as Icon} from '@react-native-vector-icons/material-design-icons';
 import {styles} from './RightActions.styles';
 
 interface RightActionsProps {

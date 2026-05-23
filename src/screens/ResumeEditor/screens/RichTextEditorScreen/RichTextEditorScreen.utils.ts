@@ -1,9 +1,18 @@
 import {GOOGLE_GEMINI_API_KEY} from '@/utils/apiKeys';
 import {extractHtmlFromCodeBlock} from '@/utils/regex';
-import {GoogleGenAI} from '@google/genai';
+import {GoogleGenAI} from '@google/genai/web';
 import {ContentType} from './RichTextEditorScreen.types';
 
-const genAI = new GoogleGenAI({apiKey: GOOGLE_GEMINI_API_KEY});
+let genAIInstance: GoogleGenAI | null = null;
+const getGenAI = () => {
+  if (!genAIInstance) {
+    if (!GOOGLE_GEMINI_API_KEY) {
+      throw new Error('Google Gemini API Key is missing. Please set GOOGLE_GEMINI_API_KEY in your environment/Config.');
+    }
+    genAIInstance = new GoogleGenAI({apiKey: GOOGLE_GEMINI_API_KEY});
+  }
+  return genAIInstance;
+};
 
 export const generateAIContent = async (
   contentType: ContentType,
@@ -26,7 +35,7 @@ export const generateAIContent = async (
       return '';
     }
     console.log('prompt', prompt);
-    const result = await genAI.models.generateContent({
+    const result = await getGenAI().models.generateContent({
       model: 'gemini-2.0-flash',
       contents: prompt,
     });

@@ -1,9 +1,9 @@
 import React from 'react';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Octicons from 'react-native-vector-icons/Octicons';
+import AntDesign from '@react-native-vector-icons/ant-design';
+import FontAwesome from '@react-native-vector-icons/fontawesome';
+import Ionicons from '@react-native-vector-icons/ionicons';
+import MaterialIcons from '@react-native-vector-icons/material-icons';
+import Octicons from '@react-native-vector-icons/octicons';
 import {SvgIcon} from '../SvgIcon/SvgIcon';
 import {CustomIconProps} from './CustomIcon.types';
 

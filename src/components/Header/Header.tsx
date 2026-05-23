@@ -3,7 +3,7 @@ import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import {Text} from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from '@react-native-vector-icons/material-icons';
 import {CustomIcon} from '../CustomIcon';
 import {TextInput} from '../TextInput';
 import {styles} from './Header.styles';

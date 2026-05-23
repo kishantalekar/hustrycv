@@ -1,10 +1,19 @@
 import {createInitialResume} from '@/types';
 import {GOOGLE_GEMINI_API_KEY} from '@/utils/apiKeys';
-import {GoogleGenAI} from '@google/genai';
+import {GoogleGenAI} from '@google/genai/web';
 import {v4 as uuidv4} from 'uuid';
 
-// Initialize Google GenAI with API key
-const genAI = new GoogleGenAI({apiKey: GOOGLE_GEMINI_API_KEY});
+// Initialize Google GenAI with API key lazily
+let genAIInstance: GoogleGenAI | null = null;
+const getGenAI = () => {
+  if (!genAIInstance) {
+    if (!GOOGLE_GEMINI_API_KEY) {
+      throw new Error('Google Gemini API Key is missing. Please set GOOGLE_GEMINI_API_KEY in your environment/Config.');
+    }
+    genAIInstance = new GoogleGenAI({apiKey: GOOGLE_GEMINI_API_KEY});
+  }
+  return genAIInstance;
+};
 
 type Section =
   | 'basics'
@@ -88,7 +97,7 @@ export const processChatMessage = async (
     If you have enough information, format it as JSON. Otherwise, ask for more details.
     `;
 
-    const result = await genAI.models.generateContent({
+    const result = await getGenAI().models.generateContent({
       model: 'gemini-2.0-flash',
       contents: prompt,
     });

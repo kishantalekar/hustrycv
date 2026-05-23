@@ -1,6 +1,6 @@
 import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import {View, TouchableOpacity} from 'react-native';
+import Icon from '@react-native-vector-icons/material-icons';
 import {Typography, TypographyVariant} from '../Typography';
 import {styles} from './KeywordItem.styles';
 import {KeywordItemProps} from './KeywordItem.types';

@@ -12,7 +12,7 @@ import {
 } from 'react-native-draggable-flatlist';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from '@react-native-vector-icons/material-icons';
 import {SkillsCard} from './SkillsCard';
 import {styles} from './SkillsEditor.styles';
 

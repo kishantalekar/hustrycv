@@ -8,12 +8,7 @@ import {posthog} from './src/analytics/posthog/PostHog';
 import {AppNavigator} from './src/navigation/AppNavigator';
 
 import {
-  setJSExceptionHandler,
-  setNativeExceptionHandler,
-} from 'react-native-exception-handler';
-import {
   handleJsExceptionHandler,
-  handleNativeExceptionHandler,
 } from './errorHandlers';
 Sentry.init({
   dsn: 'https://4e53c676d66d1e4b3fe19315c0ba28a0@o4509298628100096.ingest.de.sentry.io/4509298629738576',
@@ -31,9 +26,16 @@ Sentry.init({
   // spotlight: __DEV__,
 });
 
-setJSExceptionHandler(handleJsExceptionHandler);
-
-setNativeExceptionHandler(handleNativeExceptionHandler);
+// Use built-in ErrorUtils to handle global JS exceptions safely
+if (global.ErrorUtils) {
+  const defaultHandler = global.ErrorUtils.getGlobalHandler();
+  global.ErrorUtils.setGlobalHandler((error, isFatal) => {
+    handleJsExceptionHandler(error, isFatal);
+    if (defaultHandler) {
+      defaultHandler(error, isFatal);
+    }
+  });
+}
 //===
 
 const App = () => {

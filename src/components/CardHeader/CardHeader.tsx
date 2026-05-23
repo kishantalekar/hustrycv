@@ -1,7 +1,7 @@
 import {FONTS} from '@/constants';
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from '@react-native-vector-icons/material-icons';
 interface CardHeaderProps {
   containerStyle?: any;
   title: string;
