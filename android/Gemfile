@@ -1,3 +1,7 @@
 source "https://rubygems.org"
 
 gem "fastlane"
+
+# For Ruby 3.4 compatibility on newer macOS/development environments
+gem "abbrev"
+gem "ostruct"

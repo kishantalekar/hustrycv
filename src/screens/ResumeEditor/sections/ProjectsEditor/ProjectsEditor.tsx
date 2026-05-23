@@ -1,6 +1,6 @@
 import {Button} from '@/components';
 import {Header} from '@/components/Header';
-import {AppNavigationProp} from '@/navigation/AppNavigator';
+import type {AppNavigationProp} from '@/navigation/AppNavigator';
 import {useResumeStore} from '@/store/useResumeStore';
 import {globalStyles} from '@/styles/globalStyles';
 import {COLORS} from '@/theme';
@@ -13,7 +13,7 @@ import {
 } from 'react-native-draggable-flatlist';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from '@react-native-vector-icons/material-icons';
 import {ProjectCard} from './ProjectCard';
 import {styles} from './ProjectsEditor.styles';
 

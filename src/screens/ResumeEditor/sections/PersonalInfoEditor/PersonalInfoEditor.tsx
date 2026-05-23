@@ -2,7 +2,7 @@ import {Header} from '@/components/Header';
 import {HTMLPreview} from '@/components/HTMLPreview/HTMLPreview';
 import {TextInput} from '@/components/TextInput';
 import {FONTS} from '@/constants';
-import {AppNavigationProp} from '@/navigation/AppNavigator';
+import type {AppNavigationProp} from '@/navigation/AppNavigator';
 import {useResumeStore} from '@/store/useResumeStore';
 import {globalStyles} from '@/styles/globalStyles';
 import {useNavigation} from '@react-navigation/native';

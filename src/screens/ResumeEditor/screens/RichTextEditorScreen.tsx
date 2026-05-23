@@ -2,19 +2,28 @@
 import {LottieAnimation} from '@/components';
 import {Header} from '@/components/Header';
 import {RichTextEditor} from '@/components/RichTextEditor/RichTextEditor';
-import {RootStackParamList} from '@/navigation/AppNavigator';
+import type {RootStackParamList} from '@/navigation/AppNavigator';
 import {RootScreens} from '@/navigation/constants';
 import {useResumeStore} from '@/store/useResumeStore';
 import {GOOGLE_GEMINI_API_KEY} from '@/utils/apiKeys';
 import {extractHtmlFromCodeBlock} from '@/utils/regex';
 import {TenTapStartKit, useEditorBridge} from '@10play/tentap-editor';
-import {GoogleGenAI} from '@google/genai';
+import {GoogleGenAI} from '@google/genai/web';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useState} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-const genAI = new GoogleGenAI({apiKey: GOOGLE_GEMINI_API_KEY});
+let genAIInstance: GoogleGenAI | null = null;
+const getGenAI = () => {
+  if (!genAIInstance) {
+    if (!GOOGLE_GEMINI_API_KEY) {
+      throw new Error('Google Gemini API Key is missing. Please set GOOGLE_GEMINI_API_KEY in your environment/Config.');
+    }
+    genAIInstance = new GoogleGenAI({apiKey: GOOGLE_GEMINI_API_KEY});
+  }
+  return genAIInstance;
+};
 
 const generateAIContent = async (
   contentType: ContentType,
@@ -98,7 +107,7 @@ const generateAIContent = async (
 
     if (!prompt) return '';
     console.log('prompt', prompt);
-    const result = await genAI.models.generateContent({
+    const result = await getGenAI().models.generateContent({
       model: 'gemini-2.0-flash',
       contents: prompt,
     });

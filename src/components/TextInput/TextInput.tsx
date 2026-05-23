@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from '@react-native-vector-icons/material-icons';
 import {CustomIcon} from '../CustomIcon';
 import {Typography, TypographyVariant} from '../Typography';
 import {TextInputProps, TextInputVariant} from './TextInput.types';

@@ -1,15 +1,13 @@
 import {LoadingIndicator} from '@/components/LoadingIndicator';
-import {
-  Dashboard,
-  KeywordsEditor,
-  NameInputScreen,
-  OnboardingScreen,
-  PreviewScreen,
-  ProjectLinksScreen,
-  ResumeEditor,
-  SocialProfilesScreen,
-  UploadResumeScreen,
-} from '@/screens';
+import {Dashboard} from '@/screens/Dashboard/Dashboard';
+import {NameInputScreen} from '@/screens/NameInputScreen/NameInputScreen';
+import {OnboardingScreen} from '@/screens/Onboarding/OnboardingScreen';
+import {PreviewScreen} from '@/screens/Preview/PreviewScreen';
+import {UploadResumeScreen} from '@/screens/UploadResume/UploadResumeScreen';
+import {ResumeEditor} from '@/screens/ResumeEditor/ResumeEditor';
+import {KeywordsEditor} from '@/screens/ResumeEditor/screens/KeywordsEditor/KeywordsEditor';
+import {ProjectLinksScreen} from '@/screens/ResumeEditor/screens/LinksEditorScreen/ProjectLinksScreen';
+import {SocialProfilesScreen} from '@/screens/ResumeEditor/screens/SocialProfilesScreen/SocialProfilesScreen';
 import {
   ContentType,
   RichTextEditorScreen,

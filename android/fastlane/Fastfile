@@ -31,9 +31,22 @@ platform :android do
   end
 
   desc "Deploy a new version to the Google Play"
-  lane :deploy do
-    gradle(task: "clean assembleRelease")
-    upload_to_play_store
+  lane :deploy do |options|
+    track = options[:track] || ENV["PLAY_STORE_TRACK"] || "internal"
+
+    # Build release Android App Bundle (AAB)
+    gradle(
+      task: "clean bundle",
+      build_type: "Release"
+    )
+
+    # Upload to Play Store
+    upload_to_play_store(
+      track: track,
+      aab: "./app/build/outputs/bundle/release/app-release.aab",
+      release_status: "completed",
+      skip_upload_apk: true
+    )
   end
 
   desc "Deploy to closed testing track"

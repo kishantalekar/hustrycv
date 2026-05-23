@@ -23,17 +23,3 @@ export const handleJsExceptionHandler = (error: Error, isFatal: boolean) => {
   );
 };
 
-export const handleNativeExceptionHandler = (exceptionString: string) => {
-  // Log native error to console
-  console.error('Native Error:', exceptionString);
-
-  // Capture native error with Sentry
-  Sentry.captureException(new Error(exceptionString), {
-    tags: {
-      errorType: 'native',
-    },
-  });
-
-  // Note: Cannot show UI alerts for native crashes
-  // The app will likely terminate after native crashes
-};

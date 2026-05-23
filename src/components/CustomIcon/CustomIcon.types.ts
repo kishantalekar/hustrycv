@@ -1,4 +1,9 @@
-import {IconProps} from 'react-native-vector-icons/Icon';
+import {TextProps} from 'react-native';
+
+export interface IconProps extends TextProps {
+  size?: number;
+  color?: string;
+}
 
 export type IconVariant =
   | 'material'
@@ -9,7 +14,7 @@ export type IconVariant =
   | 'ionicons'
   | 'svg';
 
-export interface CustomIconProps extends Omit<IconProps, 'name'> {
+export interface CustomIconProps extends IconProps {
   variant?: IconVariant;
   name: string;
   size?: number;

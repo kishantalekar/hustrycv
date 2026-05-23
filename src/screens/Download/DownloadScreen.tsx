@@ -17,7 +17,7 @@ import {
   View,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {MaterialDesignIcons as Icon} from '@react-native-vector-icons/material-design-icons';
 import {styles} from './DownloadScreen.styles';
 export const DownloadScreen = () => {
   const {resumes, activeResumeId} = useResumeStore();

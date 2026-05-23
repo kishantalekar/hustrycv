@@ -1,20 +1,29 @@
 import {createInitialResume} from '@/types/common/resume.types';
 import {GOOGLE_GEMINI_API_KEY} from '@/utils/apiKeys';
 import {extractJsonFromCodeBlock} from '@/utils/regex';
-import {GoogleGenAI} from '@google/genai';
+import {GoogleGenAI} from '@google/genai/web';
 import * as Sentry from '@sentry/react-native';
 import {v4 as uuidv4} from 'uuid';
 import {RESUME_PARSE_PROMPT} from './prompts';
 
-// Initialize Google GenAI with API key
-const genAI = new GoogleGenAI({apiKey: GOOGLE_GEMINI_API_KEY});
+// Initialize Google GenAI with API key lazily
+let genAIInstance: GoogleGenAI | null = null;
+const getGenAI = () => {
+  if (!genAIInstance) {
+    if (!GOOGLE_GEMINI_API_KEY) {
+      throw new Error('Google Gemini API Key is missing. Please set GOOGLE_GEMINI_API_KEY in your environment/Config.');
+    }
+    genAIInstance = new GoogleGenAI({apiKey: GOOGLE_GEMINI_API_KEY});
+  }
+  return genAIInstance;
+};
 
 // Function to parse resume text using Gemini AI
 export const parseResumeWithAI = async (resumeText: string) => {
   try {
     const prompt = RESUME_PARSE_PROMPT.replace('{{resumeText}}', resumeText);
 
-    const result = await genAI.models.generateContent({
+    const result = await getGenAI().models.generateContent({
       model: 'gemini-2.0-flash',
       contents: prompt,
     });

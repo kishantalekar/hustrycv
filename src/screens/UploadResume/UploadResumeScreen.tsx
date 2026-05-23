@@ -16,7 +16,7 @@ import React, {useEffect, useState} from 'react';
 import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Config from 'react-native-config';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {MaterialDesignIcons as Icon} from '@react-native-vector-icons/material-design-icons';
 import {styles} from './UploadResumeScreen.styles';
 import {useAppStore} from '@/store/useAppStore';
 
